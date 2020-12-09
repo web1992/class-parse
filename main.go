@@ -8,6 +8,11 @@ import (
 
 func main() {
 
+	l := len(os.Args)
+	if l == 1 {
+		fmt.Println("Please enter file name! Exit!")
+		return
+	}
 	fileName := os.Args[1]
 	fmt.Println("main", fileName)
 
