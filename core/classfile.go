@@ -1,4 +1,6 @@
 package core
 
-type ClassFile struct {
+type ClassFile interface {
+
+
 }
