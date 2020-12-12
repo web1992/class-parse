@@ -16,3 +16,7 @@ const (
 	TAG_CONSTANT_MethodType         = 16
 	TAG_CONSTANT_InvokeDynamic      = 18
 )
+
+type Tag struct {
+	Tag int
+}
