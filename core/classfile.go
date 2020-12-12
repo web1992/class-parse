@@ -32,6 +32,8 @@ ClassFile {
 }
 */
 type ClassFile interface {
+	ByteLen() int
+	View() interface{}
 }
 
 type ClassPart interface {

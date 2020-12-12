@@ -17,6 +17,4 @@ const (
 	TAG_CONSTANT_InvokeDynamic      = 18
 )
 
-type Tag struct {
-	Tag int
-}
+type Tag int
