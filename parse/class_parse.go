@@ -15,7 +15,22 @@ var fileSuffixInvalid = errors.New("file must has suffix " + fileSuffix)
 type ClassParse struct {
 	filePath string
 	fileByes []byte
-	p        int
+	pointer  int
+}
+
+func (cp *ClassParse) IncrPointer(num int) {
+	cp.pointer += num
+}
+
+func (cp *ClassParse) Read(r Reader) {
+
+	bytes := cp.Bytes()
+
+	l := r.ObjLen()
+	b := bytes[cp.pointer : cp.pointer+l]
+	r.ReadObj(b)
+
+	cp.IncrPointer(l)
 }
 
 func (cp *ClassParse) Name() string {
@@ -56,8 +71,8 @@ func (cp *ClassParse) parseFile(filePath string) error {
 func (cp *ClassParse) Magic() core.Magic {
 	bytes := cp.Bytes()
 	var m core.Magic
-	magic := bytes[cp.p:m.ByteLen()]
-	cp.p += m.ByteLen()
+	magic := bytes[cp.pointer:m.ByteLen()]
+	cp.pointer += m.ByteLen()
 	m.Bytes = magic
 	return m
 }
@@ -70,11 +85,11 @@ func (cp *ClassParse) MinorVersion() core.MinorVersion {
 
 	var mv core.MinorVersion
 
-	p := cp.p
+	p := cp.pointer
 	mvb := bytes[p : p+mv.ByteLen()]
 	mv.Bytes = mvb
 
-	cp.p += mv.ByteLen()
+	cp.pointer += mv.ByteLen()
 
 	return mv
 }
@@ -85,11 +100,11 @@ func (cp *ClassParse) MajorVersion() core.MajorVersion {
 	var mv core.MajorVersion
 	bytes := cp.Bytes()
 
-	p := cp.p
+	p := cp.pointer
 	mvb := bytes[p : p+mv.ByteLen()]
 	mv.Bytes = mvb
 
-	cp.p += mv.ByteLen()
+	cp.pointer += mv.ByteLen()
 	return mv
 }
 
@@ -99,10 +114,10 @@ func (cp *ClassParse) ConstantPoolCount() core.ConstantPoolCount {
 	var cpPool core.ConstantPoolCount
 	bytes := cp.Bytes()
 
-	p := cp.p
+	p := cp.pointer
 	mvb := bytes[p : p+cpPool.ByteLen()]
 	cpPool.Bytes = mvb
 
-	cp.p += cpPool.ByteLen()
+	cp.pointer += cpPool.ByteLen()
 	return cpPool
 }

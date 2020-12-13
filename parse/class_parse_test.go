@@ -6,12 +6,12 @@ import (
 	"testing"
 )
 
-const s = "/Users/zl/Documents/DEV/github/class-parse/Main.class"
+const file = "/Users/zl/Documents/DEV/github/class-parse/Main.class"
 
 func Test_class_parse(t *testing.T) {
 
 	var cp ClassParse
-	e := cp.parseFile(s)
+	e := cp.parseFile(file)
 	if e != nil {
 		log.Fatal(e)
 	}
@@ -22,7 +22,7 @@ func Test_class_parse(t *testing.T) {
 func Test_get_magic_num(t *testing.T) {
 
 	var cp ClassParse
-	_ = cp.parseFile(s)
+	_ = cp.parseFile(file)
 
 	m := cp.Magic()
 
@@ -33,7 +33,7 @@ func Test_get_magic_num(t *testing.T) {
 func Test_get_Minor_Version(t *testing.T) {
 
 	var cp ClassParse
-	_ = cp.parseFile(s)
+	_ = cp.parseFile(file)
 	mv := cp.MinorVersion()
 	v := mv.View()
 	log.Println(v)
@@ -42,7 +42,7 @@ func Test_get_Minor_Version(t *testing.T) {
 
 func Test_get_major_version(t *testing.T) {
 	var cp ClassParse
-	_ = cp.parseFile(s)
+	_ = cp.parseFile(file)
 	mv := cp.MajorVersion()
 	v := mv.View()
 	log.Println("view is", v)
@@ -51,7 +51,7 @@ func Test_get_major_version(t *testing.T) {
 
 func Test_get_cp(t *testing.T) {
 	var cp ClassParse
-	_ = cp.parseFile(s)
+	_ = cp.parseFile(file)
 	cpool := cp.ConstantPoolCount()
 	v := cpool.View()
 	log.Println("view is", v)
@@ -60,4 +60,13 @@ func Test_get_cp(t *testing.T) {
 		t.Fatalf("view is %d  except is %d", v, 35)
 	}
 
+}
+
+func Test_get_cp_info(t *testing.T) {
+	var cp ClassParse
+	_ = cp.parseFile(file)
+
+	cpInfos := cp.CpInfos()
+
+	fmt.Println(cpInfos)
 }

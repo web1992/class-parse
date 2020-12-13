@@ -18,3 +18,7 @@ const (
 )
 
 type Tag int32
+type ClassIndex int32
+type NameAndTypeIndex int32
+type NameIndex int32
+type DescriptorIndex int32

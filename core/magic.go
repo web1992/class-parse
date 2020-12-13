@@ -11,7 +11,7 @@ type Magic struct {
 }
 
 func (m *Magic) ByteLen() int {
-	return U4
+	return U4_L
 }
 
 func (m *Magic) View() interface{} {

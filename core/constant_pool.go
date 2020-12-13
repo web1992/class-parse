@@ -1,5 +1,7 @@
 package core
 
+import "class-parse/utils"
+
 /**
 | Constant Type               | Value |
 | --------------------------- | ----- |
@@ -19,6 +21,12 @@ package core
 | CONSTANT_InvokeDynamic      | 18    |
 */
 
+const (
+	u1 = U1_L
+	u2 = U2_L
+)
+
+// The constant_pool table is indexed from 1 to constant_pool_count - 1.
 type CpInfo struct {
 	CpClass
 	CpFieldRef
@@ -37,7 +45,7 @@ type CpInfo struct {
 }
 
 // CpInfos is a array for CpInfo
-type CpInfos []CpInfo
+type CpInfos []interface{}
 
 /**
 tag =7
@@ -49,6 +57,22 @@ u2 name_index;
 
 type CpClass struct {
 	Tag
+	NameIndex
+}
+
+func CpClassNew() *CpClass {
+	return &CpClass{
+		Tag: TAG_CONSTANT_Class,
+	}
+}
+
+func (class *CpClass) ReadObj(bytes []byte) {
+	class.NameIndex = NameIndex(utils.U2(bytes[u1 : u1+u2]))
+}
+
+func (class *CpClass) ObjLen() int {
+
+	return u1 + u2
 }
 
 /*
@@ -60,6 +84,21 @@ u2 name_and_type_index;
 }*/
 type CpFieldRef struct {
 	Tag
+	ClassIndex
+	NameAndTypeIndex
+}
+
+func CpFieldRefNew() *CpFieldRef {
+	return &CpFieldRef{Tag: TAG_CONSTANT_Fieldref}
+}
+
+func (f *CpFieldRef) ReadObj(bytes []byte) {
+	f.ClassIndex = ClassIndex(utils.U2(bytes[u1 : u1+u2]))
+	f.NameAndTypeIndex = NameAndTypeIndex(utils.U2(bytes[u1+u2 : u1+u2+u2]))
+}
+
+func (f *CpFieldRef) ObjLen() int {
+	return u1 + u2 + u2
 }
 
 /**
@@ -73,6 +112,23 @@ CONSTANT_Methodref_info {
 
 type CpMethodRef struct {
 	Tag
+	ClassIndex
+	NameAndTypeIndex
+}
+
+func CpMethodRefNew() *CpMethodRef {
+	return &CpMethodRef{
+		Tag: TAG_CONSTANT_Methodref,
+	}
+}
+
+func (method *CpMethodRef) ReadObj(bytes []byte) {
+	method.ClassIndex = ClassIndex(utils.U2(bytes[u1 : u1+u2]))
+	method.NameAndTypeIndex = NameAndTypeIndex(utils.U2(bytes[u1+u2 : u1+u2+u2]))
+}
+
+func (method *CpMethodRef) ObjLen() int {
+	return u1 + u2 + u2
 }
 
 /*
@@ -154,6 +210,24 @@ u2 descriptor_index;
 
 type CpNameAndType struct {
 	Tag
+	NameIndex
+	DescriptorIndex
+}
+
+func CpNameAndTypeNew() *CpNameAndType {
+
+	return &CpNameAndType{
+		Tag: TAG_CONSTANT_NameAndType,
+	}
+}
+
+func (cnat *CpNameAndType) ReadObj(bytes []byte) {
+	cnat.NameIndex = NameIndex(utils.U2(bytes[u1 : u1+u2]))
+	cnat.DescriptorIndex = DescriptorIndex(utils.U2(bytes[u1+u2 : u1+u2+u2]))
+}
+
+func (cnat *CpNameAndType) ObjLen() int {
+	return u1 + u2 + u2
 }
 
 /**

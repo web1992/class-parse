@@ -21,13 +21,13 @@ ClassFile {
 }
 */
 
-// U1 1 byte
-// U2 2 bytes
-// U4 4 bytes
+// U1_L 1 byte
+// U2_L 2 bytes
+// U4_L 4 bytes
 const (
-	U1 = 1 // 1 byte
-	U2 = 2 // 2 bytes
-	U4 = 4 // 4 bytes
+	U1_L = 1 // 1 byte
+	U2_L = 2 // 2 bytes
+	U4_L = 4 // 4 bytes
 )
 
 // Bytes ,binary Bytes

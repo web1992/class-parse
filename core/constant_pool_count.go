@@ -6,7 +6,7 @@ type ConstantPoolCount struct {
 }
 
 func (cp *ConstantPoolCount) ByteLen() int {
-	return U2
+	return U2_L
 }
 
 // always stored in big-endian order, where the high bytes come first
