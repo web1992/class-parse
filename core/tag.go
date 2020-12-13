@@ -17,4 +17,4 @@ const (
 	TAG_CONSTANT_InvokeDynamic      = 18
 )
 
-type Tag int
+type Tag int32

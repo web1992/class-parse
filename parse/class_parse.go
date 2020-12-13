@@ -96,13 +96,13 @@ func (cp *ClassParse) MajorVersion() core.MajorVersion {
 func (cp *ClassParse) ConstantPoolCount() core.ConstantPoolCount {
 
 	cp.MajorVersion()
-	var cpool core.ConstantPoolCount
+	var cpPool core.ConstantPoolCount
 	bytes := cp.Bytes()
 
 	p := cp.p
-	mvb := bytes[p : p+cpool.ByteLen()]
-	cpool.Bytes = mvb
+	mvb := bytes[p : p+cpPool.ByteLen()]
+	cpPool.Bytes = mvb
 
-	cp.p += cpool.ByteLen()
-	return cpool
+	cp.p += cpPool.ByteLen()
+	return cpPool
 }

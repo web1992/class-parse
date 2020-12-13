@@ -18,9 +18,6 @@ package core
 | CONSTANT_MethodType         | 16    |
 | CONSTANT_InvokeDynamic      | 18    |
 */
-type CpReader interface {
-	ReadCpInfo() CpInfo
-}
 
 type CpInfo struct {
 	CpClass
@@ -38,6 +35,9 @@ type CpInfo struct {
 	CpMethodType
 	CpInvokeDynamic
 }
+
+// CpInfos is a array for CpInfo
+type CpInfos []CpInfo
 
 /**
 tag =7
