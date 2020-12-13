@@ -70,3 +70,12 @@ func Test_get_cp_info(t *testing.T) {
 
 	fmt.Println(cpInfos)
 }
+
+func Test_get_access_flags(t *testing.T) {
+	var cp ClassParse
+	_ = cp.parseFile(file)
+
+	af := cp.AccessFlag()
+	fmt.Println(af.View())
+
+}

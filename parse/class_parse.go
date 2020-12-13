@@ -121,3 +121,17 @@ func (cp *ClassParse) ConstantPoolCount() core.ConstantPoolCount {
 	cp.pointer += cpPool.ByteLen()
 	return cpPool
 }
+
+func (cp *ClassParse) AccessFlag() core.AccessFlag {
+
+	cp.CpInfos()
+
+	var af core.AccessFlag
+
+	bytes := cp.Bytes()
+	p := cp.pointer
+	afBytes := bytes[p : p+af.ByteLen()]
+	af.Bytes = afBytes
+
+	return af
+}
