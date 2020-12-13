@@ -16,6 +16,7 @@ const (
 func (cp *ClassParse) CpInfos() core.CpInfos {
 
 	var cpInfos core.CpInfos
+	cpInfos = append(cpInfos, nil)
 	cpc := cp.ConstantPoolCount()
 	count := (cpc.View()).(int)
 	fmt.Printf("constant pool count is %d \n", count)
@@ -23,11 +24,10 @@ func (cp *ClassParse) CpInfos() core.CpInfos {
 	for i := 1; i <= count-1; i++ {
 		bytes := cp.Bytes()
 
+		//fmt.Println("CpInfos c is", i)
 		p := cp.pointer
 		tagByte := bytes[p : p+core.U1_L]
 		tag := utils.U1(tagByte)
-		//fmt.Println(tag)
-
 		switch tag {
 
 		case core.TAG_CONSTANT_Class:
@@ -42,114 +42,55 @@ func (cp *ClassParse) CpInfos() core.CpInfos {
 			m := core.CpMethodRefNew()
 			cp.Read(m)
 			cpInfos = append(cpInfos, m)
-		//case core.TAG_CONSTANT_InterfaceMethodref:
-		//	cpInfos = append(cpInfos, parseCpInterfaceMethodRef())
-		//case core.TAG_CONSTANT_String:
-		//	cpInfos = append(cpInfos, parseCpString())
-		//case core.TAG_CONSTANT_Integer:
-		//	cpInfos = append(cpInfos, parseCpInter())
-		//case core.TAG_CONSTANT_Float:
-		//	cpInfos = append(cpInfos, parseCpFloat())
-		//case core.TAG_CONSTANT_Long:
-		//	cpInfos = append(cpInfos, parseCpLong())
-		//case core.TAG_CONSTANT_Double:
-		//	cpInfos = append(cpInfos, parseCpDouble())
+		case core.TAG_CONSTANT_InterfaceMethodref:
+			imr := core.CpInterfaceMethodRefNew()
+			cp.Read(imr)
+			cpInfos = append(cpInfos, imr)
+		case core.TAG_CONSTANT_String:
+			s := core.CpStringNew()
+			cp.Read(s)
+			cpInfos = append(cpInfos, s)
+		case core.TAG_CONSTANT_Integer:
+			i := core.CpIntegerNew()
+			cp.Read(i)
+			cpInfos = append(cpInfos, i)
+		case core.TAG_CONSTANT_Float:
+			f := core.CpFloatNew()
+			cp.Read(f)
+			cpInfos = append(cpInfos, f)
+		case core.TAG_CONSTANT_Long:
+			l := core.CpLongNew()
+			cp.Read(l)
+			cpInfos = append(cpInfos, l)
+		case core.TAG_CONSTANT_Double:
+			d := core.CpDoubleNew()
+			cp.Read(d)
+			cpInfos = append(cpInfos, d)
 		case core.TAG_CONSTANT_NameAndType:
 			var cnat = core.CpNameAndTypeNew()
 			cp.Read(cnat)
 			cpInfos = append(cpInfos, cnat)
-		//case core.TAG_CONSTANT_Utf8:
-		//	cpInfos = append(cpInfos, parseCpUTF8())
-		//case core.TAG_CONSTANT_MethodHandle:
-		//	cpInfos = append(cpInfos, parseCpMethodHandle())
-		//case core.TAG_CONSTANT_MethodType:
-		//	cpInfos = append(cpInfos, parseCpMethodType())
-		//case core.TAG_CONSTANT_InvokeDynamic:
-		//	cpInfos = append(cpInfos, parseCpInvokeDynamic())
+		case core.TAG_CONSTANT_Utf8:
+			u := core.CpUTF8New()
+			cp.Read(u)
+			cpInfos = append(cpInfos, u)
+		case core.TAG_CONSTANT_MethodHandle:
+			m := core.CpMethodHandleNew()
+			cp.Read(m)
+			cpInfos = append(cpInfos, m)
+		case core.TAG_CONSTANT_MethodType:
+			mt := core.CpMethodTypeNew()
+			cp.Read(mt)
+			cpInfos = append(cpInfos, mt)
+		case core.TAG_CONSTANT_InvokeDynamic:
+			id := core.CpInvokeDynamicNew()
+			cp.Read(id)
+			cpInfos = append(cpInfos, id)
 
 		default:
-			//fmt.Sprintf("tag %d is undefiend", tag)
+			fmt.Sprintf("tag %d is undefiend", tag)
 
 		}
 	}
 	return cpInfos
-}
-
-/**
-/*
-tag =12
-CONSTANT_NameAndType_info {
-u1 tag;
-u2 name_index;
-u2 descriptor_index;
-}*/
-
-func parseCpNameAndType(cp *ClassParse) core.CpNameAndType {
-
-	var cpnt core.CpNameAndType
-
-	bytes := cp.Bytes()
-	p := cp.pointer
-	b := bytes[p : p+u1+u2+u2]
-
-	cpnt.Tag = core.Tag(utils.U1(b[:u1]))
-	cpnt.NameIndex = core.NameIndex(utils.U2(b[u1 : u1+u2]))
-	cpnt.DescriptorIndex = core.DescriptorIndex(utils.U2(b[u1+u2 : u1+u2+u2]))
-
-	cp.pointer += u1 + u2 + u2
-	return cpnt
-}
-
-/**
-parseCpMethodRef
-
-tag =10
-CONSTANT_Methodref_info {
-    u1 tag;
-    u2 class_index;
-    u2 name_and_type_index;
-}
-*/
-func parseCpMethodRef(cp *ClassParse) core.CpMethodRef {
-	var cpM core.CpMethodRef
-
-	bytes := cp.Bytes()
-	p := cp.pointer
-	b := bytes[p : p+u1+u2+u2]
-
-	tag := utils.U1(b[:u1])
-	cpM.Tag = core.Tag(tag)
-
-	ci := utils.U2(b[u1 : u1+u2])
-	cpM.ClassIndex = core.ClassIndex(ci)
-
-	ni := utils.U2(b[u1+u2 : u1+u2+u2])
-	cpM.NameAndTypeIndex = core.NameAndTypeIndex(ni)
-
-	cp.pointer += u1 + u2 + u2
-	return cpM
-}
-
-/**
-tag =7
-CONSTANT_Class_info {
-u1 tag;
-u2 name_index;
-}
-*/
-func parseCpClass(cp *ClassParse) core.CpClass {
-	var cpClass core.CpClass
-
-	bytes := cp.Bytes()
-	p := cp.pointer
-	b := bytes[p : p+u1+u2]
-
-	tag := utils.U1(b[:u1])
-	cpClass.Tag = core.Tag(tag)
-
-	ni := utils.U2(b[u1 : u1+u2])
-	cpClass.NameIndex = core.NameIndex(ni)
-
-	cp.pointer += u1 + u2
-	return cpClass
 }

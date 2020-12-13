@@ -28,9 +28,9 @@ func (cp *ClassParse) Read(r Reader) {
 
 	l := r.ObjLen()
 	b := bytes[cp.pointer : cp.pointer+l]
-	r.ReadObj(b)
+	readL := r.ReadObj(b)
 
-	cp.IncrPointer(l)
+	cp.IncrPointer(l + readL)
 }
 
 func (cp *ClassParse) Name() string {

@@ -24,6 +24,7 @@ import "class-parse/utils"
 const (
 	u1 = U1_L
 	u2 = U2_L
+	u4 = U4_L
 )
 
 // The constant_pool table is indexed from 1 to constant_pool_count - 1.
@@ -66,8 +67,9 @@ func CpClassNew() *CpClass {
 	}
 }
 
-func (class *CpClass) ReadObj(bytes []byte) {
+func (class *CpClass) ReadObj(bytes []byte) int {
 	class.NameIndex = NameIndex(utils.U2(bytes[u1 : u1+u2]))
+	return 0
 }
 
 func (class *CpClass) ObjLen() int {
@@ -92,9 +94,10 @@ func CpFieldRefNew() *CpFieldRef {
 	return &CpFieldRef{Tag: TAG_CONSTANT_Fieldref}
 }
 
-func (f *CpFieldRef) ReadObj(bytes []byte) {
+func (f *CpFieldRef) ReadObj(bytes []byte) int {
 	f.ClassIndex = ClassIndex(utils.U2(bytes[u1 : u1+u2]))
 	f.NameAndTypeIndex = NameAndTypeIndex(utils.U2(bytes[u1+u2 : u1+u2+u2]))
+	return 0
 }
 
 func (f *CpFieldRef) ObjLen() int {
@@ -122,9 +125,10 @@ func CpMethodRefNew() *CpMethodRef {
 	}
 }
 
-func (method *CpMethodRef) ReadObj(bytes []byte) {
+func (method *CpMethodRef) ReadObj(bytes []byte) int {
 	method.ClassIndex = ClassIndex(utils.U2(bytes[u1 : u1+u2]))
 	method.NameAndTypeIndex = NameAndTypeIndex(utils.U2(bytes[u1+u2 : u1+u2+u2]))
+	return 0
 }
 
 func (method *CpMethodRef) ObjLen() int {
@@ -141,6 +145,23 @@ u2 name_and_type_index;
 
 type CpInterfaceMethodRef struct {
 	Tag
+	ClassIndex
+	NameAndTypeIndex
+}
+
+func CpInterfaceMethodRefNew() *CpInterfaceMethodRef {
+	return &CpInterfaceMethodRef{
+		Tag: TAG_CONSTANT_InterfaceMethodref,
+	}
+}
+
+func (im *CpInterfaceMethodRef) ReadObj(bytes []byte) int {
+	im.ClassIndex = ClassIndex(utils.U2(bytes[u1 : u1+u2]))
+	im.NameAndTypeIndex = NameAndTypeIndex(utils.U2(bytes[u1+u2 : u1+u2+u2]))
+	return 0
+}
+func (im *CpInterfaceMethodRef) ObjLen() int {
+	return u1 + u2 + u2
 }
 
 /*
@@ -152,6 +173,22 @@ u2 string_index;
 
 type CpString struct {
 	Tag
+	StringIndex
+}
+
+func CpStringNew() *CpString {
+	return &CpString{
+		Tag: TAG_CONSTANT_String,
+	}
+}
+
+func (s *CpString) ReadObj(bytes []byte) int {
+	s.StringIndex = StringIndex(utils.U2(bytes[u1 : u1+u2]))
+
+	return 0
+}
+func (s *CpString) ObjLen() int {
+	return u1 + u2
 }
 
 /*
@@ -160,8 +197,28 @@ CONSTANT_Integer_info {
 u1 tag;
 u4 bytes;
 }*/
+// The bytes item of the CONSTANT_Integer_info structure represents the value of the int constant.
+// The bytes of the value are stored in big-endian (high byte first) order.
 type CpInteger struct {
 	Tag
+	Bytes
+	Integer // bytes to integer
+}
+
+func CpIntegerNew() *CpInteger {
+	return &CpInteger{
+		Tag: TAG_CONSTANT_Integer,
+	}
+}
+
+func (i *CpInteger) ReadObj(bytes []byte) int {
+	b := bytes[u1 : u1+u4]
+	i.Bytes = b
+	i.Integer = Integer(utils.U4(b))
+	return 0
+}
+func (i *CpInteger) ObjLen() int {
+	return u1 + u4
 }
 
 /**
@@ -173,6 +230,24 @@ CONSTANT_Float_info {
 */
 type CpFloat struct {
 	Tag
+	Bytes
+	Float // bytes to float
+}
+
+func CpFloatNew() *CpFloat {
+	return &CpFloat{
+		Tag: TAG_CONSTANT_Float,
+	}
+}
+
+func (f *CpFloat) ReadObj(bytes []byte) int {
+	b := bytes[u1 : u1+u4]
+	f.Bytes = b
+	f.Float = Float(utils.Float(b))
+	return 0
+}
+func (f *CpFloat) ObjLen() int {
+	return u1 + u4
 }
 
 /**
@@ -184,7 +259,25 @@ CONSTANT_Long_info {
 }
 */
 type CpLong struct {
-	Tag
+	Tag   // tag =5
+	Bytes // high_bytes + low_bytes
+	Long  // bytes to long
+}
+
+func CpLongNew() *CpLong {
+	return &CpLong{
+		Tag: TAG_CONSTANT_Long,
+	}
+}
+
+func (l *CpLong) ReadObj(bytes []byte) int {
+	b := bytes[u1 : u1+u4+u4]
+	l.Bytes = b
+	l.Long = Long(utils.Long(b))
+	return 0
+}
+func (l *CpLong) ObjLen() int {
+	return u1 + u4 + u4
 }
 
 /**
@@ -197,7 +290,24 @@ CONSTANT_Double_info {
 */
 
 type CpDouble struct {
-	Tag
+	Tag    // tag =6
+	Bytes  // high_bytes + low_bytes
+	Double // bytes to long
+}
+
+func CpDoubleNew() *CpDouble {
+	return &CpDouble{
+		Tag: TAG_CONSTANT_Double,
+	}
+}
+func (d *CpDouble) ReadObj(bytes []byte) int {
+	b := bytes[u1 : u1+u4+u4]
+	d.Bytes = b
+	d.Double = Double(utils.Double(b))
+	return 0
+}
+func (d *CpDouble) ObjLen() int {
+	return u1 + u4 + u4
 }
 
 /*
@@ -221,9 +331,10 @@ func CpNameAndTypeNew() *CpNameAndType {
 	}
 }
 
-func (cnat *CpNameAndType) ReadObj(bytes []byte) {
+func (cnat *CpNameAndType) ReadObj(bytes []byte) int {
 	cnat.NameIndex = NameIndex(utils.U2(bytes[u1 : u1+u2]))
 	cnat.DescriptorIndex = DescriptorIndex(utils.U2(bytes[u1+u2 : u1+u2+u2]))
+	return 0
 }
 
 func (cnat *CpNameAndType) ObjLen() int {
@@ -240,6 +351,32 @@ CONSTANT_Utf8_info {
 */
 type CpUTF8 struct {
 	Tag
+	len int32
+	Bytes
+	String // bytes to string
+
+}
+
+func CpUTF8New() *CpUTF8 {
+	return &CpUTF8{
+		Tag: TAG_CONSTANT_Utf8,
+	}
+}
+
+func (u *CpUTF8) ReadObj(bytes []byte) int {
+
+	l := utils.U2(bytes[u1 : u1+u2])
+	u.len = l
+	bs := bytes[u1+u2 : u1+u2+l]
+	u.Bytes = bs
+	u.String = String(bs)
+
+	return int(l)
+
+}
+
+func (u *CpUTF8) ObjLen() int {
+	return u1 + u2
 }
 
 /*
@@ -253,6 +390,23 @@ u2 reference_index;
 
 type CpMethodHandle struct {
 	Tag
+	ReferenceKind
+	ReferenceIndex
+}
+
+func CpMethodHandleNew() *CpMethodHandle {
+	return &CpMethodHandle{
+		Tag: TAG_CONSTANT_MethodHandle,
+	}
+}
+
+func (mh *CpMethodHandle) ReadObj(bytes []byte) int {
+
+	return 0
+}
+
+func (mh *CpMethodHandle) ObjLen() int {
+	return u1 + u1 + u2
 }
 
 /*tag=16
@@ -263,6 +417,22 @@ u2 descriptor_index;
 
 type CpMethodType struct {
 	Tag
+	DescriptorIndex
+}
+
+func CpMethodTypeNew() *CpMethodType {
+	return &CpMethodType{
+		Tag: TAG_CONSTANT_MethodType,
+	}
+}
+
+func (mt *CpMethodType) ReadObj(bytes []byte) int {
+
+	return 0
+}
+
+func (mt *CpMethodType) ObjLen() int {
+	return u1 + u2
 }
 
 /*
@@ -275,4 +445,21 @@ u2 name_and_type_index;
 
 type CpInvokeDynamic struct {
 	Tag
+	BootstrapMethodAttrIndex
+	NameAndTypeIndex
+}
+
+func CpInvokeDynamicNew() *CpInvokeDynamic {
+	return &CpInvokeDynamic{
+		Tag: TAG_CONSTANT_InvokeDynamic,
+	}
+}
+
+func (id *CpInvokeDynamic) ReadObj(bytes []byte) int {
+
+	return 0
+}
+
+func (id *CpInvokeDynamic) ObjLen() int {
+	return u1 + u2 + u2
 }

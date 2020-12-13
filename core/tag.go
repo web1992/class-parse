@@ -22,3 +22,12 @@ type ClassIndex int32
 type NameAndTypeIndex int32
 type NameIndex int32
 type DescriptorIndex int32
+type StringIndex int32
+type Integer int32
+type Float float32
+type Long int64
+type Double float64
+type ReferenceKind int32
+type ReferenceIndex int32
+type BootstrapMethodAttrIndex int32
+type String string

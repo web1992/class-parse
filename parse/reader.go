@@ -1,6 +1,6 @@
 package parse
 
 type Reader interface {
-	ReadObj(bytes []byte)
+	ReadObj(bytes []byte) int
 	ObjLen() int
 }
