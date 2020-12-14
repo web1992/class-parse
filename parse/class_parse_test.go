@@ -13,7 +13,7 @@ func Test_class_parse(t *testing.T) {
 	var cp ClassParse
 	e := cp.parseFile(file)
 	if e != nil {
-		log.Fatal(e)
+		t.Fatal(e)
 	}
 	fmt.Println(cp)
 
@@ -25,9 +25,12 @@ func Test_get_magic_num(t *testing.T) {
 	_ = cp.parseFile(file)
 
 	m := cp.Magic()
+	view := m.View()
+	expect := "CAFEBABE"
 
-	log.Println(m)
-	log.Println(m.View())
+	if view != expect {
+		t.Fatalf("magic num is  %s  except is %s", view, expect)
+	}
 }
 
 func Test_get_Minor_Version(t *testing.T) {
@@ -36,8 +39,11 @@ func Test_get_Minor_Version(t *testing.T) {
 	_ = cp.parseFile(file)
 	mv := cp.MinorVersion()
 	v := mv.View()
-	log.Println(v)
-	log.Println("view is", v)
+	log.Println("minor_Version is ", v)
+	expect := 0
+	if v != expect {
+		t.Fatalf("minor version is %d,except is %d", v, expect)
+	}
 }
 
 func Test_get_major_version(t *testing.T) {
@@ -45,19 +51,25 @@ func Test_get_major_version(t *testing.T) {
 	_ = cp.parseFile(file)
 	mv := cp.MajorVersion()
 	v := mv.View()
+	expect := 58
+
 	log.Println("view is", v)
+
+	if expect != v {
+		t.Fatalf("major version is %d,except is %d", v, expect)
+	}
 
 }
 
 func Test_get_cp(t *testing.T) {
 	var cp ClassParse
 	_ = cp.parseFile(file)
-	cpool := cp.ConstantPoolCount()
-	v := cpool.View()
-	log.Println("view is", v)
+	constPoolCount := cp.ConstantPoolCount()
+	v := constPoolCount.View()
 
-	if v != 35 {
-		t.Fatalf("view is %d  except is %d", v, 35)
+	except := 35
+	if v != except {
+		t.Fatalf("constPoolCount is %d  except is %d", v, except)
 	}
 
 }
@@ -76,6 +88,11 @@ func Test_get_access_flags(t *testing.T) {
 	_ = cp.parseFile(file)
 
 	af := cp.AccessFlag()
-	fmt.Println(af.View())
+	view := af.View()
+	except := "ACC_PUBLIC,ACC_SUPER"
+
+	if view != except {
+		t.Fatalf("access flags is %s  except is %s", view, except)
+	}
 
 }
