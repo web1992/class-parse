@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-const file = "/Users/zl/Documents/DEV/github/class-parse/Main.class"
+const file = "/Users/zl/Documents/DEV/github/class-parse/java/Main.class"
 
 func Test_class_parse(t *testing.T) {
 
@@ -67,7 +67,7 @@ func Test_get_cp(t *testing.T) {
 	constPoolCount := cp.ConstantPoolCount()
 	v := constPoolCount.View()
 
-	except := 35
+	except := 139
 	if v != except {
 		t.Fatalf("constPoolCount is %d  except is %d", v, except)
 	}
