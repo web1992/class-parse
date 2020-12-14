@@ -1,7 +1,6 @@
 package core
 
 import (
-	"class-parse/utils"
 	"strings"
 )
 
@@ -39,7 +38,7 @@ func (af *AccessFlag) ByteLen() int {
 
 func (af *AccessFlag) View() interface{} {
 	b := af.Bytes
-	f := utils.U2(b)
+	f := U2(b)
 	return getFlag(int(f))
 }
 

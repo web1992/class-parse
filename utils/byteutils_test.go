@@ -1,12 +1,13 @@
 package utils
 
 import (
+	"class-parse/core"
 	"testing"
 )
 
 func Test_get_double(t *testing.T) {
 	bs := []byte{64, 9, 33, 251, 84, 68, 45, 24}
-	d := Double(bs)
+	d := core.Byte2Double(bs)
 	except := 3.141592653589793
 
 	if except != d {

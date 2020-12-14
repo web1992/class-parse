@@ -2,7 +2,6 @@ package parse
 
 import (
 	"class-parse/core"
-	"class-parse/utils"
 	"fmt"
 )
 
@@ -27,7 +26,7 @@ func (cp *ClassParse) CpInfos() core.CpInfos {
 		//fmt.Println("CpInfos c is", i)
 		p := cp.pointer
 		tagByte := bytes[p : p+core.U1_L]
-		tag := utils.U1(tagByte)
+		tag := core.U1(tagByte)
 		switch tag {
 
 		case core.TAG_CONSTANT_Class:

@@ -75,6 +75,21 @@ func Test_get_cp(t *testing.T) {
 
 }
 
+func Test_get_cp_info_view(t *testing.T) {
+
+	var cp ClassParse
+	_ = cp.parseFile(file)
+
+	cpInfos := cp.CpInfos()
+
+	for i, v := range cpInfos {
+		view, ok := v.(core.View)
+		if ok {
+			fmt.Printf("#%d = %v \n", i, view.View())
+		}
+	}
+
+}
 func Test_get_cp_info(t *testing.T) {
 	var cp ClassParse
 	_ = cp.parseFile(file)
@@ -83,17 +98,22 @@ func Test_get_cp_info(t *testing.T) {
 
 	fmt.Println(cpInfos)
 	integerMax := cpInfos[34]
-	fmt.Println(integerMax)
+	fmt.Println("integerMax is", integerMax)
 
 	integerMin := cpInfos[45]
-	fmt.Println(integerMin)
+	fmt.Println("integerMin is", integerMin)
 
 	longMax := cpInfos[51]
-	fmt.Println(longMax)
+	fmt.Println("longMax is", longMax)
 
-	longMin := cpInfos[59]
-	fmt.Println(longMin)
+	longMin := cpInfos[60]
+	cpLong := longMin.(*core.CpLong)
+	fmt.Println("longMin is", longMin)
 
+	expect := core.Long(-9223372036854775808)
+	if cpLong.Long != expect {
+		t.Fatalf("Long Min is %d except %d", cpLong.Long, expect)
+	}
 }
 
 func Test_get_access_flags(t *testing.T) {

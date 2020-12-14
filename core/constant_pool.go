@@ -1,9 +1,5 @@
 package core
 
-import (
-	"class-parse/utils"
-)
-
 /**
 | Constant Type               | Value |
 | --------------------------- | ----- |
@@ -71,7 +67,7 @@ func CpClassNew() *CpClass {
 }
 
 func (class *CpClass) ReadObj(bytes []byte) int {
-	class.NameIndex = NameIndex(utils.U2(bytes[u1 : u1+u2]))
+	class.NameIndex = NameIndex(U2(bytes[u1 : u1+u2]))
 	class.Bytes = bytes
 	return 0
 }
@@ -79,6 +75,11 @@ func (class *CpClass) ReadObj(bytes []byte) int {
 func (class *CpClass) ObjLen() int {
 
 	return u1 + u2
+}
+
+func (class *CpClass) View() interface{} {
+
+	return "todo"
 }
 
 /*
@@ -101,13 +102,18 @@ func CpFieldRefNew() *CpFieldRef {
 
 func (f *CpFieldRef) ReadObj(bytes []byte) int {
 	f.Bytes = bytes
-	f.ClassIndex = ClassIndex(utils.U2(bytes[u1 : u1+u2]))
-	f.NameAndTypeIndex = NameAndTypeIndex(utils.U2(bytes[u1+u2 : u1+u2+u2]))
+	f.ClassIndex = ClassIndex(U2(bytes[u1 : u1+u2]))
+	f.NameAndTypeIndex = NameAndTypeIndex(U2(bytes[u1+u2 : u1+u2+u2]))
 	return 0
 }
 
 func (f *CpFieldRef) ObjLen() int {
 	return u1 + u2 + u2
+}
+
+func (f *CpFieldRef) View() interface{} {
+
+	return "todo"
 }
 
 /**
@@ -133,14 +139,18 @@ func CpMethodRefNew() *CpMethodRef {
 }
 
 func (method *CpMethodRef) ReadObj(bytes []byte) int {
-	method.ClassIndex = ClassIndex(utils.U2(bytes[u1 : u1+u2]))
-	method.NameAndTypeIndex = NameAndTypeIndex(utils.U2(bytes[u1+u2 : u1+u2+u2]))
+	method.ClassIndex = ClassIndex(U2(bytes[u1 : u1+u2]))
+	method.NameAndTypeIndex = NameAndTypeIndex(U2(bytes[u1+u2 : u1+u2+u2]))
 	method.Bytes = bytes
 	return 0
 }
 
 func (method *CpMethodRef) ObjLen() int {
 	return u1 + u2 + u2
+}
+
+func (method *CpMethodRef) View() interface{} {
+	return "todo"
 }
 
 /*
@@ -165,8 +175,8 @@ func CpInterfaceMethodRefNew() *CpInterfaceMethodRef {
 }
 
 func (im *CpInterfaceMethodRef) ReadObj(bytes []byte) int {
-	im.ClassIndex = ClassIndex(utils.U2(bytes[u1 : u1+u2]))
-	im.NameAndTypeIndex = NameAndTypeIndex(utils.U2(bytes[u1+u2 : u1+u2+u2]))
+	im.ClassIndex = ClassIndex(U2(bytes[u1 : u1+u2]))
+	im.NameAndTypeIndex = NameAndTypeIndex(U2(bytes[u1+u2 : u1+u2+u2]))
 	im.Bytes = bytes
 	return 0
 }
@@ -194,12 +204,16 @@ func CpStringNew() *CpString {
 }
 
 func (s *CpString) ReadObj(bytes []byte) int {
-	s.StringIndex = StringIndex(utils.U2(bytes[u1 : u1+u2]))
+	s.StringIndex = StringIndex(U2(bytes[u1 : u1+u2]))
 	s.Bytes = bytes
 	return 0
 }
 func (s *CpString) ObjLen() int {
 	return u1 + u2
+}
+
+func (s *CpString) View() interface{} {
+	return "todo"
 }
 
 /*
@@ -226,7 +240,7 @@ func CpIntegerNew() *CpInteger {
 func (i *CpInteger) ReadObj(bytes []byte) int {
 	b := bytes[u1 : u1+u4]
 	i.Bytes = b
-	i.Integer = Integer(utils.U4(b))
+	i.Integer = Integer(U4(b))
 	i.Hex = HexByte(i.Bytes)
 	return 0
 }
@@ -245,6 +259,7 @@ type CpFloat struct {
 	Tag
 	Bytes
 	Float // bytes to float
+	Hex
 }
 
 func CpFloatNew() *CpFloat {
@@ -256,7 +271,8 @@ func CpFloatNew() *CpFloat {
 func (f *CpFloat) ReadObj(bytes []byte) int {
 	b := bytes[u1 : u1+u4]
 	f.Bytes = b
-	f.Float = Float(utils.Float(b))
+	f.Float = Float(Byte2Float(b))
+	f.Hex = HexByte(b)
 	return 0
 }
 func (f *CpFloat) ObjLen() int {
@@ -275,6 +291,7 @@ type CpLong struct {
 	Tag   // tag =5
 	Bytes // high_bytes + low_bytes
 	Long  // bytes to long
+	Hex   // Hex to view
 }
 
 func CpLongNew() *CpLong {
@@ -286,7 +303,8 @@ func CpLongNew() *CpLong {
 func (l *CpLong) ReadObj(bytes []byte) int {
 	b := bytes[u1 : u1+u4+u4]
 	l.Bytes = b
-	l.Long = Long(utils.Long(b))
+	l.Long = Long(Byte2Long(b))
+	l.Hex = HexByte(b)
 	return 0
 }
 func (l *CpLong) ObjLen() int {
@@ -306,6 +324,7 @@ type CpDouble struct {
 	Tag    // tag =6
 	Bytes  // high_bytes + low_bytes
 	Double // bytes to long
+	Hex
 }
 
 func CpDoubleNew() *CpDouble {
@@ -316,7 +335,8 @@ func CpDoubleNew() *CpDouble {
 func (d *CpDouble) ReadObj(bytes []byte) int {
 	b := bytes[u1 : u1+u4+u4]
 	d.Bytes = b
-	d.Double = Double(utils.Double(b))
+	d.Double = Double(Byte2Double(b))
+	d.Hex = HexByte(b)
 	return 0
 }
 func (d *CpDouble) ObjLen() int {
@@ -346,14 +366,19 @@ func CpNameAndTypeNew() *CpNameAndType {
 }
 
 func (cnat *CpNameAndType) ReadObj(bytes []byte) int {
-	cnat.NameIndex = NameIndex(utils.U2(bytes[u1 : u1+u2]))
-	cnat.DescriptorIndex = DescriptorIndex(utils.U2(bytes[u1+u2 : u1+u2+u2]))
+	cnat.NameIndex = NameIndex(U2(bytes[u1 : u1+u2]))
+	cnat.DescriptorIndex = DescriptorIndex(U2(bytes[u1+u2 : u1+u2+u2]))
 	cnat.Bytes = bytes
 	return 0
 }
 
 func (cnat *CpNameAndType) ObjLen() int {
 	return u1 + u2 + u2
+}
+
+func (cnat *CpNameAndType) View() interface{} {
+
+	return "todo"
 }
 
 /**
@@ -380,7 +405,7 @@ func CpUTF8New() *CpUTF8 {
 
 func (u *CpUTF8) ReadObj(bytes []byte) int {
 
-	l := utils.U2(bytes[u1 : u1+u2])
+	l := U2(bytes[u1 : u1+u2])
 	u.len = l
 	bs := bytes[u1+u2 : u1+u2+l]
 	u.Bytes = bs
@@ -392,6 +417,10 @@ func (u *CpUTF8) ReadObj(bytes []byte) int {
 
 func (u *CpUTF8) ObjLen() int {
 	return u1 + u2
+}
+
+func (u *CpUTF8) View() interface{} {
+	return u.String
 }
 
 /*
