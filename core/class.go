@@ -32,6 +32,7 @@ const (
 
 // Bytes ,binary Bytes
 type Bytes []byte
+type Hex string
 
 // ClassFile
 type ClassFile struct {

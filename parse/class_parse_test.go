@@ -1,6 +1,7 @@
 package parse
 
 import (
+	"class-parse/core"
 	"fmt"
 	"log"
 	"testing"
@@ -26,7 +27,7 @@ func Test_get_magic_num(t *testing.T) {
 
 	m := cp.Magic()
 	view := m.View()
-	expect := "CAFEBABE"
+	expect := core.Hex("CAFEBABE")
 
 	if view != expect {
 		t.Fatalf("magic num is  %s  except is %s", view, expect)
@@ -81,6 +82,18 @@ func Test_get_cp_info(t *testing.T) {
 	cpInfos := cp.CpInfos()
 
 	fmt.Println(cpInfos)
+	integerMax := cpInfos[34]
+	fmt.Println(integerMax)
+
+	integerMin := cpInfos[45]
+	fmt.Println(integerMin)
+
+	longMax := cpInfos[51]
+	fmt.Println(longMax)
+
+	longMin := cpInfos[59]
+	fmt.Println(longMin)
+
 }
 
 func Test_get_access_flags(t *testing.T) {

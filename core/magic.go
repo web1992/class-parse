@@ -1,13 +1,9 @@
 package core
 
-import (
-	"fmt"
-	"strings"
-)
-
 // Magic class file Magic num
 type Magic struct {
 	Bytes
+	Hex
 }
 
 func (m *Magic) ByteLen() int {
@@ -15,9 +11,7 @@ func (m *Magic) ByteLen() int {
 }
 
 func (m *Magic) View() interface{} {
-	magicStr := fmt.Sprintf("%x", m.Bytes)
-	mx := strings.ToUpper(magicStr)
-	return mx
+	return m.Hex
 }
 
 func MagicNew() *Magic {
@@ -26,6 +20,7 @@ func MagicNew() *Magic {
 
 func (magic *Magic) ReadObj(bytes []byte) int {
 	magic.Bytes = bytes[0:u4]
+	magic.Hex = HexByte(magic.Bytes)
 	return 0
 }
 

@@ -1,6 +1,8 @@
 package core
 
-import "class-parse/utils"
+import (
+	"class-parse/utils"
+)
 
 /**
 | Constant Type               | Value |
@@ -212,6 +214,7 @@ type CpInteger struct {
 	Tag
 	Bytes
 	Integer // bytes to integer
+	Hex
 }
 
 func CpIntegerNew() *CpInteger {
@@ -224,6 +227,7 @@ func (i *CpInteger) ReadObj(bytes []byte) int {
 	b := bytes[u1 : u1+u4]
 	i.Bytes = b
 	i.Integer = Integer(utils.U4(b))
+	i.Hex = HexByte(i.Bytes)
 	return 0
 }
 func (i *CpInteger) ObjLen() int {

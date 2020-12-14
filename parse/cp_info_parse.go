@@ -62,10 +62,14 @@ func (cp *ClassParse) CpInfos() core.CpInfos {
 			l := core.CpLongNew()
 			cp.Read(l)
 			cpInfos = append(cpInfos, l)
+			cpInfos = append(cpInfos, nil)
+			i++
 		case core.TAG_CONSTANT_Double:
 			d := core.CpDoubleNew()
 			cp.Read(d)
 			cpInfos = append(cpInfos, d)
+			cpInfos = append(cpInfos, nil)
+			i++
 		case core.TAG_CONSTANT_NameAndType:
 			var cnat = core.CpNameAndTypeNew()
 			cp.Read(cnat)
