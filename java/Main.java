@@ -1,8 +1,14 @@
 
 import java.io.IOException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+@FFF
 public class Main extends AbstractMain implements InterfaceMain {
 
+    @FFF
     public static final Integer INT_MAX = Integer.MAX_VALUE;
     public static final Integer INT_MIN = Integer.MIN_VALUE;
 
@@ -30,6 +36,7 @@ public class Main extends AbstractMain implements InterfaceMain {
     }
 
     @Override
+    @FFF
     public void say() {
         System.out.println("ha ha ha ha");
     }
@@ -44,4 +51,11 @@ interface InterfaceMain {
 abstract class AbstractMain {
 
 }
+
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.TYPE})
+@Retention(RetentionPolicy.SOURCE)
+@interface FFF {
+
+}
+
 
