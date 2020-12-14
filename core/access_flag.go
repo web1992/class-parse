@@ -43,12 +43,26 @@ func (af *AccessFlag) View() interface{} {
 	return getFlag(int(f))
 }
 
+func AccessFlagNew() *AccessFlag {
+	return &AccessFlag{}
+}
+
+func (af *AccessFlag) ReadObj(bytes []byte) int {
+	af.Bytes = bytes[0:u2]
+	return 0
+}
+
+func (af *AccessFlag) ObjLen() int {
+	return u2
+}
+
 func getFlag(f int) string {
 
 	var fs []string
 	if f&ACC_PUBLIC != 0 {
 		fs = append(fs, "ACC_PUBLIC")
 	}
+
 	if f&ACC_FINAL != 0 {
 		fs = append(fs, "ACC_FINAL")
 	}

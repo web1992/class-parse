@@ -16,3 +16,16 @@ func (cp *ConstantPoolCount) View() interface{} {
 	n := ((b[0] & 0xFF) << 8) + ((b[1]) << 0)
 	return int(n)
 }
+
+func ConstantPoolCountNew() *ConstantPoolCount {
+	return &ConstantPoolCount{}
+}
+
+func (cpc *ConstantPoolCount) ReadObj(bytes []byte) int {
+	cpc.Bytes = bytes[0:u2]
+	return 0
+}
+
+func (cpc *ConstantPoolCount) ObjLen() int {
+	return u2
+}

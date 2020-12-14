@@ -19,3 +19,16 @@ func (m *Magic) View() interface{} {
 	mx := strings.ToUpper(magicStr)
 	return mx
 }
+
+func MagicNew() *Magic {
+	return &Magic{}
+}
+
+func (magic *Magic) ReadObj(bytes []byte) int {
+	magic.Bytes = bytes[0:u4]
+	return 0
+}
+
+func (magic *Magic) ObjLen() int {
+	return u4
+}

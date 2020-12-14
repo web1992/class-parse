@@ -16,3 +16,16 @@ func (m *MajorVersion) View() interface{} {
 	n := (b[0] << 8) + ((b[1]) << 0)
 	return int(n)
 }
+
+func MajorVersionNew() *MajorVersion {
+	return &MajorVersion{}
+}
+
+func (mv *MajorVersion) ReadObj(bytes []byte) int {
+	mv.Bytes = bytes[0:u2]
+	return 0
+}
+
+func (mv *MajorVersion) ObjLen() int {
+	return u2
+}

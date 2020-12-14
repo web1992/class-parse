@@ -69,69 +69,39 @@ func (cp *ClassParse) parseFile(filePath string) error {
 }
 
 func (cp *ClassParse) Magic() core.Magic {
-	bytes := cp.Bytes()
-	var m core.Magic
-	magic := bytes[cp.pointer:m.ByteLen()]
-	cp.pointer += m.ByteLen()
-	m.Bytes = magic
-	return m
+	var m = core.MagicNew()
+	cp.Read(m)
+	return *m
 }
 
 func (cp *ClassParse) MinorVersion() core.MinorVersion {
 
 	cp.Magic()
-
-	bytes := cp.Bytes()
-
-	var mv core.MinorVersion
-
-	p := cp.pointer
-	mvb := bytes[p : p+mv.ByteLen()]
-	mv.Bytes = mvb
-
-	cp.pointer += mv.ByteLen()
-
-	return mv
+	var mv = core.MinorVersionNew()
+	cp.Read(mv)
+	return *mv
 }
 
 func (cp *ClassParse) MajorVersion() core.MajorVersion {
 
 	cp.MinorVersion()
-	var mv core.MajorVersion
-	bytes := cp.Bytes()
-
-	p := cp.pointer
-	mvb := bytes[p : p+mv.ByteLen()]
-	mv.Bytes = mvb
-
-	cp.pointer += mv.ByteLen()
-	return mv
+	var mv = core.MajorVersionNew()
+	cp.Read(mv)
+	return *mv
 }
 
 func (cp *ClassParse) ConstantPoolCount() core.ConstantPoolCount {
 
 	cp.MajorVersion()
-	var cpPool core.ConstantPoolCount
-	bytes := cp.Bytes()
-
-	p := cp.pointer
-	mvb := bytes[p : p+cpPool.ByteLen()]
-	cpPool.Bytes = mvb
-
-	cp.pointer += cpPool.ByteLen()
-	return cpPool
+	var cpPool = core.ConstantPoolCountNew()
+	cp.Read(cpPool)
+	return *cpPool
 }
 
 func (cp *ClassParse) AccessFlag() core.AccessFlag {
 
 	cp.CpInfos()
-
-	var af core.AccessFlag
-
-	bytes := cp.Bytes()
-	p := cp.pointer
-	afBytes := bytes[p : p+af.ByteLen()]
-	af.Bytes = afBytes
-
-	return af
+	var af = core.AccessFlagNew()
+	cp.Read(af)
+	return *af
 }
