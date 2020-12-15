@@ -10,8 +10,8 @@ func (cpInfos CpInfos) View() interface{} {
 
 	var views []string
 
-	for i := range cpInfos {
-		if i == 0 {
+	for i, v := range cpInfos {
+		if i == 0 || v == nil {
 			continue
 		}
 		views = append(views, getCp(cpInfos, i))
@@ -25,11 +25,11 @@ func getCp(cpInfos CpInfos, index int) string {
 	cp := cpInfos[index]
 
 	if m, ok := isCpMethodref(cp); ok {
-		return fmt.Sprintf("#%d = Methodref %s ", index, cpInfos.viewCpMethodref(m))
+		return fmt.Sprintf("#%d = Methodref %s ", index, cpInfos.viewCpMethodRef(m, true))
 	}
 
 	if c, ok := isCpClass(cp); ok {
-		return fmt.Sprintf("#%d = Class %s ", index, cpInfos.viewCpClass(c))
+		return fmt.Sprintf("#%d = Class %s ", index, cpInfos.viewCpClass(c, true))
 	}
 
 	if u, ok := isCpUTF8(cp); ok {
@@ -37,7 +37,7 @@ func getCp(cpInfos CpInfos, index int) string {
 	}
 
 	if c, ok := isCpNameAndType(cp); ok {
-		return fmt.Sprintf("#%d = NameAndType %s ", index, cpInfos.viewCpNameAndType(c))
+		return fmt.Sprintf("#%d = NameAndType %s ", index, cpInfos.viewCpNameAndType(c, true))
 	}
 
 	if f, ok := isCpFieldRef(cp); ok {
@@ -53,16 +53,65 @@ func getCp(cpInfos CpInfos, index int) string {
 	}
 
 	if im, ok := isCpInterfaceMethodRef(cp); ok {
-		return fmt.Sprintf("#%d = InterfaceMethodref %s ", index, cpInfos.viewCpInterfaceMethodref(im))
+		return fmt.Sprintf("#%d = InterfaceMethodref %s ", index, cpInfos.viewCpInterfaceMethodRef(im))
 	}
 
 	if ok := isNum(cp); ok {
 		return cpInfos.viewNum(cp, index)
 	}
+
+	if mh, ok := isCpMethodHandle(cp); ok {
+		return fmt.Sprintf("#%d = MethodHandle %s ", index, cpInfos.viewMethodHandle(mh))
+	}
+
+	if mh, ok := isCpMethodType(cp); ok {
+		return fmt.Sprintf("#%d = MethodType %s ", index, cpInfos.viewMethodType(mh))
+	}
+
 	return fmt.Sprintf("#%d = ", index)
 
 }
-func (cpInfos CpInfos) viewCpInterfaceMethodref(im interface{}) string {
+
+func isCpMethodType(e interface{}) (*CpMethodType, bool) {
+	mt, ok := e.(*CpMethodType)
+	return mt, ok
+}
+
+func isCpMethodHandle(e interface{}) (*CpMethodHandle, bool) {
+	mh, ok := e.(*CpMethodHandle)
+	return mh, ok
+}
+
+//#129 = MethodType         #6            //  ()V
+func (cpInfos CpInfos) viewMethodType(mt interface{}) string {
+
+	if m, ok := isCpMethodType(mt); ok {
+		di := m.DescriptorIndex
+		cp := cpInfos[di]
+		if uu, ok := isCpUTF8(cp); ok {
+			return fmt.Sprintf("#%d %s", di, string(uu.String))
+		}
+	}
+
+	return ""
+}
+
+//#130 = MethodHandle       6:#131        // REF_invokeStatic Main.lambda$main$0:()V
+func (cpInfos CpInfos) viewMethodHandle(mh interface{}) string {
+
+	if m, ok := isCpMethodHandle(mh); ok {
+		rk := m.ReferenceKind
+		ri := m.ReferenceIndex
+		cp := cpInfos[ri]
+		rks := getReferenceKind(int32(rk))
+		methodRef := cpInfos.viewCpMethodRef(cp, false)
+
+		return fmt.Sprintf("%d:%d // %s %s", rk, ri, rks, methodRef)
+	}
+
+	return ""
+}
+func (cpInfos CpInfos) viewCpInterfaceMethodRef(im interface{}) string {
 	if im, ok := isCpInterfaceMethodRef(im); ok {
 
 		ci := im.ClassIndex
@@ -74,8 +123,8 @@ func (cpInfos CpInfos) viewCpInterfaceMethodref(im interface{}) string {
 		s := fmt.Sprintf("#%d.#%d %s.%s",
 			int32(ci),
 			int32(nati),
-			cpInfos.viewCpClass(cpClass),
-			cpInfos.viewCpNameAndType(cpNAti))
+			cpInfos.viewCpClass(cpClass, false),
+			cpInfos.viewCpNameAndType(cpNAti, false))
 
 		return s
 	}
@@ -92,29 +141,32 @@ func (cpInfos CpInfos) viewCpInvokeDynamic(cpInvokeDynamic interface{}) string {
 			0,
 			int32(nati),
 			"0",
-			cpInfos.viewCpNameAndType(cpNAti))
+			cpInfos.viewCpNameAndType(cpNAti, false))
 
 		return s
 	}
 
 	return ""
 }
-func (cpInfos CpInfos) viewCpMethodref(cpFieldref interface{}) string {
+func (cpInfos CpInfos) viewCpMethodRef(cpMethodRef interface{}, showIndex bool) string {
 
-	if m, ok := isCpMethodref(cpFieldref); ok {
+	if m, ok := isCpMethodref(cpMethodRef); ok {
 		ci := m.ClassIndex
-		nati := m.NameAndTypeIndex
+		ti := m.NameAndTypeIndex
 
 		cpClass := cpInfos[ci]
-		cpNAti := cpInfos[nati]
+		cpNAti := cpInfos[ti]
 
-		s := fmt.Sprintf("#%d.#%d %s.%s",
-			int32(ci),
-			int32(nati),
-			cpInfos.viewCpClass(cpClass),
-			cpInfos.viewCpNameAndType(cpNAti))
-
-		return s
+		if showIndex {
+			return fmt.Sprintf("#%d.#%d %s.%s",
+				int32(ci),
+				int32(ti),
+				cpInfos.viewCpClass(cpClass, false),
+				cpInfos.viewCpNameAndType(cpNAti, false))
+		}
+		return fmt.Sprintf("%s.%s",
+			cpInfos.viewCpClass(cpClass, false),
+			cpInfos.viewCpNameAndType(cpNAti, false))
 	}
 
 	return ""
@@ -132,25 +184,28 @@ func (cpInfos CpInfos) viewCpFieldref(cpFieldref interface{}) string {
 		s := fmt.Sprintf("#%d.#%d %s.%s",
 			int32(ci),
 			int32(nati),
-			cpInfos.viewCpClass(cpClass),
-			cpInfos.viewCpNameAndType(cpNAti))
+			cpInfos.viewCpClass(cpClass, false),
+			cpInfos.viewCpNameAndType(cpNAti, false))
 		return s
 	}
 	return ""
 }
 
-func (cpInfos CpInfos) viewCpClass(cpClass interface{}) string {
+func (cpInfos CpInfos) viewCpClass(cpClass interface{}, showIndex bool) string {
 	if c, ok := isCpClass(cpClass); ok {
 		ni := c.NameIndex
 		u := cpInfos[ni]
 		if uu, ok := isCpUTF8(u); ok {
-			return fmt.Sprintf("#%d %s", ni, string(uu.String))
+			if showIndex {
+				return fmt.Sprintf("#%d %s", ni, string(uu.String))
+			}
+			return string(uu.String)
 		}
 	}
 	return ""
 }
 
-func (cpInfos CpInfos) viewCpNameAndType(cpNameAndType interface{}) string {
+func (cpInfos CpInfos) viewCpNameAndType(cpNameAndType interface{}, showIndex bool) string {
 	if c, ok := isCpNameAndType(cpNameAndType); ok {
 		ni := c.NameIndex
 		di := c.DescriptorIndex
@@ -167,8 +222,10 @@ func (cpInfos CpInfos) viewCpNameAndType(cpNameAndType interface{}) string {
 		if uu, ok := isCpUTF8(u2); ok {
 			us = string(uu.String)
 		}
-		s := fmt.Sprintf("#%d: #%d %v:%v", ni, di, ds, us)
-
+		if showIndex {
+			return fmt.Sprintf("#%d:#%d %v:%v", ni, di, ds, us)
+		}
+		s := fmt.Sprintf("%v:%v", ds, us)
 		return s
 	}
 	return ""
@@ -290,19 +347,19 @@ func (cpInfos CpInfos) viewCpFloat(e interface{}) float32 {
 func (cpInfos CpInfos) viewNum(e interface{}, index int) string {
 	if i, ok := isCpInteger(e); ok {
 		// #34 = Integer
-		return fmt.Sprintf("#%d = Integer %v", index, i)
+		return fmt.Sprintf("#%d = Integer %v", index, i.Integer)
 	}
 
 	if l, ok := isCpLong(e); ok {
-		return fmt.Sprintf("#%d = Long %v", index, l)
+		return fmt.Sprintf("#%d = Long %v", index, l.Long)
 	}
 
 	if d, ok := isCpDouble(e); ok {
-		return fmt.Sprintf("#%d = Double %v", index, d)
+		return fmt.Sprintf("#%d = Double %v", index, d.Double)
 	}
 
 	if f, ok := isCpFloat(e); ok {
-		return fmt.Sprintf("#%d = Float %v", index, f)
+		return fmt.Sprintf("#%d = Float %v", index, f.Float)
 	}
 	return ""
 }

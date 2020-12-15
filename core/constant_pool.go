@@ -25,6 +25,59 @@ const (
 	u4 = U4_L
 )
 
+// The value of the reference_kind item must be in the range 1 to 9.
+// The value denotes the kind of this method handle, which characterizes its bytecode behavior
+// Kind	Description	Interpretation
+// 1	REF_getField	getfield C.f:T
+// 2	REF_getStatic	getstatic C.f:T
+// 3	REF_putField	putfield C.f:T
+// 4	REF_putStatic	putstatic C.f:T
+// 5	REF_invokeVirtual	invokevirtual C.m:(A*)T
+// 6	REF_invokeStatic	invokestatic C.m:(A*)T
+// 7	REF_invokeSpecial	invokespecial C.m:(A*)T
+// 8	REF_newInvokeSpecial	new C; dup; invokespecial C.<init>:(A*)V
+// 9	REF_invokeInterface	invokeinterface C.m:(A*)T
+
+func getReferenceKind(referenceKind int32) string {
+
+	if referenceKind == 1 {
+		return "REF_getField"
+	}
+
+	if referenceKind == 2 {
+		return "REF_getStatic"
+	}
+
+	if referenceKind == 3 {
+		return "REF_putField"
+	}
+
+	if referenceKind == 4 {
+		return "REF_putStatic"
+	}
+	if referenceKind == 5 {
+		return "REF_invokeVirtual"
+	}
+
+	if referenceKind == 6 {
+		return "REF_invokeStatic"
+	}
+
+	if referenceKind == 7 {
+		return "REF_invokeSpecial"
+	}
+
+	if referenceKind == 8 {
+		return "REF_newInvokeSpecial"
+	}
+
+	if referenceKind == 9 {
+		return "REF_invokeInterface"
+	}
+
+	return ""
+}
+
 // The constant_pool table is indexed from 1 to constant_pool_count - 1.
 type CpInfo struct {
 	CpClass
@@ -447,8 +500,8 @@ func CpMethodHandleNew() *CpMethodHandle {
 
 func (mh *CpMethodHandle) ReadObj(bytes []byte) int {
 	mh.Bytes = bytes
-	mh.ReferenceKind = ReferenceKind(U1(bytes[u1 : u1+u2]))
-	mh.ReferenceIndex = ReferenceIndex(U2(bytes[u1+u2 : u1+u2+u2]))
+	mh.ReferenceKind = ReferenceKind(U1(bytes[u1 : u1+u1]))
+	mh.ReferenceIndex = ReferenceIndex(U2(bytes[u1+u1 : u1+u1+u2]))
 	return 0
 }
 
