@@ -79,7 +79,7 @@ func (class *CpClass) ObjLen() int {
 
 func (class *CpClass) View() interface{} {
 
-	return "todo"
+	return "Class"
 }
 
 /*
@@ -113,7 +113,7 @@ func (f *CpFieldRef) ObjLen() int {
 
 func (f *CpFieldRef) View() interface{} {
 
-	return "todo"
+	return "Fieldref"
 }
 
 /**
@@ -150,7 +150,7 @@ func (method *CpMethodRef) ObjLen() int {
 }
 
 func (method *CpMethodRef) View() interface{} {
-	return "todo"
+	return "Methodref"
 }
 
 /*
@@ -213,7 +213,7 @@ func (s *CpString) ObjLen() int {
 }
 
 func (s *CpString) View() interface{} {
-	return "todo"
+	return "String"
 }
 
 /*
@@ -378,7 +378,7 @@ func (cnat *CpNameAndType) ObjLen() int {
 
 func (cnat *CpNameAndType) View() interface{} {
 
-	return "todo"
+	return "NameAndType"
 }
 
 /**
@@ -447,7 +447,8 @@ func CpMethodHandleNew() *CpMethodHandle {
 
 func (mh *CpMethodHandle) ReadObj(bytes []byte) int {
 	mh.Bytes = bytes
-
+	mh.ReferenceKind = ReferenceKind(U1(bytes[u1 : u1+u2]))
+	mh.ReferenceIndex = ReferenceIndex(U2(bytes[u1+u2 : u1+u2+u2]))
 	return 0
 }
 
@@ -475,7 +476,7 @@ func CpMethodTypeNew() *CpMethodType {
 
 func (mt *CpMethodType) ReadObj(bytes []byte) int {
 	mt.Bytes = bytes
-
+	mt.DescriptorIndex = DescriptorIndex(U2(bytes[u1 : u1+u2]))
 	return 0
 }
 
@@ -507,6 +508,8 @@ func CpInvokeDynamicNew() *CpInvokeDynamic {
 func (id *CpInvokeDynamic) ReadObj(bytes []byte) int {
 
 	id.Bytes = bytes
+	id.BootstrapMethodAttrIndex = BootstrapMethodAttrIndex(U2(bytes[u1 : u1+u2]))
+	id.NameAndTypeIndex = NameAndTypeIndex(U2(bytes[u1+u2 : u1+u2+u2]))
 	return 0
 }
 

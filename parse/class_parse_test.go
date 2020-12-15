@@ -82,18 +82,21 @@ func Test_get_cp_info_view(t *testing.T) {
 
 	cpInfos := cp.CpInfos()
 
-	for i, v := range cpInfos {
-		view, ok := v.(core.View)
-		if ok {
-			fmt.Printf("#%d = %v \n", i, view.View())
-		}
-	}
+	s := cpInfos.View()
+	fmt.Println(s)
+
+	// 	}
+	// for i, v := range cpInfos {
+	// 	view, ok := v.(core.View)
+	// 	if ok {
+	// 		fmt.Printf("#%d = %v \n", i, view.View())
+	// 	}
+	// }
 
 }
 func Test_get_cp_info(t *testing.T) {
 	var cp ClassParse
 	_ = cp.parseFile(file)
-
 	cpInfos := cp.CpInfos()
 
 	fmt.Println(cpInfos)
