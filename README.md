@@ -1,4 +1,10 @@
-# class-parse
+# goclass
+
+Use golang parse `class` file. Output like use `javap` cmd.
+
+```sh
+javap -v Main.class
+```
 
 ## Links
 
