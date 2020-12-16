@@ -14,12 +14,12 @@ func (cpInfos CpInfos) View() interface{} {
 		if i == 0 || v == nil {
 			continue
 		}
-		views = append(views, getCp(cpInfos, i))
+		views = append(views, GetCp(cpInfos, i))
 	}
 	return strings.Join(views, "\n")
 }
 
-func getCp(cpInfos CpInfos, index int) string {
+func GetCp(cpInfos CpInfos, index int) string {
 
 	_ = cpInfos[index]
 	cp := cpInfos[index]

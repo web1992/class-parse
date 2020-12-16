@@ -13,9 +13,9 @@ var filePathInvalid = errors.New("file patch is invalid")
 var fileSuffixInvalid = errors.New("file must has suffix " + fileSuffix)
 
 type ClassParse struct {
-	filePath string
-	fileByes []byte
-	pointer  int
+	filePath string // file paths
+	fileByes []byte // files bytes
+	pointer  int    // []byte index
 }
 
 func (cp *ClassParse) IncrPointer(num int) {
@@ -73,30 +73,39 @@ func (cp *ClassParse) parseFile(filePath string) error {
 func (cp *ClassParse) ClassFile() core.ClassFile {
 
 	magic := cp.magic()
-	mv := cp.minorVersion()
+	minorVersion := cp.minorVersion()
 	majorVersion := cp.majorVersion()
 	poolCount := cp.constantPoolCount()
 	cpInfos := cp.cpInfos(poolCount)
 	accessFlag := cp.accessFlag()
 	thisClass := cp.thisClass(cpInfos)
+	superClass := cp.superClass(cpInfos)
+	interfacesCount := cp.interfacesCount()
+	interfaces := cp.interfaces(cpInfos, interfacesCount)
+	fieldsCount := cp.fieldsCount()
+	fields := cp.fields(cpInfos, fieldsCount)
+	methodCount := cp.methodCount()
+	methods := cp.methods(cpInfos, methodCount)
+	attributeCount := cp.attributeCount()
+	attributes := cp.attributes(cpInfos, attributeCount)
 
 	return core.ClassFile{
 		Magic:             magic,
-		MinorVersion:      mv,
+		MinorVersion:      minorVersion,
 		MajorVersion:      majorVersion,
 		ConstantPoolCount: poolCount,
 		CpInfos:           cpInfos,
 		AccessFlag:        accessFlag,
 		ThisClass:         thisClass,
-		SuperClass:        cp.superClass(),
-		InterfacesCount:   cp.interfacesCount(),
-		Interfaces:        cp.interfaces(),
-		FieldsCount:       cp.fieldsCount(),
-		Fields:            cp.fields(),
-		MethodCount:       cp.methodCount(),
-		Methods:           cp.methods(),
-		AttributeCount:    cp.attributeCount(),
-		Attributes:        cp.attributes(),
+		SuperClass:        superClass,
+		InterfacesCount:   interfacesCount,
+		Interfaces:        interfaces,
+		FieldsCount:       fieldsCount,
+		Fields:            fields,
+		MethodCount:       methodCount,
+		Methods:           methods,
+		AttributeCount:    attributeCount,
+		Attributes:        attributes,
 	}
 
 }
@@ -142,12 +151,17 @@ func (cp *ClassParse) accessFlag() core.AccessFlag {
 func (cp *ClassParse) thisClass(cpInfos core.CpInfos) core.ThisClass {
 
 	//cp.accessFlag()
-	var af = core.ThisClassNew()
-	cp.Read(af)
-	return *af
+	var tc = core.ThisClassNew()
+	cp.Read(tc)
+
+	ci := tc.ClassIndex
+	s := core.GetCp(cpInfos, int(ci))
+	tc.String = s
+
+	return *tc
 }
 
-func (cp *ClassParse) superClass() core.SuperClass {
+func (cp *ClassParse) superClass(cpInfos core.CpInfos) core.SuperClass {
 
 	return core.SuperClass{}
 }
@@ -156,7 +170,7 @@ func (cp *ClassParse) interfacesCount() core.InterfacesCount {
 
 	return core.InterfacesCount{}
 }
-func (cp *ClassParse) interfaces() core.Interfaces {
+func (cp *ClassParse) interfaces(cpInfos core.CpInfos, count core.InterfacesCount) core.Interfaces {
 
 	return core.Interfaces{}
 }
@@ -166,7 +180,7 @@ func (cp *ClassParse) fieldsCount() core.FieldsCount {
 	return core.FieldsCount{}
 }
 
-func (cp *ClassParse) fields() core.Fields {
+func (cp *ClassParse) fields(cpInfos core.CpInfos, count core.FieldsCount) core.Fields {
 
 	return core.Fields{}
 }
@@ -176,7 +190,7 @@ func (cp *ClassParse) methodCount() core.MethodCount {
 	return core.MethodCount{}
 }
 
-func (cp *ClassParse) methods() core.Methods {
+func (cp *ClassParse) methods(cpInfos core.CpInfos, count core.MethodCount) core.Methods {
 
 	return core.Methods{}
 }
@@ -186,7 +200,7 @@ func (cp *ClassParse) attributeCount() core.AttributeCount {
 	return core.AttributeCount{}
 }
 
-func (cp *ClassParse) attributes() core.Attributes {
+func (cp *ClassParse) attributes(cpInfos core.CpInfos, attributeCount core.AttributeCount) core.Attributes {
 
 	return core.Attributes{}
 }

@@ -151,6 +151,11 @@ func Test_get_this_class(t *testing.T) {
 
 	tc := cp.thisClass(classFile.CpInfos)
 
-	v := tc.View()
-	fmt.Println(v)
+	s := tc.String
+	fmt.Println(s)
+	expect := "#2 = Class #4 AbstractMain "
+
+	if s != expect {
+		t.Fatalf("\n expect is %v \n s is %v", expect, s)
+	}
 }

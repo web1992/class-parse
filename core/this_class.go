@@ -3,6 +3,8 @@ package core
 // ThisClass u2 this_class
 type ThisClass struct {
 	Bytes
+	ClassIndex
+	String string
 }
 
 func ThisClassNew() *ThisClass {
@@ -10,7 +12,9 @@ func ThisClassNew() *ThisClass {
 }
 
 func (tc *ThisClass) ReadObj(bytes []byte) int {
-	tc.Bytes = bytes[0:u2]
+	bs := bytes[0:u2]
+	tc.Bytes = bs
+	tc.ClassIndex = ClassIndex(U2(bs))
 	return 0
 }
 
