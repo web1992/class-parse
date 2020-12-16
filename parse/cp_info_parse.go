@@ -12,12 +12,12 @@ const (
 
 // read constant_pool
 // The constant_pool table is indexed from 1 to constant_pool_count - 1.
-func (cp *ClassParse) CpInfos() core.CpInfos {
+func (cp *ClassParse) cpInfos(cpc core.ConstantPoolCount) core.CpInfos {
 
 	var cpInfos core.CpInfos
 	cpInfos = append(cpInfos, nil)
-	cpc := cp.ConstantPoolCount()
-	count := (cpc.View()).(int)
+	view := cpc.View()
+	count := view.(int)
 	fmt.Printf("constant pool count is %d \n", count)
 
 	for i := 1; i <= count-1; i++ {

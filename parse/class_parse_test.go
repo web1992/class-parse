@@ -4,6 +4,7 @@ import (
 	"class-parse/core"
 	"fmt"
 	"log"
+	"strings"
 	"testing"
 )
 
@@ -20,12 +21,21 @@ func Test_class_parse(t *testing.T) {
 
 }
 
+func Test_get_class_file(t *testing.T) {
+	var cp ClassParse
+	_ = cp.parseFile(file)
+
+	classFile := cp.ClassFile()
+
+	fmt.Println("classFile is", classFile)
+}
+
 func Test_get_magic_num(t *testing.T) {
 
 	var cp ClassParse
 	_ = cp.parseFile(file)
 
-	m := cp.Magic()
+	m := cp.ClassFile().Magic
 	view := m.View()
 	expect := core.Hex("CAFEBABE")
 
@@ -38,7 +48,7 @@ func Test_get_Minor_Version(t *testing.T) {
 
 	var cp ClassParse
 	_ = cp.parseFile(file)
-	mv := cp.MinorVersion()
+	mv := cp.ClassFile().MinorVersion
 	v := mv.View()
 	log.Println("minor_Version is ", v)
 	expect := 0
@@ -50,7 +60,7 @@ func Test_get_Minor_Version(t *testing.T) {
 func Test_get_major_version(t *testing.T) {
 	var cp ClassParse
 	_ = cp.parseFile(file)
-	mv := cp.MajorVersion()
+	mv := cp.ClassFile().MajorVersion
 	v := mv.View()
 	expect := 58
 
@@ -65,7 +75,7 @@ func Test_get_major_version(t *testing.T) {
 func Test_get_cp(t *testing.T) {
 	var cp ClassParse
 	_ = cp.parseFile(file)
-	constPoolCount := cp.ConstantPoolCount()
+	constPoolCount := cp.ClassFile().ConstantPoolCount
 	v := constPoolCount.View()
 
 	except := 139
@@ -79,25 +89,24 @@ func Test_get_cp_info_view(t *testing.T) {
 
 	var cp ClassParse
 	_ = cp.parseFile(file)
+	classFile := cp.ClassFile()
+	cpInfos := classFile.CpInfos
 
-	cpInfos := cp.CpInfos()
+	sv := cpInfos.View()
+	//fmt.Println(sv)
+	expect := "#1 = Methodref #2.#3 AbstractMain.<init>:()V"
 
-	s := cpInfos.View()
-	fmt.Println(s)
-
-	// 	}
-	// for i, v := range cpInfos {
-	// 	view, ok := v.(core.View)
-	// 	if ok {
-	// 		fmt.Printf("#%d = %v \n", i, view.View())
-	// 	}
-	// }
+	s := sv.(string)
+	if !strings.Contains(s, expect) {
+		t.Fatalf(" expect %s \n sv is \n%s", expect, s)
+	}
 
 }
 func Test_get_cp_info(t *testing.T) {
 	var cp ClassParse
 	_ = cp.parseFile(file)
-	cpInfos := cp.CpInfos()
+	classFile := cp.ClassFile()
+	cpInfos := classFile.CpInfos
 
 	fmt.Println(cpInfos)
 	integerMax := cpInfos[34]
@@ -123,7 +132,7 @@ func Test_get_access_flags(t *testing.T) {
 	var cp ClassParse
 	_ = cp.parseFile(file)
 
-	af := cp.AccessFlag()
+	af := cp.ClassFile().AccessFlag
 	view := af.View()
 	except := "ACC_PUBLIC,ACC_SUPER"
 
@@ -131,4 +140,17 @@ func Test_get_access_flags(t *testing.T) {
 		t.Fatalf("access flags is %s  except is %s", view, except)
 	}
 
+}
+
+func Test_get_this_class(t *testing.T) {
+
+	var cp ClassParse
+	_ = cp.parseFile(file)
+
+	classFile := cp.ClassFile()
+
+	tc := cp.thisClass(classFile.CpInfos)
+
+	v := tc.View()
+	fmt.Println(v)
 }

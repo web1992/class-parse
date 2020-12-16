@@ -46,7 +46,7 @@ func (af *AccessFlag) ObjLen() int {
 }
 
 // getFlag get int vale to convert to string
-func getFlag(f int) string {
+func getFlag(f int32) string {
 
 	var fs []string
 	if f&ACC_PUBLIC != 0 {

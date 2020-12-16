@@ -68,40 +68,125 @@ func (cp *ClassParse) parseFile(filePath string) error {
 	return nil
 }
 
-func (cp *ClassParse) Magic() core.Magic {
+// ClassFile
+// parse bytes to core.ClassFile obj
+func (cp *ClassParse) ClassFile() core.ClassFile {
+
+	magic := cp.magic()
+	mv := cp.minorVersion()
+	majorVersion := cp.majorVersion()
+	poolCount := cp.constantPoolCount()
+	cpInfos := cp.cpInfos(poolCount)
+	accessFlag := cp.accessFlag()
+	thisClass := cp.thisClass(cpInfos)
+
+	return core.ClassFile{
+		Magic:             magic,
+		MinorVersion:      mv,
+		MajorVersion:      majorVersion,
+		ConstantPoolCount: poolCount,
+		CpInfos:           cpInfos,
+		AccessFlag:        accessFlag,
+		ThisClass:         thisClass,
+		SuperClass:        cp.superClass(),
+		InterfacesCount:   cp.interfacesCount(),
+		Interfaces:        cp.interfaces(),
+		FieldsCount:       cp.fieldsCount(),
+		Fields:            cp.fields(),
+		MethodCount:       cp.methodCount(),
+		Methods:           cp.methods(),
+		AttributeCount:    cp.attributeCount(),
+		Attributes:        cp.attributes(),
+	}
+
+}
+
+func (cp *ClassParse) magic() core.Magic {
 	var m = core.MagicNew()
 	cp.Read(m)
 	return *m
 }
 
-func (cp *ClassParse) MinorVersion() core.MinorVersion {
+func (cp *ClassParse) minorVersion() core.MinorVersion {
 
-	cp.Magic()
+	//cp.magic()
 	var mv = core.MinorVersionNew()
 	cp.Read(mv)
 	return *mv
 }
 
-func (cp *ClassParse) MajorVersion() core.MajorVersion {
+func (cp *ClassParse) majorVersion() core.MajorVersion {
 
-	cp.MinorVersion()
+	//cp.minorVersion()
 	var mv = core.MajorVersionNew()
 	cp.Read(mv)
 	return *mv
 }
 
-func (cp *ClassParse) ConstantPoolCount() core.ConstantPoolCount {
+func (cp *ClassParse) constantPoolCount() core.ConstantPoolCount {
 
-	cp.MajorVersion()
+	//cp.majorVersion()
 	var cpPool = core.ConstantPoolCountNew()
 	cp.Read(cpPool)
 	return *cpPool
 }
 
-func (cp *ClassParse) AccessFlag() core.AccessFlag {
+func (cp *ClassParse) accessFlag() core.AccessFlag {
 
-	cp.CpInfos()
+	//cp.cpInfos()
 	var af = core.AccessFlagNew()
 	cp.Read(af)
 	return *af
+}
+
+func (cp *ClassParse) thisClass(cpInfos core.CpInfos) core.ThisClass {
+
+	//cp.accessFlag()
+	var af = core.ThisClassNew()
+	cp.Read(af)
+	return *af
+}
+
+func (cp *ClassParse) superClass() core.SuperClass {
+
+	return core.SuperClass{}
+}
+
+func (cp *ClassParse) interfacesCount() core.InterfacesCount {
+
+	return core.InterfacesCount{}
+}
+func (cp *ClassParse) interfaces() core.Interfaces {
+
+	return core.Interfaces{}
+}
+
+func (cp *ClassParse) fieldsCount() core.FieldsCount {
+
+	return core.FieldsCount{}
+}
+
+func (cp *ClassParse) fields() core.Fields {
+
+	return core.Fields{}
+}
+
+func (cp *ClassParse) methodCount() core.MethodCount {
+
+	return core.MethodCount{}
+}
+
+func (cp *ClassParse) methods() core.Methods {
+
+	return core.Methods{}
+}
+
+func (cp *ClassParse) attributeCount() core.AttributeCount {
+
+	return core.AttributeCount{}
+}
+
+func (cp *ClassParse) attributes() core.Attributes {
+
+	return core.Attributes{}
 }
