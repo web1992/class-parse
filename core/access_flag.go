@@ -32,16 +32,6 @@ type AccessFlag struct {
 	Bytes
 }
 
-func (af *AccessFlag) ByteLen() int {
-	return U2_L
-}
-
-func (af *AccessFlag) View() interface{} {
-	b := af.Bytes
-	f := U2(b)
-	return getFlag(int(f))
-}
-
 func AccessFlagNew() *AccessFlag {
 	return &AccessFlag{}
 }
@@ -55,6 +45,7 @@ func (af *AccessFlag) ObjLen() int {
 	return u2
 }
 
+// getFlag get int vale to convert to string
 func getFlag(f int) string {
 
 	var fs []string
