@@ -12,6 +12,7 @@ func HexByte(b []byte) Hex {
 	return Hex(strings.ToUpper(s))
 }
 
+// U4 4 bytes to int32
 // always stored in big-endian order, where the high bytes come first
 func U4(b []byte) int32 {
 	bits := binary.BigEndian.Uint32(b)
@@ -19,6 +20,7 @@ func U4(b []byte) int32 {
 	return n
 }
 
+// U1 1 bytes to int32
 func U1(b []byte) int32 {
 	b4 := []byte{0, 0, 0, b[0]}
 	bits := binary.BigEndian.Uint32(b4)
@@ -26,6 +28,7 @@ func U1(b []byte) int32 {
 	return n
 }
 
+// U2 2 bytes to int32
 // always stored in big-endian order, where the high bytes come first
 func U2(b []byte) int32 {
 	b4 := []byte{0, 0, b[0], b[1]}

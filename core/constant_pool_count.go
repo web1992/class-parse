@@ -13,7 +13,7 @@ func (cp *ConstantPoolCount) ByteLen() int {
 func (cp *ConstantPoolCount) View() interface{} {
 	// 0xFF = 1111 1111
 	b := cp.Bytes
-	n := ((b[0] & 0xFF) << 8) + ((b[1]) << 0)
+	n := U2(b)
 	return int(n)
 }
 
