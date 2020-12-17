@@ -1,5 +1,7 @@
 package core
 
+//u2             attributes_count;
+//attribute_info attributes[attributes_count];
 type AttributeCount struct {
 	Bytes
 	Count int32
@@ -18,7 +20,22 @@ u1 info[attribute_length];
 type Attribute struct {
 }
 
-type Attributes []Attribute
+type Attributes []interface{}
+
+func AttributeCountNew() *AttributeCount {
+	return &AttributeCount{}
+}
+
+func (af *AttributeCount) ReadObj(bytes []byte) int {
+	bs := bytes[0:u2]
+	af.Bytes = bs
+	af.Count = U2(bs)
+	return 0
+}
+
+func (af *AttributeCount) ObjLen() int {
+	return u2
+}
 
 /*
 ConstantValue_attribute {

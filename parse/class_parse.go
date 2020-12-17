@@ -209,6 +209,9 @@ func (cp *ClassParse) fields(cpInfos core.CpInfos, count core.FieldsCount) core.
 	for i := 0; i < c; i++ {
 		field := core.FieldNew()
 		cp.Read(field)
+		field.NameString = core.GetCp(cpInfos, int(field.NameIndex))
+		field.DescriptorString = core.GetCp(cpInfos, int(field.DescriptorIndex))
+		field.AccessFlagString = core.GetFlag(field.AccessFlag)
 		fields = append(fields, *field)
 	}
 
@@ -217,20 +220,24 @@ func (cp *ClassParse) fields(cpInfos core.CpInfos, count core.FieldsCount) core.
 
 func (cp *ClassParse) methodCount() core.MethodCount {
 
-	return core.MethodCount{}
+	mc := core.MethodCountNew()
+	cp.Read(mc)
+	return *mc
 }
 
 func (cp *ClassParse) methods(cpInfos core.CpInfos, count core.MethodCount) core.Methods {
 
-	return core.Methods{}
-}
+	var ms core.Methods
+	c := int(count.Count)
+	for i := 0; i < c; i++ {
+		m := core.MethodNew()
+		cp.Read(m)
+		m.NameString = core.GetCp(cpInfos, int(m.NameIndex))
+		m.DescriptorString = core.GetCp(cpInfos, int(m.DescriptorIndex))
+		m.AccessFlagString = core.GetFlag(m.AccessFlag)
+		m.Attributes = cp.attributes(cpInfos, m.AttributeCount)
+		ms = append(ms, *m)
+	}
 
-func (cp *ClassParse) attributeCount() core.AttributeCount {
-
-	return core.AttributeCount{}
-}
-
-func (cp *ClassParse) attributes(cpInfos core.CpInfos, attributeCount core.AttributeCount) core.Attributes {
-
-	return core.Attributes{}
+	return ms
 }

@@ -24,7 +24,9 @@ type Field struct {
 	DescriptorIndex
 	AttributeCount
 	Attributes
-	String string
+	NameString       string
+	DescriptorString string
+	AccessFlagString string
 }
 
 type Fields []Field

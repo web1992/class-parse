@@ -182,3 +182,12 @@ func Test_get_interface(t *testing.T) {
 		t.Fatalf("ifcc is %v expect is %s", ifcc, expect)
 	}
 }
+
+func Test_get_attributes(t *testing.T) {
+	var cp ClassParse
+	_ = cp.parseFile(file)
+
+	classFile := cp.ClassFile()
+
+	fmt.Println(classFile)
+}
