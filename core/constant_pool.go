@@ -19,12 +19,6 @@ package core
 | CONSTANT_InvokeDynamic      | 18    |
 */
 
-const (
-	u1 = U1_L
-	u2 = U2_L
-	u4 = U4_L
-)
-
 // The value of the reference_kind item must be in the range 1 to 9.
 // The value denotes the kind of this method handle, which characterizes its bytecode behavior
 // Kind	Description	Interpretation

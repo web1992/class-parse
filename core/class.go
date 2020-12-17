@@ -29,10 +29,31 @@ const (
 	U2_L = 2 // 2 bytes
 	U4_L = 4 // 4 bytes
 )
+const (
+	u1 = U1_L
+	u2 = U2_L
+	u4 = U4_L
+)
 
 // Bytes ,binary Bytes
 type Bytes []byte
 type Hex string
+
+// Constant pool
+type Tag int32
+type ClassIndex int32
+type NameAndTypeIndex int32
+type NameIndex int32
+type DescriptorIndex int32
+type StringIndex int32
+type Integer int32
+type Float float32
+type Long int64
+type Double float64
+type ReferenceKind int32
+type ReferenceIndex int32
+type BootstrapMethodAttrIndex int32
+type String string
 
 // ClassFile
 type ClassFile struct {
