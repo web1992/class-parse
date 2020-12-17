@@ -22,7 +22,7 @@ func (cp *ClassParse) IncrPointer(num int) {
 	cp.pointer += num
 }
 
-func (cp *ClassParse) Read(r Reader) {
+func (cp *ClassParse) Read(r core.Reader) {
 
 	bytes := cp.Bytes()
 
@@ -163,26 +163,56 @@ func (cp *ClassParse) thisClass(cpInfos core.CpInfos) core.ThisClass {
 
 func (cp *ClassParse) superClass(cpInfos core.CpInfos) core.SuperClass {
 
-	return core.SuperClass{}
+	superClass := core.SuperClassNew()
+	cp.Read(superClass)
+	ci := superClass.ClassIndex
+	superClass.String = core.GetCp(cpInfos, int(ci))
+
+	return *superClass
 }
 
 func (cp *ClassParse) interfacesCount() core.InterfacesCount {
-
-	return core.InterfacesCount{}
+	interfacesCount := core.InterfacesCountNew()
+	cp.Read(interfacesCount)
+	return *interfacesCount
 }
 func (cp *ClassParse) interfaces(cpInfos core.CpInfos, count core.InterfacesCount) core.Interfaces {
 
-	return core.Interfaces{}
+	var fs core.Interfaces
+	c := int(count.Count)
+
+	for i := 0; i < c; i++ {
+		var f core.Interface
+		cp.Read(&f)
+		ci := f.ClassIndex
+		s := core.GetCp(cpInfos, int(ci))
+		f.String = s
+		fs = append(fs, f)
+	}
+
+	return fs
 }
 
 func (cp *ClassParse) fieldsCount() core.FieldsCount {
 
-	return core.FieldsCount{}
+	fc := core.FieldsCountNew()
+	cp.Read(fc)
+
+	return *fc
 }
 
 func (cp *ClassParse) fields(cpInfos core.CpInfos, count core.FieldsCount) core.Fields {
 
-	return core.Fields{}
+	var fields core.Fields
+
+	c := int(count.Count)
+	for i := 0; i < c; i++ {
+		field := core.FieldNew()
+		cp.Read(field)
+		fields = append(fields, *field)
+	}
+
+	return fields
 }
 
 func (cp *ClassParse) methodCount() core.MethodCount {

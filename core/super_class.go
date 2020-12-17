@@ -3,4 +3,21 @@ package core
 // SuperClass u2  super_class
 type SuperClass struct {
 	Bytes
+	ClassIndex
+	String string
+}
+
+func SuperClassNew() *SuperClass {
+	return &SuperClass{}
+}
+
+func (tc *SuperClass) ReadObj(bytes []byte) int {
+	bs := bytes[0:u2]
+	tc.Bytes = bs
+	tc.ClassIndex = ClassIndex(U2(bs))
+	return 0
+}
+
+func (tc *SuperClass) ObjLen() int {
+	return u2
 }

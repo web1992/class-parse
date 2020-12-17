@@ -159,3 +159,26 @@ func Test_get_this_class(t *testing.T) {
 		t.Fatalf("\n expect is %v \n s is %v", expect, s)
 	}
 }
+
+func Test_get_interface(t *testing.T) {
+	var cp ClassParse
+	_ = cp.parseFile(file)
+
+	classFile := cp.ClassFile()
+
+	fmt.Println(classFile)
+
+	ifc := classFile.InterfacesCount
+
+	if ifc.Count != int32(1) {
+		t.Fatalf("ifc is %v expect is %d", ifc, 1)
+	}
+	ifcc := classFile.Interfaces[0]
+
+	s := ifcc.String
+	expect := "#107 = Class #108 InterfaceMain "
+
+	if s != expect {
+		t.Fatalf("ifcc is %v expect is %s", ifcc, expect)
+	}
+}

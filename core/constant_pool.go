@@ -78,24 +78,6 @@ func getReferenceKind(referenceKind int32) string {
 	return ""
 }
 
-// The constant_pool table is indexed from 1 to constant_pool_count - 1.
-type CpInfo struct {
-	CpClass
-	CpFieldRef
-	CpMethodRef
-	CpInterfaceMethodRef
-	CpString
-	CpInteger
-	CpFloat
-	CpLong
-	CpDouble
-	CpNameAndType
-	CpUTF8
-	CpMethodHandle
-	CpMethodType
-	CpInvokeDynamic
-}
-
 // CpInfos is a array for CpInfo
 type CpInfos []interface{}
 
