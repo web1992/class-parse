@@ -86,7 +86,7 @@ func (cp *ClassParse) cpInfos(cpc core.ConstantPoolCount) core.CpInfos {
 			cpInfos = append(cpInfos, id)
 
 		default:
-			fmt.Sprintf("tag %d is undefiend", tag)
+			fmt.Sprintf("tag %d is undefined", tag)
 
 		}
 	}
