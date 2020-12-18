@@ -106,11 +106,6 @@ func (class *CpClass) ObjLen() int {
 	return u1 + u2
 }
 
-func (class *CpClass) View() interface{} {
-
-	return "Class"
-}
-
 /*
 tag =9
 CONSTANT_Fieldref_info {
@@ -138,11 +133,6 @@ func (f *CpFieldRef) ReadObj(bytes []byte) int {
 
 func (f *CpFieldRef) ObjLen() int {
 	return u1 + u2 + u2
-}
-
-func (f *CpFieldRef) View() interface{} {
-
-	return "Fieldref"
 }
 
 /**
@@ -176,10 +166,6 @@ func (method *CpMethodRef) ReadObj(bytes []byte) int {
 
 func (method *CpMethodRef) ObjLen() int {
 	return u1 + u2 + u2
-}
-
-func (method *CpMethodRef) View() interface{} {
-	return "Methodref"
 }
 
 /*
@@ -239,10 +225,6 @@ func (s *CpString) ReadObj(bytes []byte) int {
 }
 func (s *CpString) ObjLen() int {
 	return u1 + u2
-}
-
-func (s *CpString) View() interface{} {
-	return "String"
 }
 
 /*
@@ -405,11 +387,6 @@ func (cnat *CpNameAndType) ObjLen() int {
 	return u1 + u2 + u2
 }
 
-func (cnat *CpNameAndType) View() interface{} {
-
-	return "NameAndType"
-}
-
 /**
 tag=1
 CONSTANT_Utf8_info {
@@ -446,10 +423,6 @@ func (u *CpUTF8) ReadObj(bytes []byte) int {
 
 func (u *CpUTF8) ObjLen() int {
 	return u1 + u2
-}
-
-func (u *CpUTF8) View() interface{} {
-	return u.String
 }
 
 /*

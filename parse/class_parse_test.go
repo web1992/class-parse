@@ -37,11 +37,10 @@ func Test_get_magic_num(t *testing.T) {
 	_ = cp.parseFile(file)
 
 	m := cp.ClassFile().Magic
-	view := m.View()
 	expect := core.Hex("CAFEBABE")
 
-	if view != expect {
-		t.Fatalf("magic num is  %s  except is %s", view, expect)
+	if m.Hex != expect {
+		t.Fatalf("magic num is  %s  except is %s", m.Hex, expect)
 	}
 }
 
@@ -50,9 +49,9 @@ func Test_get_Minor_Version(t *testing.T) {
 	var cp ClassParse
 	_ = cp.parseFile(file)
 	mv := cp.ClassFile().MinorVersion
-	v := mv.View()
+	v := mv.Version
 	log.Println("minor_Version is ", v)
-	expect := 0
+	expect := int32(0)
 	if v != expect {
 		t.Fatalf("minor version is %d,except is %d", v, expect)
 	}
@@ -62,13 +61,10 @@ func Test_get_major_version(t *testing.T) {
 	var cp ClassParse
 	_ = cp.parseFile(file)
 	mv := cp.ClassFile().MajorVersion
-	v := mv.View()
 	expect := 58
 
-	log.Println("view is", v)
-
-	if expect != v {
-		t.Fatalf("major version is %d,except is %d", v, expect)
+	if int32(expect) != mv.Version {
+		t.Fatalf("major version is %d,except is %d", mv.Version, expect)
 	}
 
 }
@@ -77,9 +73,9 @@ func Test_get_cp(t *testing.T) {
 	var cp ClassParse
 	_ = cp.parseFile(file)
 	constPoolCount := cp.ClassFile().ConstantPoolCount
-	v := constPoolCount.View()
+	v := constPoolCount.Count
 
-	except := 139
+	except := int32(139)
 	if v != except {
 		t.Fatalf("constPoolCount is %d  except is %d", v, except)
 	}
@@ -93,11 +89,11 @@ func Test_get_cp_info_view(t *testing.T) {
 	classFile := cp.ClassFile()
 	cpInfos := classFile.CpInfos
 
-	sv := cpInfos.View()
-	//fmt.Println(sv)
-	expect := "#1 = Methodref #2.#3 AbstractMain.<init>:()V"
+	//sv := cpInfos.View()
+	//fmt.Println(cpInfos)
+	expect := "#1 = Methodref          #2.#3         // AbstractMain.<init>:()V"
 
-	s := sv.(string)
+	s := cpInfos.String()
 	if !strings.Contains(s, expect) {
 		t.Fatalf(" expect %s \n sv is \n%s", expect, s)
 	}
@@ -108,7 +104,7 @@ func Test_get_cp_info(t *testing.T) {
 	_ = cp.parseFile(file)
 	classFile := cp.ClassFile()
 	cpInfos := classFile.CpInfos
-	v := cpInfos.View().(string)
+	v := cpInfos.String()
 	fmt.Println(v)
 	f, _ := os.Create("cp_test.txt")
 	defer f.Close()
@@ -120,7 +116,7 @@ func Test_get_access_flags(t *testing.T) {
 	_ = cp.parseFile(file)
 
 	af := cp.ClassFile().AccessFlag
-	view := af.View()
+	view := af.String()
 	except := "ACC_PUBLIC,ACC_SUPER"
 
 	if view != except {
@@ -140,7 +136,7 @@ func Test_get_this_class(t *testing.T) {
 
 	s := tc.String
 	fmt.Println(s)
-	expect := "#40 = Class #42 Main "
+	expect := "Main"
 
 	if s != expect {
 		t.Fatalf("\n expect is %v \n s is %v", expect, s)
@@ -163,7 +159,7 @@ func Test_get_interface(t *testing.T) {
 	ifcc := classFile.Interfaces[0]
 
 	s := ifcc.NameString
-	expect := "#107 = Class #108 InterfaceMain "
+	expect := "InterfaceMain"
 
 	if s != expect {
 		t.Fatalf("ifcc is %v expect is %s", ifcc, expect)

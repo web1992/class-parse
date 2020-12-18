@@ -26,7 +26,7 @@ const INIT = "\"<init>\""
 const INIT_S = "<init>"
 
 // View print constant pool
-func (cpInfos CpInfos) View() interface{} {
+func (cpInfos CpInfos) String() string {
 
 	var views []string
 

@@ -3,17 +3,11 @@ package core
 // ConstantPoolCount constant_pool_count
 type ConstantPoolCount struct {
 	Bytes
+	Count int32
 }
 
 func (cp *ConstantPoolCount) ByteLen() int {
 	return u2
-}
-
-// always stored in big-endian order, where the high bytes come first
-func (cp *ConstantPoolCount) View() interface{} {
-	b := cp.Bytes
-	n := Byte2U2(b)
-	return int(n)
 }
 
 func ConstantPoolCountNew() *ConstantPoolCount {
@@ -22,6 +16,7 @@ func ConstantPoolCountNew() *ConstantPoolCount {
 
 func (cpc *ConstantPoolCount) ReadObj(bytes []byte) int {
 	cpc.Bytes = bytes[0:u2]
+	cpc.Count = Byte2U2(bytes)
 	return 0
 }
 

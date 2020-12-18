@@ -45,6 +45,12 @@ func (af *AccessFlag) ObjLen() int {
 	return u2
 }
 
+func (af *AccessFlag) String() string {
+	b := af.Bytes
+	f := Byte2U2(b)
+	return getFlag(f)
+}
+
 // GetFlag get int vale to convert to string
 func GetFlag(f AccessFlag) string {
 	u := Byte2U2(f.Bytes)
