@@ -4,7 +4,7 @@ package core
 type Interface struct {
 	Bytes
 	ClassIndex
-	String string
+	NameString string
 }
 
 // Interface u2  interfaces[interfaces_count]

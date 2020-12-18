@@ -108,24 +108,7 @@ func Test_get_cp_info(t *testing.T) {
 	classFile := cp.ClassFile()
 	cpInfos := classFile.CpInfos
 
-	fmt.Println(cpInfos)
-	integerMax := cpInfos[34]
-	fmt.Println("integerMax is", integerMax)
-
-	integerMin := cpInfos[45]
-	fmt.Println("integerMin is", integerMin)
-
-	longMax := cpInfos[51]
-	fmt.Println("longMax is", longMax)
-
-	longMin := cpInfos[60]
-	cpLong := longMin.(*core.CpLong)
-	fmt.Println("longMin is", longMin)
-
-	expect := core.Long(-9223372036854775808)
-	if cpLong.Long != expect {
-		t.Fatalf("Long Min is %d except %d", cpLong.Long, expect)
-	}
+	fmt.Println(cpInfos.View())
 }
 
 func Test_get_access_flags(t *testing.T) {
@@ -175,7 +158,7 @@ func Test_get_interface(t *testing.T) {
 	}
 	ifcc := classFile.Interfaces[0]
 
-	s := ifcc.String
+	s := ifcc.NameString
 	expect := "#107 = Class #108 InterfaceMain "
 
 	if s != expect {

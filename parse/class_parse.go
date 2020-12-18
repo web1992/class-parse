@@ -191,7 +191,7 @@ func (cp *ClassParse) interfaces(cpInfos core.CpInfos, count core.InterfacesCoun
 		cp.Read(&f)
 		ci := f.ClassIndex
 		s := core.GetCp(cpInfos, int(ci))
-		f.String = s
+		f.NameString = s
 		fs = append(fs, f)
 	}
 
