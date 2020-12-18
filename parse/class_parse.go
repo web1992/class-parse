@@ -11,11 +11,12 @@ const fileSuffix = ".class"
 
 var filePathInvalid = errors.New("file patch is invalid")
 var fileSuffixInvalid = errors.New("file must has suffix " + fileSuffix)
+var byteNoUsed = errors.New("byte not all used")
 
 type ClassParse struct {
-	filePath string // file paths
-	fileByes []byte // files bytes
-	pointer  int    // []byte index
+	filePath  string // file paths
+	fileBytes []byte // files bytes
+	pointer   int    // []byte index
 }
 
 func (cp *ClassParse) IncrPointer(num int) {
@@ -38,7 +39,7 @@ func (cp *ClassParse) Name() string {
 }
 
 func (cp *ClassParse) Bytes() []byte {
-	return cp.fileByes
+	return cp.fileBytes
 }
 
 func (cp *ClassParse) String() string {
@@ -64,7 +65,7 @@ func (cp *ClassParse) parseFile(filePath string) error {
 		return e
 	}
 
-	cp.fileByes = bytes
+	cp.fileBytes = bytes
 	return nil
 }
 
@@ -89,6 +90,10 @@ func (cp *ClassParse) ClassFile() core.ClassFile {
 	attributeCount := cp.attributeCount()
 	attributes := cp.attributes(cpInfos, attributeCount)
 
+	// check pointer and bytes len
+	if cp.pointer != len(cp.fileBytes) {
+		panic(byteNoUsed)
+	}
 	return core.ClassFile{
 		Magic:             magic,
 		MinorVersion:      minorVersion,
@@ -236,6 +241,7 @@ func (cp *ClassParse) methods(cpInfos core.CpInfos, count core.MethodCount) core
 		m.DescriptorString = core.GetCp(cpInfos, int(m.DescriptorIndex))
 		m.AccessFlagString = core.GetFlag(m.AccessFlag)
 		m.Attributes = cp.attributes(cpInfos, m.AttributeCount)
+		// parse method attribute
 		ms = append(ms, *m)
 	}
 

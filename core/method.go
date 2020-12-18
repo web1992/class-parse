@@ -60,12 +60,13 @@ func (tc *Method) ReadObj(bytes []byte) int {
 	tc.DescriptorIndex = DescriptorIndex(Byte2U2(bytes[u2+u2 : u2+u2+u2]))
 
 	var ac AttributeCount
-	ac.ReadObj(bytes[u2+u2+u2 : u2+u2+u2+u2])
-
+	bs := bytes[u2+u2+u2 : u2+u2+u2+u2]
+	ac.Count = Byte2U2(bs)
+	ac.Bytes = bs
 	tc.AttributeCount = ac
 	return 0
 }
 
 func (tc *Method) ObjLen() int {
-	return u2
+	return u2 * 4
 }

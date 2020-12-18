@@ -62,12 +62,10 @@ func (cp *ClassParse) attributes(cpInfos core.CpInfos, attributeCount core.Attri
 	var attrs core.Attributes
 	c := int(attributeCount.Count)
 	for i := 0; i < c; i++ {
-		bs := cp.Bytes()
-		p := cp.pointer
-		nameIndexBytes := bs[p : p+core.U2_L]
-		i := core.Byte2U2(nameIndexBytes)
-		s := core.GetCp(cpInfos, int(i))
-		attrs = append(attrs, s+"-"+string(i))
+		attr := core.AttributeNew()
+		cp.Read(attr)
+		attr.Name = core.GetCp(cpInfos, int(attr.AttributeNameIndex))
+		attrs = append(attrs, attr)
 
 	}
 	return attrs
