@@ -96,7 +96,7 @@ func CpClassNew() *CpClass {
 }
 
 func (class *CpClass) ReadObj(bytes []byte) int {
-	class.NameIndex = NameIndex(U2(bytes[u1 : u1+u2]))
+	class.NameIndex = NameIndex(Byte2U2(bytes[u1 : u1+u2]))
 	class.Bytes = bytes
 	return 0
 }
@@ -131,8 +131,8 @@ func CpFieldRefNew() *CpFieldRef {
 
 func (f *CpFieldRef) ReadObj(bytes []byte) int {
 	f.Bytes = bytes
-	f.ClassIndex = ClassIndex(U2(bytes[u1 : u1+u2]))
-	f.NameAndTypeIndex = NameAndTypeIndex(U2(bytes[u1+u2 : u1+u2+u2]))
+	f.ClassIndex = ClassIndex(Byte2U2(bytes[u1 : u1+u2]))
+	f.NameAndTypeIndex = NameAndTypeIndex(Byte2U2(bytes[u1+u2 : u1+u2+u2]))
 	return 0
 }
 
@@ -168,8 +168,8 @@ func CpMethodRefNew() *CpMethodRef {
 }
 
 func (method *CpMethodRef) ReadObj(bytes []byte) int {
-	method.ClassIndex = ClassIndex(U2(bytes[u1 : u1+u2]))
-	method.NameAndTypeIndex = NameAndTypeIndex(U2(bytes[u1+u2 : u1+u2+u2]))
+	method.ClassIndex = ClassIndex(Byte2U2(bytes[u1 : u1+u2]))
+	method.NameAndTypeIndex = NameAndTypeIndex(Byte2U2(bytes[u1+u2 : u1+u2+u2]))
 	method.Bytes = bytes
 	return 0
 }
@@ -204,8 +204,8 @@ func CpInterfaceMethodRefNew() *CpInterfaceMethodRef {
 }
 
 func (im *CpInterfaceMethodRef) ReadObj(bytes []byte) int {
-	im.ClassIndex = ClassIndex(U2(bytes[u1 : u1+u2]))
-	im.NameAndTypeIndex = NameAndTypeIndex(U2(bytes[u1+u2 : u1+u2+u2]))
+	im.ClassIndex = ClassIndex(Byte2U2(bytes[u1 : u1+u2]))
+	im.NameAndTypeIndex = NameAndTypeIndex(Byte2U2(bytes[u1+u2 : u1+u2+u2]))
 	im.Bytes = bytes
 	return 0
 }
@@ -233,7 +233,7 @@ func CpStringNew() *CpString {
 }
 
 func (s *CpString) ReadObj(bytes []byte) int {
-	s.StringIndex = StringIndex(U2(bytes[u1 : u1+u2]))
+	s.StringIndex = StringIndex(Byte2U2(bytes[u1 : u1+u2]))
 	s.Bytes = bytes
 	return 0
 }
@@ -269,7 +269,7 @@ func CpIntegerNew() *CpInteger {
 func (i *CpInteger) ReadObj(bytes []byte) int {
 	b := bytes[u1 : u1+u4]
 	i.Bytes = b
-	i.Integer = Integer(U4(b))
+	i.Integer = Integer(Byte2U4(b))
 	i.Hex = HexByte(i.Bytes)
 	return 0
 }
@@ -395,8 +395,8 @@ func CpNameAndTypeNew() *CpNameAndType {
 }
 
 func (cnat *CpNameAndType) ReadObj(bytes []byte) int {
-	cnat.NameIndex = NameIndex(U2(bytes[u1 : u1+u2]))
-	cnat.DescriptorIndex = DescriptorIndex(U2(bytes[u1+u2 : u1+u2+u2]))
+	cnat.NameIndex = NameIndex(Byte2U2(bytes[u1 : u1+u2]))
+	cnat.DescriptorIndex = DescriptorIndex(Byte2U2(bytes[u1+u2 : u1+u2+u2]))
 	cnat.Bytes = bytes
 	return 0
 }
@@ -434,7 +434,7 @@ func CpUTF8New() *CpUTF8 {
 
 func (u *CpUTF8) ReadObj(bytes []byte) int {
 
-	l := U2(bytes[u1 : u1+u2])
+	l := Byte2U2(bytes[u1 : u1+u2])
 	u.len = l
 	bs := bytes[u1+u2 : u1+u2+l]
 	u.Bytes = bs
@@ -476,8 +476,8 @@ func CpMethodHandleNew() *CpMethodHandle {
 
 func (mh *CpMethodHandle) ReadObj(bytes []byte) int {
 	mh.Bytes = bytes
-	mh.ReferenceKind = ReferenceKind(U1(bytes[u1 : u1+u1]))
-	mh.ReferenceIndex = ReferenceIndex(U2(bytes[u1+u1 : u1+u1+u2]))
+	mh.ReferenceKind = ReferenceKind(Byte2U1(bytes[u1 : u1+u1]))
+	mh.ReferenceIndex = ReferenceIndex(Byte2U2(bytes[u1+u1 : u1+u1+u2]))
 	return 0
 }
 
@@ -505,7 +505,7 @@ func CpMethodTypeNew() *CpMethodType {
 
 func (mt *CpMethodType) ReadObj(bytes []byte) int {
 	mt.Bytes = bytes
-	mt.DescriptorIndex = DescriptorIndex(U2(bytes[u1 : u1+u2]))
+	mt.DescriptorIndex = DescriptorIndex(Byte2U2(bytes[u1 : u1+u2]))
 	return 0
 }
 
@@ -537,8 +537,8 @@ func CpInvokeDynamicNew() *CpInvokeDynamic {
 func (id *CpInvokeDynamic) ReadObj(bytes []byte) int {
 
 	id.Bytes = bytes
-	id.BootstrapMethodAttrIndex = BootstrapMethodAttrIndex(U2(bytes[u1 : u1+u2]))
-	id.NameAndTypeIndex = NameAndTypeIndex(U2(bytes[u1+u2 : u1+u2+u2]))
+	id.BootstrapMethodAttrIndex = BootstrapMethodAttrIndex(Byte2U2(bytes[u1 : u1+u2]))
+	id.NameAndTypeIndex = NameAndTypeIndex(Byte2U2(bytes[u1+u2 : u1+u2+u2]))
 	return 0
 }
 

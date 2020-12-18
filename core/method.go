@@ -37,7 +37,7 @@ func MethodCountNew() *MethodCount {
 func (tc *MethodCount) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
 	tc.Bytes = bs
-	tc.Count = U2(bs)
+	tc.Count = Byte2U2(bs)
 	return 0
 }
 
@@ -56,8 +56,8 @@ func (tc *Method) ReadObj(bytes []byte) int {
 	af.ReadObj(bytes[0:u2])
 
 	tc.AccessFlag = af
-	tc.NameIndex = NameIndex(U2(bytes[u2 : u2+u2]))
-	tc.DescriptorIndex = DescriptorIndex(U2(bytes[u2+u2 : u2+u2+u2]))
+	tc.NameIndex = NameIndex(Byte2U2(bytes[u2 : u2+u2]))
+	tc.DescriptorIndex = DescriptorIndex(Byte2U2(bytes[u2+u2 : u2+u2+u2]))
 
 	var ac AttributeCount
 	ac.ReadObj(bytes[u2+u2+u2 : u2+u2+u2+u2])

@@ -65,7 +65,7 @@ func (cp *ClassParse) attributes(cpInfos core.CpInfos, attributeCount core.Attri
 		bs := cp.Bytes()
 		p := cp.pointer
 		nameIndexBytes := bs[p : p+core.U2_L]
-		i := core.U2(nameIndexBytes)
+		i := core.Byte2U2(nameIndexBytes)
 		s := core.GetCp(cpInfos, int(i))
 		attrs = append(attrs, s+"-"+string(i))
 

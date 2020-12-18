@@ -38,7 +38,7 @@ func FieldsCountNew() *FieldsCount {
 func (tc *FieldsCount) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
 	tc.Bytes = bs
-	tc.Count = U2(bs)
+	tc.Count = Byte2U2(bs)
 	return 0
 }
 
@@ -58,12 +58,12 @@ func (tc *Field) ReadObj(bytes []byte) int {
 	af.Bytes = afBytes
 	tc.AccessFlag = af
 
-	tc.NameIndex = NameIndex(U2(bytes[u2 : u2*2]))
-	tc.DescriptorIndex = DescriptorIndex(U2(bytes[u2*2 : u2*3]))
+	tc.NameIndex = NameIndex(Byte2U2(bytes[u2 : u2*2]))
+	tc.DescriptorIndex = DescriptorIndex(Byte2U2(bytes[u2*2 : u2*3]))
 
 	var ac AttributeCount
 	acBytes := bytes[u2*3 : u2*4]
-	ac.Count = U2(acBytes)
+	ac.Count = Byte2U2(acBytes)
 	ac.Bytes = acBytes
 	tc.AttributeCount = ac
 	return 0

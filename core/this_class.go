@@ -14,7 +14,7 @@ func ThisClassNew() *ThisClass {
 func (tc *ThisClass) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
 	tc.Bytes = bs
-	tc.ClassIndex = ClassIndex(U2(bs))
+	tc.ClassIndex = ClassIndex(Byte2U2(bs))
 	return 0
 }
 

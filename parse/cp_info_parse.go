@@ -5,11 +5,6 @@ import (
 	"fmt"
 )
 
-const (
-	u1 = core.U1_L
-	u2 = core.U2_L
-)
-
 // read constant_pool
 // The constant_pool table is indexed from 1 to constant_pool_count - 1.
 func (cp *ClassParse) cpInfos(cpc core.ConstantPoolCount) core.CpInfos {
@@ -26,7 +21,7 @@ func (cp *ClassParse) cpInfos(cpc core.ConstantPoolCount) core.CpInfos {
 		//fmt.Println("CpInfos c is", i)
 		p := cp.pointer
 		tagByte := bytes[p : p+core.U1_L]
-		tag := core.U1(tagByte)
+		tag := core.Byte2U1(tagByte)
 		switch tag {
 
 		case core.TAG_CONSTANT_Class:

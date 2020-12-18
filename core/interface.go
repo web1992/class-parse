@@ -13,7 +13,7 @@ type Interfaces []Interface
 func (tc *Interface) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
 	tc.Bytes = bs
-	tc.ClassIndex = ClassIndex(U2(bs))
+	tc.ClassIndex = ClassIndex(Byte2U2(bs))
 	return 0
 }
 
@@ -34,7 +34,7 @@ func InterfacesCountNew() *InterfacesCount {
 func (tc *InterfacesCount) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
 	tc.Bytes = bs
-	tc.Count = U2(bs)
+	tc.Count = Byte2U2(bs)
 	return 0
 }
 
