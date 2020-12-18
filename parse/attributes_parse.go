@@ -62,11 +62,54 @@ func (cp *ClassParse) attributes(cpInfos core.CpInfos, attributeCount core.Attri
 	var attrs core.Attributes
 	c := int(attributeCount.Count)
 	for i := 0; i < c; i++ {
-		attr := core.AttributeNew()
-		cp.Read(attr)
-		attr.Name = core.GetCp(cpInfos, int(attr.AttributeNameIndex))
+
+		bytes := cp.Bytes()
+		p := cp.pointer
+		tagByte := bytes[p : p+core.U2_L]
+
+		attributeNameIndex := core.Byte2U2(tagByte)
+		name := core.GetCp(cpInfos, int(attributeNameIndex))
+		ca := core.CreateAttribute(name)
+
+		attr := cp.parseAttr(ca, cpInfos, attributeNameIndex)
 		attrs = append(attrs, attr)
 
 	}
 	return attrs
+}
+
+func (cp *ClassParse) parseAttr(ca interface{}, cpInfos core.CpInfos, attributeNameIndex int32) interface{} {
+
+	if attr, ok := ca.(*core.SourceFileAttribute); ok {
+		cp.Read(attr)
+		attr.AttributeName = core.GetCp(cpInfos, int(attributeNameIndex))
+		attr.SourceFileName = core.GetCp(cpInfos, int(attr.SourceFileIndex))
+		return attr
+	}
+
+	if attr, ok := ca.(*core.BootstrapMethodsAttribute); ok {
+		cp.Read(attr)
+		attr.AttributeName = core.GetCp(cpInfos, int(attr.AttributeNameIndex))
+		bms := attr.BootstrapMethods
+		var t []core.BootstrapMethod
+		for _, b := range bms {
+			b.BootstrapMethodRefName = core.GetCp(cpInfos, int(b.BootstrapMethodRef))
+			for _, bi := range b.BootstrapArguments {
+				bn := core.GetCp(cpInfos, int(bi))
+				b.BootstrapArgumentName = append(b.BootstrapArgumentName, bn)
+			}
+			t = append(t, b)
+		}
+		attr.BootstrapMethods = t
+		return attr
+	}
+
+	// default
+	attr := core.AttributeNew()
+	cp.Read(attr)
+	name := core.GetCp(cpInfos, int(attr.AttributeNameIndex))
+	attr.Name = name
+
+	return attr
+
 }

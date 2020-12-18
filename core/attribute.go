@@ -38,7 +38,11 @@ func AttributeNew() *Attribute {
 	return &Attribute{}
 }
 
+// Attribute as default attribute_info
+// Must read bytes from file,change the pointer
+// make other bytes can read success
 type Attribute struct {
+	Bytes
 	AttributeNameIndex
 	AttributeLength
 	Name string
@@ -51,6 +55,8 @@ func (af *Attribute) ReadObj(bytes []byte) int {
 	l := Byte2U4(bytes[u2 : u2+u4])
 	af.AttributeLength = AttributeLength(l)
 
+	//af.Bytes = bytes[u2+u4: u2+u4+l]
+	// just ignore left bytes
 	return int(l)
 }
 
@@ -252,5 +258,142 @@ func (da *DeprecatedAttribute) ReadObj(bytes []byte) int {
 }
 
 func (da *DeprecatedAttribute) ObjLen() int {
+	return u2 + u4
+}
+
+/*
+SourceFile_attribute {
+u2 attribute_name_index;
+u4 attribute_length;
+u2 sourcefile_index;
+}
+*/
+type SourceFileAttribute struct {
+	Name string
+	AttributeNameIndex
+	AttributeLength
+	SourceFileIndex int32
+	AttributeName   string
+	SourceFileName  string
+}
+
+func (sfa *SourceFileAttribute) ReadObj(bytes []byte) int {
+	i := Byte2U2(bytes[0:u2])
+	sfa.AttributeNameIndex = AttributeNameIndex(i)
+
+	l := Byte2U2(bytes[u2 : u2+u4])
+	sfa.AttributeLength = AttributeLength(l)
+
+	sfa.SourceFileIndex = Byte2U2(bytes[u2+u4 : u2+u4+u2])
+
+	return 0
+}
+
+func (sfa *SourceFileAttribute) ObjLen() int {
+	return u2 + u4 + u2
+}
+
+/*
+InnerClasses_attribute {
+u2 attribute_name_index;
+u4 attribute_length;
+u2 number_of_classes;
+{   u2 inner_class_info_index;
+u2 outer_class_info_index;
+u2 inner_name_index;
+u2 inner_class_access_flags;
+} classes[number_of_classes];
+}
+*/
+
+type InnerClassesAttribute struct {
+	AttributeNameIndex
+	AttributeLength
+	NumberOfClasses int32
+	Classes         []struct {
+		InnerClassInfoIndex   int32
+		OuterClassInfoIndex   int32
+		InnerNameIndex        int32
+		InnerClassAccessFlags int32
+	}
+}
+
+func (sfa *InnerClassesAttribute) ReadObj(bytes []byte) int {
+	i := Byte2U2(bytes[0:u2])
+	sfa.AttributeNameIndex = AttributeNameIndex(i)
+
+	l := Byte2U2(bytes[u2 : u2+u4])
+	sfa.AttributeLength = AttributeLength(l)
+
+	return int(l)
+}
+
+func (sfa *InnerClassesAttribute) ObjLen() int {
+	return u2 + u4
+}
+
+/*
+BootstrapMethods_attribute {
+u2 attribute_name_index;
+u4 attribute_length;
+u2 num_bootstrap_methods;
+{
+u2 bootstrap_method_ref;
+u2 num_bootstrap_arguments;
+u2 bootstrap_arguments[num_bootstrap_arguments];
+
+} bootstrap_methods[num_bootstrap_methods];
+}
+*/
+
+type BootstrapMethodsAttribute struct {
+	AttributeNameIndex
+	AttributeLength
+	NumBootstrapMethods int32
+	BootstrapMethods    []BootstrapMethod
+	AttributeName       string
+}
+
+type BootstrapMethod struct {
+	BootstrapMethodRef    int32
+	NumBootstrapArguments int32
+	BootstrapArguments    []int32
+
+	BootstrapMethodRefName string
+	BootstrapArgumentName  []string
+}
+
+func (bma *BootstrapMethodsAttribute) ReadObj(bytes []byte) int {
+	i := Byte2U2(bytes[0:u2])
+	bma.AttributeNameIndex = AttributeNameIndex(i)
+
+	l := Byte2U4(bytes[u2 : u2+u4])
+	bma.AttributeLength = AttributeLength(l)
+
+	m := Byte2U2(bytes[u2+u4 : u2+u4+u2])
+	bma.NumBootstrapMethods = m
+
+	bs := bytes[u2+u4+u2 : u2+u4+u2+l]
+
+	mNum := int(m)
+	for i := 0; i < mNum; i++ {
+		base := i * u2
+		var bm BootstrapMethod
+		bm.BootstrapMethodRef = Byte2U2(bs[base : base+u2])
+		nba := Byte2U2(bs[base+u2 : base+u2+u2])
+		bm.NumBootstrapArguments = nba
+
+		bs2 := bs[base+u2+u2 : base+u2+u2+u2]
+		for j := 0; j < int(nba); j++ {
+			base2 := j * u2
+			nba := Byte2U2(bs2[base2 : base2+u2])
+			bm.BootstrapArguments = append(bm.BootstrapArguments, nba)
+		}
+		bma.BootstrapMethods = append(bma.BootstrapMethods, bm)
+	}
+	return int(l)
+}
+
+func (bma *BootstrapMethodsAttribute) ObjLen() int {
 	return u2 + u4
 }
