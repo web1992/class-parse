@@ -5,7 +5,25 @@ import (
 	"strings"
 )
 
-const F = "%6s = %-18s%-14s// %s"
+const F = "%6s = %-18s %-14s// %s"
+const F_UTF8 = "%6s = %-18s %-s"
+const INTEGER = "Integer"
+const LONG = "Long"
+const DOUBLE = "Double"
+const FLOAT = "Float"
+const METHODREF = "Methodref"
+const CLASS = "Class"
+const Utf8 = "Utf8"
+const NameAndType = "NameAndType "
+const Fieldref = "Fieldref"
+const STRING = "String"
+const InvokeDynamic = "InvokeDynamic"
+const InterfaceMethodref = "InterfaceMethodref"
+const MethodHandle = "MethodHandle"
+const MethodType = "MethodType"
+
+const INIT = "\"<init>\""
+const INIT_S = "<init>"
 
 // View print constant pool
 func (cpInfos CpInfos) View() interface{} {
@@ -76,19 +94,21 @@ func GetCp(cpInfos CpInfos, index int) string {
 func FmtM(a interface{}, b interface{}) string {
 	return fmt.Sprintf("#%d.#%d", a, b)
 }
-func Fmt2(a interface{}, b interface{}) string {
-	return fmt.Sprintf("#%d:#%d", a, b)
-}
-func Fmt22(a interface{}, b interface{}) string {
-	return fmt.Sprintf("%d.#%d", a, b)
-}
 
 func Fmt1(ci interface{}) string {
 	return fmt.Sprintf("#%d", ci)
 }
 
-func Fmt11(ci interface{}) string {
-	return fmt.Sprintf("#0:%d", ci)
+func Fmt2(a interface{}, b interface{}) string {
+	return fmt.Sprintf("#%d:#%d", a, b)
+}
+
+func Fmt3(a interface{}, b interface{}) string {
+	return fmt.Sprintf("%d:#%d", a, b)
+}
+
+func Fmt4(ci interface{}) string {
+	return fmt.Sprintf("#0:#%d", ci)
 }
 
 func FmtIndex(i interface{}) string {
@@ -100,35 +120,35 @@ func GetCpView(cpInfos CpInfos, index int) string {
 	cp := cpInfos[index]
 
 	if m, ok := isCpMethodref(cp); ok {
-		return fmt.Sprintf(F, FmtIndex(index), "Methodref", FmtM(m.ClassIndex, m.NameAndTypeIndex), cpInfos.getCpMethodRef(m))
+		return fmt.Sprintf(F, FmtIndex(index), METHODREF, FmtM(m.ClassIndex, m.NameAndTypeIndex), cpInfos.getCpMethodRef(m))
 	}
 
 	if c, ok := isCpClass(cp); ok {
-		return fmt.Sprintf(F, FmtIndex(index), "Class", Fmt1(c.NameIndex), cpInfos.getCpClass(c))
+		return fmt.Sprintf(F, FmtIndex(index), CLASS, Fmt1(c.NameIndex), cpInfos.getCpClass(c))
 	}
 
 	if u, ok := isCpUTF8(cp); ok {
-		return fmt.Sprintf("%6s = %-18s %-s", FmtIndex(index), "Utf8 ", string(u.String))
+		return fmt.Sprintf(F_UTF8, FmtIndex(index), Utf8, string(u.String))
 	}
 
 	if c, ok := isCpNameAndType(cp); ok {
-		return fmt.Sprintf(F, FmtIndex(index), "NameAndType", Fmt2(c.NameIndex, c.DescriptorIndex), cpInfos.getCpNameAndType(c))
+		return fmt.Sprintf(F, FmtIndex(index), NameAndType, Fmt2(c.NameIndex, c.DescriptorIndex), cpInfos.getCpNameAndType(c))
 	}
 
 	if f, ok := isCpFieldRef(cp); ok {
-		return fmt.Sprintf(F, FmtIndex(index), "Fieldref", FmtM(f.ClassIndex, f.NameAndTypeIndex), cpInfos.getCpFieldRef(f))
+		return fmt.Sprintf(F, FmtIndex(index), Fieldref, FmtM(f.ClassIndex, f.NameAndTypeIndex), cpInfos.getCpFieldRef(f))
 	}
 
 	if s, ok := isCpString(cp); ok {
-		return fmt.Sprintf(F, FmtIndex(index), "String", Fmt1(s.StringIndex), cpInfos.getCpString(s))
+		return fmt.Sprintf(F, FmtIndex(index), STRING, Fmt1(s.StringIndex), cpInfos.getCpString(s))
 	}
 
 	if id, ok := isCpInvokeDynamic(cp); ok {
-		return fmt.Sprintf(F, FmtIndex(index), "InvokeDynamic", Fmt11(id.NameAndTypeIndex), cpInfos.getCpInvokeDynamic(id))
+		return fmt.Sprintf(F, FmtIndex(index), InvokeDynamic, Fmt4(id.NameAndTypeIndex), cpInfos.getCpInvokeDynamic(id))
 	}
 
 	if im, ok := isCpInterfaceMethodRef(cp); ok {
-		return fmt.Sprintf(F, FmtIndex(index), "InterfaceMethodref", FmtM(im.ClassIndex, im.NameAndTypeIndex), cpInfos.getCpInterfaceMethodRef(im))
+		return fmt.Sprintf(F, FmtIndex(index), InterfaceMethodref, FmtM(im.ClassIndex, im.NameAndTypeIndex), cpInfos.getCpInterfaceMethodRef(im))
 	}
 
 	if ok := isNum(cp); ok {
@@ -136,11 +156,11 @@ func GetCpView(cpInfos CpInfos, index int) string {
 	}
 
 	if mh, ok := isCpMethodHandle(cp); ok {
-		return fmt.Sprintf(F, FmtIndex(index), "MethodHandle", Fmt22(mh.ReferenceKind, mh.ReferenceIndex), cpInfos.getMethodHandle(mh))
+		return fmt.Sprintf(F, FmtIndex(index), MethodHandle, Fmt3(mh.ReferenceKind, mh.ReferenceIndex), cpInfos.getMethodHandle(mh))
 	}
 
 	if mh, ok := isCpMethodType(cp); ok {
-		return fmt.Sprintf(F, FmtIndex(index), "MethodType", Fmt1(mh.DescriptorIndex), cpInfos.getMethodType(mh))
+		return fmt.Sprintf(F, FmtIndex(index), MethodType, Fmt1(mh.DescriptorIndex), " "+cpInfos.getMethodType(mh))
 	}
 
 	return fmt.Sprintf("#%d = ", FmtIndex(index))
@@ -210,7 +230,7 @@ func (cpInfos CpInfos) getCpInvokeDynamic(cpInvokeDynamic interface{}) string {
 		nati := id.NameAndTypeIndex
 		cpNAti := cpInfos[nati]
 		s := fmt.Sprintf("%s:%s",
-			"0",
+			"#0",
 			cpInfos.getCpNameAndType(cpNAti))
 		return s
 	}
@@ -394,19 +414,19 @@ func (cpInfos CpInfos) getNum(e interface{}) string {
 func (cpInfos CpInfos) viewNum(e interface{}, index int) string {
 	if i, ok := isCpInteger(e); ok {
 		// #34 = Integer
-		return fmt.Sprintf("%6s = %-18s %-18v", FmtIndex(index), "Integer", i.Integer)
+		return fmt.Sprintf("%6s = %-18s %-v", FmtIndex(index), INTEGER, i.Integer)
 	}
 
 	if l, ok := isCpLong(e); ok {
-		return fmt.Sprintf("%6s = %-18s %-18v", FmtIndex(index), "Long", l.Long)
+		return fmt.Sprintf("%6s = %-18s %-vl", FmtIndex(index), LONG, l.Long)
 	}
 
 	if d, ok := isCpDouble(e); ok {
-		return fmt.Sprintf("%6s = %-18s %-18v", FmtIndex(index), "Double", d.Double)
+		return fmt.Sprintf("%6s = %-18s %-v", FmtIndex(index), DOUBLE, d.Double)
 	}
 
 	if f, ok := isCpFloat(e); ok {
-		return fmt.Sprintf("%6s = %-18s %-18v", FmtIndex(index), "Float", f.Float)
+		return fmt.Sprintf("%6s = %-18s %-v", FmtIndex(index), FLOAT, f.Float)
 	}
 	return ""
 }

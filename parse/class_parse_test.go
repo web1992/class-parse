@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"goclass/core"
 	"log"
+	"os"
 	"strings"
 	"testing"
 )
@@ -107,8 +108,11 @@ func Test_get_cp_info(t *testing.T) {
 	_ = cp.parseFile(file)
 	classFile := cp.ClassFile()
 	cpInfos := classFile.CpInfos
-
-	fmt.Println(cpInfos.View())
+	v := cpInfos.View().(string)
+	fmt.Println(v)
+	f, _ := os.Create("cp_test.txt")
+	defer f.Close()
+	f.Write([]byte(v))
 }
 
 func Test_get_access_flags(t *testing.T) {
