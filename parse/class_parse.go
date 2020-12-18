@@ -1,9 +1,9 @@
 package parse
 
 import (
-	"class-parse/core"
-	"class-parse/utils"
 	"errors"
+	"goclass/core"
+	"goclass/utils"
 	"strings"
 )
 

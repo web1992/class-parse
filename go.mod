@@ -1,3 +1,3 @@
-module class-parse
+module goclass
 
 go 1.14

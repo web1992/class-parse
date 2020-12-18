@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"class-parse/core"
+	"goclass/core"
 	"testing"
 )
 

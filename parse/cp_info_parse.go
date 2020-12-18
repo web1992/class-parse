@@ -1,8 +1,8 @@
 package parse
 
 import (
-	"class-parse/core"
 	"fmt"
+	"goclass/core"
 )
 
 // read constant_pool

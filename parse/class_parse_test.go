@@ -1,14 +1,14 @@
 package parse
 
 import (
-	"class-parse/core"
 	"fmt"
+	"goclass/core"
 	"log"
 	"strings"
 	"testing"
 )
 
-const file = "/Users/zl/Documents/DEV/github/class-parse/java/Main.class"
+const file = "/Users/zl/Documents/DEV/github/class-parse/testfiles/Main.class"
 
 func Test_class_parse(t *testing.T) {
 

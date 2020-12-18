@@ -6,12 +6,11 @@ type ConstantPoolCount struct {
 }
 
 func (cp *ConstantPoolCount) ByteLen() int {
-	return U2_L
+	return u2
 }
 
 // always stored in big-endian order, where the high bytes come first
 func (cp *ConstantPoolCount) View() interface{} {
-	// 0xFF = 1111 1111
 	b := cp.Bytes
 	n := Byte2U2(b)
 	return int(n)

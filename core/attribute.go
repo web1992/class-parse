@@ -128,7 +128,7 @@ type CodeAttribute struct {
 	MaxStack
 	MaxLocals
 	CodeLength
-	Code struct {
+	Code []struct {
 		Opcode int32
 		Desc   string
 	}
@@ -248,7 +248,7 @@ func (da *DeprecatedAttribute) ReadObj(bytes []byte) int {
 	l := Byte2U2(bytes[u2 : u2+u4])
 	da.AttributeLength = AttributeLength(l)
 
-	return int(l)
+	return 0
 }
 
 func (da *DeprecatedAttribute) ObjLen() int {

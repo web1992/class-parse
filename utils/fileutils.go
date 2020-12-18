@@ -21,13 +21,11 @@ func ReadClassFile(filePath string) ([]byte, error) {
 	for {
 
 		n, er := f.Read(buf)
+		bs = append(bs, buf[:n]...)
 
 		if er == io.EOF {
 			break
 		}
-
-		bs = append(bs, buf[:n]...)
-
 	}
 
 	return bs, nil
