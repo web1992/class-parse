@@ -30,6 +30,8 @@ ACC_ENUM	0x4000	Declared as an enum type.
 // access_flags u2
 type AccessFlag struct {
 	Bytes
+	Flag       int32
+	FlagString string
 }
 
 func AccessFlagNew() *AccessFlag {
