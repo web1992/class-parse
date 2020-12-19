@@ -1,27 +1,9 @@
 package core
 
-type AttributeNameIndex int32
-type AttributeLength int32
-type ConstantValueIndex int32
-type MaxStack int32
-type MaxLocals int32
-type CodeLength int32
-type ExceptionTableLength int32
-type NumberOfExceptions int32
-type ExceptionIndexTable []int32
-type LineNumberTableLength int32
-type StartPc int32
-type EndPc int32
-type HandlerPc int32
-type CatchType int32
-type LineNumber int32
+// https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7
 
-//u2             attributes_count;
-//attribute_info attributes[attributes_count];
-type AttributeCount struct {
-	Bytes
-	Count int32
-}
+// Attributes an array of attribute
+type Attributes []interface{}
 
 /*
 Attribute
@@ -32,8 +14,6 @@ u4 attribute_length;
 u1 info[attribute_length];
 }
 */
-// https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7
-
 func AttributeNew() *Attribute {
 	return &Attribute{}
 }
@@ -43,17 +23,17 @@ func AttributeNew() *Attribute {
 // make other bytes can read success
 type Attribute struct {
 	Bytes
-	AttributeNameIndex
-	AttributeLength
-	Name string
+	AttributeNameIndex int32
+	AttributeLength    int32
+	Name               string
 }
 
 func (af *Attribute) ReadObj(bytes []byte) int {
 	i := Byte2U2(bytes[0:u2])
-	af.AttributeNameIndex = AttributeNameIndex(i)
+	af.AttributeNameIndex = i
 
 	l := Byte2U4(bytes[u2 : u2+u4])
-	af.AttributeLength = AttributeLength(l)
+	af.AttributeLength = l
 
 	//af.Bytes = bytes[u2+u4: u2+u4+l]
 	// just ignore left bytes
@@ -64,7 +44,12 @@ func (af *Attribute) ObjLen() int {
 	return u2 + u4
 }
 
-type Attributes []interface{}
+//u2             attributes_count;
+//attribute_info attributes[attributes_count];
+type AttributeCount struct {
+	Bytes
+	Count int32
+}
 
 func AttributeCountNew() *AttributeCount {
 	return &AttributeCount{}
@@ -79,321 +64,4 @@ func (af *AttributeCount) ReadObj(bytes []byte) int {
 
 func (af *AttributeCount) ObjLen() int {
 	return u2
-}
-
-/*
-ConstantValue_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-u2 constantvalue_index;
-}
-*/
-type ConstantValueAttribute struct {
-	AttributeNameIndex
-	AttributeLength
-	ConstantValueIndex
-}
-
-func (cva *ConstantValueAttribute) ReadObj(bytes []byte) int {
-	i := Byte2U2(bytes[0:u2])
-	cva.AttributeNameIndex = AttributeNameIndex(i)
-
-	l := Byte2U2(bytes[u2 : u2+u4])
-	cva.AttributeLength = AttributeLength(l)
-
-	ii := Byte2U2(bytes[u2+u4 : u2+u4+l])
-	cva.ConstantValueIndex = ConstantValueIndex(ii)
-	return int(l)
-}
-
-func (cva *ConstantValueAttribute) ObjLen() int {
-	return u2 + u4
-}
-
-/*
-Code_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-u2 max_stack;
-u2 max_locals;
-u4 code_length;
-u1 code[code_length];
-u2 exception_table_length;
-{   u2 start_pc;
-u2 end_pc;
-u2 handler_pc;
-u2 catch_type;
-} exception_table[exception_table_length];
-u2 attributes_count;
-attribute_info attributes[attributes_count];
-}
-*/
-type CodeAttribute struct {
-	AttributeNameIndex
-	AttributeLength
-	MaxStack
-	MaxLocals
-	CodeLength
-	Code []struct {
-		Opcode int32
-		Desc   string
-	}
-	ExceptionTableLength
-	ExceptionTable []struct {
-		StartPc
-		EndPc
-		HandlerPc
-		CatchType
-	}
-	AttributeCount
-	Attributes
-}
-
-func (ca *CodeAttribute) ReadObj(bytes []byte) int {
-	i := Byte2U2(bytes[0:u2])
-	ca.AttributeNameIndex = AttributeNameIndex(i)
-
-	l := Byte2U2(bytes[u2 : u2+u4])
-	ca.AttributeLength = AttributeLength(l)
-
-	//ms := Byte2U2(bytes[u2+u4 : u2+u4+u2])
-	//ca.MaxStack = MaxStack(ms)
-	//
-	//ml := Byte2U2(bytes[u2+u4+u2 : u2+u4+u2+u2])
-	//ca.MaxLocals=MaxLocals(ml)
-	//
-	//cl := Byte2U2(bytes[u2+u4+u2+u2 : u2+u4+u2+u2+u4])
-	//ca.CodeLength=CodeLength(cl)
-
-	return int(l)
-}
-
-func (ca *CodeAttribute) ObjLen() int {
-	return u2 + u4
-}
-
-/*
-Exceptions_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-u2 number_of_exceptions;
-u2 exception_index_table[number_of_exceptions];
-}
-*/
-
-type ExceptionsAttribute struct {
-	AttributeNameIndex
-	AttributeLength
-	NumberOfExceptions
-	ExceptionIndexTable
-}
-
-func (ea *ExceptionsAttribute) ReadObj(bytes []byte) int {
-	i := Byte2U2(bytes[0:u2])
-	ea.AttributeNameIndex = AttributeNameIndex(i)
-
-	l := Byte2U2(bytes[u2 : u2+u4])
-	ea.AttributeLength = AttributeLength(l)
-
-	return int(l)
-}
-
-func (ea *ExceptionsAttribute) ObjLen() int {
-	return u2 + u4
-}
-
-/*
-LineNumberTable_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-u2 line_number_table_length;
-{   u2 start_pc;
-u2 line_number;
-} line_number_table[line_number_table_length];
-}
-*/
-
-type LineNumberTableAttribute struct {
-	AttributeNameIndex
-	AttributeLength
-	LineNumberTableLength
-	LineNumberTable []struct {
-		StartPc
-		LineNumber
-	}
-}
-
-func (lnta *LineNumberTableAttribute) ReadObj(bytes []byte) int {
-	i := Byte2U2(bytes[0:u2])
-	lnta.AttributeNameIndex = AttributeNameIndex(i)
-
-	l := Byte2U2(bytes[u2 : u2+u4])
-	lnta.AttributeLength = AttributeLength(l)
-
-	return int(l)
-}
-
-func (lnta *LineNumberTableAttribute) ObjLen() int {
-	return u2 + u4
-}
-
-/*
-Deprecated_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-}*/
-type DeprecatedAttribute struct {
-	AttributeNameIndex
-	AttributeLength
-}
-
-func (da *DeprecatedAttribute) ReadObj(bytes []byte) int {
-	i := Byte2U2(bytes[0:u2])
-	da.AttributeNameIndex = AttributeNameIndex(i)
-
-	l := Byte2U2(bytes[u2 : u2+u4])
-	da.AttributeLength = AttributeLength(l)
-
-	return 0
-}
-
-func (da *DeprecatedAttribute) ObjLen() int {
-	return u2 + u4
-}
-
-/*
-SourceFile_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-u2 sourcefile_index;
-}
-*/
-type SourceFileAttribute struct {
-	Name string
-	AttributeNameIndex
-	AttributeLength
-	SourceFileIndex int32
-	AttributeName   string
-	SourceFileName  string
-}
-
-func (sfa *SourceFileAttribute) ReadObj(bytes []byte) int {
-	i := Byte2U2(bytes[0:u2])
-	sfa.AttributeNameIndex = AttributeNameIndex(i)
-
-	l := Byte2U2(bytes[u2 : u2+u4])
-	sfa.AttributeLength = AttributeLength(l)
-
-	sfa.SourceFileIndex = Byte2U2(bytes[u2+u4 : u2+u4+u2])
-
-	return 0
-}
-
-func (sfa *SourceFileAttribute) ObjLen() int {
-	return u2 + u4 + u2
-}
-
-/*
-InnerClasses_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-u2 number_of_classes;
-{   u2 inner_class_info_index;
-u2 outer_class_info_index;
-u2 inner_name_index;
-u2 inner_class_access_flags;
-} classes[number_of_classes];
-}
-*/
-
-type InnerClassesAttribute struct {
-	AttributeNameIndex
-	AttributeLength
-	NumberOfClasses int32
-	Classes         []struct {
-		InnerClassInfoIndex   int32
-		OuterClassInfoIndex   int32
-		InnerNameIndex        int32
-		InnerClassAccessFlags int32
-	}
-}
-
-func (sfa *InnerClassesAttribute) ReadObj(bytes []byte) int {
-	i := Byte2U2(bytes[0:u2])
-	sfa.AttributeNameIndex = AttributeNameIndex(i)
-
-	l := Byte2U2(bytes[u2 : u2+u4])
-	sfa.AttributeLength = AttributeLength(l)
-
-	return int(l)
-}
-
-func (sfa *InnerClassesAttribute) ObjLen() int {
-	return u2 + u4
-}
-
-/*
-BootstrapMethods_attribute {
-u2 attribute_name_index;
-u4 attribute_length;
-u2 num_bootstrap_methods;
-{
-u2 bootstrap_method_ref;
-u2 num_bootstrap_arguments;
-u2 bootstrap_arguments[num_bootstrap_arguments];
-
-} bootstrap_methods[num_bootstrap_methods];
-}
-*/
-
-type BootstrapMethodsAttribute struct {
-	AttributeNameIndex
-	AttributeLength
-	NumBootstrapMethods int32
-	BootstrapMethods    []BootstrapMethod
-	AttributeName       string
-}
-
-type BootstrapMethod struct {
-	BootstrapMethodRef    int32
-	NumBootstrapArguments int32
-	BootstrapArguments    []int32
-
-	BootstrapMethodRefName string
-	BootstrapArgumentName  []string
-}
-
-func (bma *BootstrapMethodsAttribute) ReadObj(bytes []byte) int {
-	i := Byte2U2(bytes[0:u2])
-	bma.AttributeNameIndex = AttributeNameIndex(i)
-
-	l := Byte2U4(bytes[u2 : u2+u4])
-	bma.AttributeLength = AttributeLength(l)
-
-	m := Byte2U2(bytes[u2+u4 : u2+u4+u2])
-	bma.NumBootstrapMethods = m
-
-	bs := bytes[u2+u4+u2 : u2+u4+u2+l]
-
-	mNum := int(m)
-	for i := 0; i < mNum; i++ {
-		base := i * u2
-		var bm BootstrapMethod
-		bm.BootstrapMethodRef = Byte2U2(bs[base : base+u2])
-		nba := Byte2U2(bs[base+u2 : base+u2+u2])
-		bm.NumBootstrapArguments = nba
-
-		bs2 := bs[base+u2+u2 : base+u2+u2+u2]
-		for j := 0; j < int(nba); j++ {
-			base2 := j * u2
-			nba := Byte2U2(bs2[base2 : base2+u2])
-			bm.BootstrapArguments = append(bm.BootstrapArguments, nba)
-		}
-		bma.BootstrapMethods = append(bma.BootstrapMethods, bm)
-	}
-	return int(l)
-}
-
-func (bma *BootstrapMethodsAttribute) ObjLen() int {
-	return u2 + u4
 }
