@@ -123,7 +123,6 @@ func (cp *ClassParse) magic() core.Magic {
 
 func (cp *ClassParse) minorVersion() core.MinorVersion {
 
-	//cp.magic()
 	var mv = core.MinorVersionNew()
 	cp.Read(mv)
 	return *mv
@@ -131,7 +130,6 @@ func (cp *ClassParse) minorVersion() core.MinorVersion {
 
 func (cp *ClassParse) majorVersion() core.MajorVersion {
 
-	//cp.minorVersion()
 	var mv = core.MajorVersionNew()
 	cp.Read(mv)
 	return *mv
@@ -139,7 +137,6 @@ func (cp *ClassParse) majorVersion() core.MajorVersion {
 
 func (cp *ClassParse) constantPoolCount() core.ConstantPoolCount {
 
-	//cp.majorVersion()
 	var cpPool = core.ConstantPoolCountNew()
 	cp.Read(cpPool)
 	return *cpPool
@@ -147,7 +144,6 @@ func (cp *ClassParse) constantPoolCount() core.ConstantPoolCount {
 
 func (cp *ClassParse) accessFlag() core.AccessFlag {
 
-	//cp.cpInfos()
 	var af = core.AccessFlagNew()
 	cp.Read(af)
 	af.Flag = core.Byte2U2(af.Bytes)
@@ -157,7 +153,6 @@ func (cp *ClassParse) accessFlag() core.AccessFlag {
 
 func (cp *ClassParse) thisClass(cpInfos core.CpInfos) core.ThisClass {
 
-	//cp.accessFlag()
 	var tc = core.ThisClassNew()
 	cp.Read(tc)
 
@@ -242,8 +237,8 @@ func (cp *ClassParse) methods(cpInfos core.CpInfos, count core.MethodCount) core
 		m.NameString = core.GetCp(cpInfos, int(m.NameIndex))
 		m.DescriptorString = core.GetCp(cpInfos, int(m.DescriptorIndex))
 		m.AccessFlagString = core.GetFlag(m.AccessFlag)
-		m.Attributes = cp.attributes(cpInfos, m.AttributeCount)
 		// parse method attribute
+		m.Attributes = cp.attributes(cpInfos, m.AttributeCount)
 		ms = append(ms, *m)
 	}
 

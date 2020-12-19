@@ -62,7 +62,7 @@
    #64 = Utf8               LONG_MIN
    #65 = Class              #66           // java/lang/Double
    #66 = Utf8               java/lang/Double
-   #67 = Double             1.7976931348623157e+308
+   #67 = Double             1.7976931348623157e+308d
    #69 = Methodref          #65.#70       // java/lang/Double.valueOf:(D)Ljava/lang/Double;
    #70 = NameAndType        #37:#71       // valueOf:(D)Ljava/lang/Double;
    #71 = Utf8               (D)Ljava/lang/Double;
@@ -70,13 +70,13 @@
    #73 = NameAndType        #74:#75       // DOUBLE_MAX:Ljava/lang/Double;
    #74 = Utf8               DOUBLE_MAX
    #75 = Utf8               Ljava/lang/Double;
-   #76 = Double             5e-324
+   #76 = Double             5e-324d
    #78 = Fieldref           #40.#79       // Main.DOUBLE_MIN:Ljava/lang/Double;
    #79 = NameAndType        #80:#75       // DOUBLE_MIN:Ljava/lang/Double;
    #80 = Utf8               DOUBLE_MIN
    #81 = Class              #82           // java/lang/Float
    #82 = Utf8               java/lang/Float
-   #83 = Float              3.4028235e+38
+   #83 = Float              3.4028235e+38f
    #84 = Methodref          #81.#85       // java/lang/Float.valueOf:(F)Ljava/lang/Float;
    #85 = NameAndType        #37:#86       // valueOf:(F)Ljava/lang/Float;
    #86 = Utf8               (F)Ljava/lang/Float;
@@ -84,7 +84,7 @@
    #88 = NameAndType        #89:#90       // FLOAT_MAX:Ljava/lang/Float;
    #89 = Utf8               FLOAT_MAX
    #90 = Utf8               Ljava/lang/Float;
-   #91 = Float              1e-45
+   #91 = Float              1e-45f
    #92 = Fieldref           #40.#93       // Main.FLOAT_MIN:Ljava/lang/Float;
    #93 = NameAndType        #94:#90       // FLOAT_MIN:Ljava/lang/Float;
    #94 = Utf8               FLOAT_MIN
