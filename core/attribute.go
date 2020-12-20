@@ -14,18 +14,18 @@ u4 attribute_length;
 u1 info[attribute_length];
 }
 */
-func AttributeNew() *Attribute {
-	return &Attribute{}
+func AttributeNew(name string) *Attribute {
+	return &Attribute{Name: name}
 }
 
 // Attribute as default attribute_info
 // Must read bytes from file,change the pointer
 // make other bytes can read success
 type Attribute struct {
+	Name string
 	Bytes
 	AttributeNameIndex int32
 	AttributeLength    int32
-	Name               string
 }
 
 func (af *Attribute) ReadObj(bytes []byte) int {

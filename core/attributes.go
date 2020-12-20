@@ -33,7 +33,7 @@ func (cva *ConstantValueAttribute) ReadObj(bytes []byte) int {
 	i := Byte2U2(bytes[0:u2])
 	cva.AttributeNameIndex = AttributeNameIndex(i)
 
-	l := Byte2U2(bytes[u2 : u2+u4])
+	l := Byte2U4(bytes[u2 : u2+u4])
 	cva.AttributeLength = AttributeLength(l)
 
 	ii := Byte2U2(bytes[u2+u4 : u2+u4+l])
@@ -64,15 +64,14 @@ attribute_info attributes[attributes_count];
 }
 */
 type CodeAttribute struct {
+	Name string
 	AttributeNameIndex
 	AttributeLength
 	MaxStack
 	MaxLocals
 	CodeLength
-	Code []struct {
-		Opcode int32
-		Desc   string
-	}
+	CodeBytes []byte
+	OpCodes
 	ExceptionTableLength
 	ExceptionTable []struct {
 		StartPc
@@ -87,18 +86,20 @@ type CodeAttribute struct {
 func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 	i := Byte2U2(bytes[0:u2])
 	ca.AttributeNameIndex = AttributeNameIndex(i)
-
-	l := Byte2U2(bytes[u2 : u2+u4])
+	l := Byte2U4(bytes[u2 : u2+u4])
 	ca.AttributeLength = AttributeLength(l)
 
-	//ms := Byte2U2(bytes[u2+u4 : u2+u4+u2])
-	//ca.MaxStack = MaxStack(ms)
-	//
-	//ml := Byte2U2(bytes[u2+u4+u2 : u2+u4+u2+u2])
-	//ca.MaxLocals=MaxLocals(ml)
-	//
-	//cl := Byte2U2(bytes[u2+u4+u2+u2 : u2+u4+u2+u2+u4])
-	//ca.CodeLength=CodeLength(cl)
+	ms := Byte2U2(bytes[u2+u4 : u2+u4+u2])
+	ca.MaxStack = MaxStack(ms)
+
+	ml := Byte2U2(bytes[u2+u4+u2 : u2+u4+u2+u2])
+	ca.MaxLocals = MaxLocals(ml)
+
+	cl := Byte2U4(bytes[u2+u4+u2+u2 : u2+u4+u2+u2+u4])
+	ca.CodeLength = CodeLength(cl)
+
+	bs := bytes[u2+u4+u2+u2+u4 : u2+u4+u2+u2+u4+cl]
+	ca.CodeBytes = bs
 
 	return int(l)
 }
@@ -117,6 +118,7 @@ u2 exception_index_table[number_of_exceptions];
 */
 
 type ExceptionsAttribute struct {
+	Name string
 	AttributeNameIndex
 	AttributeLength
 	NumberOfExceptions
@@ -127,7 +129,7 @@ func (ea *ExceptionsAttribute) ReadObj(bytes []byte) int {
 	i := Byte2U2(bytes[0:u2])
 	ea.AttributeNameIndex = AttributeNameIndex(i)
 
-	l := Byte2U2(bytes[u2 : u2+u4])
+	l := Byte2U4(bytes[u2 : u2+u4])
 	ea.AttributeLength = AttributeLength(l)
 
 	return int(l)
@@ -162,7 +164,7 @@ func (lnta *LineNumberTableAttribute) ReadObj(bytes []byte) int {
 	i := Byte2U2(bytes[0:u2])
 	lnta.AttributeNameIndex = AttributeNameIndex(i)
 
-	l := Byte2U2(bytes[u2 : u2+u4])
+	l := Byte2U4(bytes[u2 : u2+u4])
 	lnta.AttributeLength = AttributeLength(l)
 
 	return int(l)
@@ -186,7 +188,7 @@ func (da *DeprecatedAttribute) ReadObj(bytes []byte) int {
 	i := Byte2U2(bytes[0:u2])
 	da.AttributeNameIndex = AttributeNameIndex(i)
 
-	l := Byte2U2(bytes[u2 : u2+u4])
+	l := Byte2U4(bytes[u2 : u2+u4])
 	da.AttributeLength = AttributeLength(l)
 
 	return 0
@@ -216,7 +218,7 @@ func (sfa *SourceFileAttribute) ReadObj(bytes []byte) int {
 	i := Byte2U2(bytes[0:u2])
 	sfa.AttributeNameIndex = AttributeNameIndex(i)
 
-	l := Byte2U2(bytes[u2 : u2+u4])
+	l := Byte2U4(bytes[u2 : u2+u4])
 	sfa.AttributeLength = AttributeLength(l)
 
 	sfa.SourceFileIndex = Byte2U2(bytes[u2+u4 : u2+u4+u2])
@@ -242,6 +244,7 @@ u2 inner_class_access_flags;
 */
 
 type InnerClassesAttribute struct {
+	Name string
 	AttributeNameIndex
 	AttributeLength
 	NumberOfClasses int32
@@ -257,7 +260,7 @@ func (sfa *InnerClassesAttribute) ReadObj(bytes []byte) int {
 	i := Byte2U2(bytes[0:u2])
 	sfa.AttributeNameIndex = AttributeNameIndex(i)
 
-	l := Byte2U2(bytes[u2 : u2+u4])
+	l := Byte2U4(bytes[u2 : u2+u4])
 	sfa.AttributeLength = AttributeLength(l)
 
 	return int(l)
@@ -282,6 +285,7 @@ u2 bootstrap_arguments[num_bootstrap_arguments];
 */
 
 type BootstrapMethodsAttribute struct {
+	Name string
 	AttributeNameIndex
 	AttributeLength
 	NumBootstrapMethods int32

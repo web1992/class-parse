@@ -69,24 +69,18 @@ end
 */
 func CreateAttribute(name string) interface{} {
 
-	if name == SourceFile {
-		var sfa SourceFileAttribute
-
-		return &sfa
+	switch name {
+	case SourceFile:
+		return &SourceFileAttribute{Name: SourceFile}
+	case BootstrapMethods:
+		return &BootstrapMethodsAttribute{Name: BootstrapMethods}
+	case InnerClasses:
+		return &InnerClassesAttribute{Name: InnerClasses}
+	case Code:
+		return &CodeAttribute{Name: Code}
+	case Exceptions:
+		return &ExceptionsAttribute{Name: Exceptions}
+	default:
+		return AttributeNew(name)
 	}
-
-	if name == BootstrapMethods {
-		var bmt BootstrapMethodsAttribute
-
-		return &bmt
-	}
-
-	if name == InnerClasses {
-		var sfa InnerClassesAttribute
-
-		return &sfa
-	}
-
-	attr := AttributeNew()
-	return attr
 }

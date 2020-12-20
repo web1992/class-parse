@@ -71,18 +71,18 @@ func (cp *ClassParse) attributes(cpInfos core.CpInfos, attributeCount core.Attri
 		name := core.GetCp(cpInfos, int(attributeNameIndex))
 		ca := core.CreateAttribute(name)
 
-		attr := cp.parseAttr(ca, cpInfos, attributeNameIndex)
+		attr := cp.parseAttr(ca, cpInfos, name)
 		attrs = append(attrs, attr)
 
 	}
 	return attrs
 }
 
-func (cp *ClassParse) parseAttr(ca interface{}, cpInfos core.CpInfos, attributeNameIndex int32) interface{} {
+func (cp *ClassParse) parseAttr(ca interface{}, cpInfos core.CpInfos, name string) interface{} {
 
 	if attr, ok := ca.(*core.SourceFileAttribute); ok {
 		cp.Read(attr)
-		attr.AttributeName = core.GetCp(cpInfos, int(attributeNameIndex))
+		attr.AttributeName = name
 		attr.SourceFileName = core.GetCp(cpInfos, int(attr.SourceFileIndex))
 		return attr
 	}
@@ -103,11 +103,15 @@ func (cp *ClassParse) parseAttr(ca interface{}, cpInfos core.CpInfos, attributeN
 		attr.BootstrapMethods = t
 		return attr
 	}
+	if attr, ok := ca.(*core.CodeAttribute); ok {
+		cp.Read(attr)
+		attr.OpCodes = cp.parseOpCodes(int(attr.CodeLength), attr.CodeBytes)
+		return attr
+	}
 
 	// default
-	attr := core.AttributeNew()
+	attr := core.AttributeNew("")
 	cp.Read(attr)
-	name := core.GetCp(cpInfos, int(attr.AttributeNameIndex))
 	attr.Name = name
 
 	return attr

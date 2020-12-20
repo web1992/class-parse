@@ -211,3 +211,24 @@ const (
 	JVM_OPC_jsr_w           = 201
 	JVM_OPC_MAX             = 201
 )
+
+type OpCodes []interface{}
+
+type OpCode struct {
+	Desc string
+	Opc  int32
+	Args []int32
+}
+
+type OpCodeInvoke struct {
+	Desc string
+	Opc  int32
+	Args []int32
+}
+
+func (op *OpCodeInvoke) ReadObj(bytes []byte) int {
+	return 0
+}
+func (op *OpCodeInvoke) ObjLen() int {
+	return 0
+}
