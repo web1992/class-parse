@@ -91,7 +91,7 @@ type CpClass struct {
 
 func CpClassNew() *CpClass {
 	return &CpClass{
-		Tag: TAG_CONSTANT_Class,
+		Tag: JVM_CONSTANT_Class,
 	}
 }
 
@@ -121,7 +121,7 @@ type CpFieldRef struct {
 }
 
 func CpFieldRefNew() *CpFieldRef {
-	return &CpFieldRef{Tag: TAG_CONSTANT_Fieldref}
+	return &CpFieldRef{Tag: JVM_CONSTANT_Fieldref}
 }
 
 func (f *CpFieldRef) ReadObj(bytes []byte) int {
@@ -153,7 +153,7 @@ type CpMethodRef struct {
 
 func CpMethodRefNew() *CpMethodRef {
 	return &CpMethodRef{
-		Tag: TAG_CONSTANT_Methodref,
+		Tag: JVM_CONSTANT_Methodref,
 	}
 }
 
@@ -185,7 +185,7 @@ type CpInterfaceMethodRef struct {
 
 func CpInterfaceMethodRefNew() *CpInterfaceMethodRef {
 	return &CpInterfaceMethodRef{
-		Tag: TAG_CONSTANT_InterfaceMethodref,
+		Tag: JVM_CONSTANT_InterfaceMethodref,
 	}
 }
 
@@ -214,7 +214,7 @@ type CpString struct {
 
 func CpStringNew() *CpString {
 	return &CpString{
-		Tag: TAG_CONSTANT_String,
+		Tag: JVM_CONSTANT_String,
 	}
 }
 
@@ -244,7 +244,7 @@ type CpInteger struct {
 
 func CpIntegerNew() *CpInteger {
 	return &CpInteger{
-		Tag: TAG_CONSTANT_Integer,
+		Tag: JVM_CONSTANT_Integer,
 	}
 }
 
@@ -275,7 +275,7 @@ type CpFloat struct {
 
 func CpFloatNew() *CpFloat {
 	return &CpFloat{
-		Tag: TAG_CONSTANT_Float,
+		Tag: JVM_CONSTANT_Float,
 	}
 }
 
@@ -307,7 +307,7 @@ type CpLong struct {
 
 func CpLongNew() *CpLong {
 	return &CpLong{
-		Tag: TAG_CONSTANT_Long,
+		Tag: JVM_CONSTANT_Long,
 	}
 }
 
@@ -340,7 +340,7 @@ type CpDouble struct {
 
 func CpDoubleNew() *CpDouble {
 	return &CpDouble{
-		Tag: TAG_CONSTANT_Double,
+		Tag: JVM_CONSTANT_Double,
 	}
 }
 func (d *CpDouble) ReadObj(bytes []byte) int {
@@ -372,7 +372,7 @@ type CpNameAndType struct {
 func CpNameAndTypeNew() *CpNameAndType {
 
 	return &CpNameAndType{
-		Tag: TAG_CONSTANT_NameAndType,
+		Tag: JVM_CONSTANT_NameAndType,
 	}
 }
 
@@ -405,7 +405,7 @@ type CpUTF8 struct {
 
 func CpUTF8New() *CpUTF8 {
 	return &CpUTF8{
-		Tag: TAG_CONSTANT_Utf8,
+		Tag: JVM_CONSTANT_Utf8,
 	}
 }
 
@@ -443,7 +443,7 @@ type CpMethodHandle struct {
 
 func CpMethodHandleNew() *CpMethodHandle {
 	return &CpMethodHandle{
-		Tag: TAG_CONSTANT_MethodHandle,
+		Tag: JVM_CONSTANT_MethodHandle,
 	}
 }
 
@@ -472,7 +472,7 @@ type CpMethodType struct {
 
 func CpMethodTypeNew() *CpMethodType {
 	return &CpMethodType{
-		Tag: TAG_CONSTANT_MethodType,
+		Tag: JVM_CONSTANT_MethodType,
 	}
 }
 
@@ -503,7 +503,7 @@ type CpInvokeDynamic struct {
 
 func CpInvokeDynamicNew() *CpInvokeDynamic {
 	return &CpInvokeDynamic{
-		Tag: TAG_CONSTANT_InvokeDynamic,
+		Tag: JVM_CONSTANT_InvokeDynamic,
 	}
 }
 

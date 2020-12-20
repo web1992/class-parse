@@ -4,15 +4,28 @@ import (
 	"strings"
 )
 
+// https://github.com/openjdk/jdk/blob/master/src/java.base/share/native/include/classfile_constants.h.template
+
 const (
-	ACC_PUBLIC     = 0x0001
-	ACC_FINAL      = 0x0010
-	ACC_SUPER      = 0x0020
-	ACC_INTERFACE  = 0x0200
-	ACC_ABSTRACT   = 0x0400
-	ACC_SYNTHETIC  = 0x1000
-	ACC_ANNOTATION = 0x2000
-	ACC_ENUM       = 0x4000
+	JVM_ACC_PUBLIC       = 0x0001
+	JVM_ACC_PRIVATE      = 0x0002
+	JVM_ACC_PROTECTED    = 0x0004
+	JVM_ACC_STATIC       = 0x0008
+	JVM_ACC_FINAL        = 0x0010
+	JVM_ACC_SYNCHRONIZED = 0x0020
+	JVM_ACC_SUPER        = 0x0020
+	JVM_ACC_VOLATILE     = 0x0040
+	JVM_ACC_BRIDGE       = 0x0040
+	JVM_ACC_TRANSIENT    = 0x0080
+	JVM_ACC_VARARGS      = 0x0080
+	JVM_ACC_NATIVE       = 0x0100
+	JVM_ACC_INTERFACE    = 0x0200
+	JVM_ACC_ABSTRACT     = 0x0400
+	JVM_ACC_STRICT       = 0x0800
+	JVM_ACC_SYNTHETIC    = 0x1000
+	JVM_ACC_ANNOTATION   = 0x2000
+	JVM_ACC_ENUM         = 0x4000
+	JVM_ACC_MODULE       = 0x8000
 )
 
 /*
@@ -62,34 +75,34 @@ func GetFlag(f AccessFlag) string {
 func getFlag(f int32) string {
 
 	var fs []string
-	if f&ACC_PUBLIC != 0 {
+	if f&JVM_ACC_PUBLIC != 0 {
 		fs = append(fs, "ACC_PUBLIC")
 	}
 
-	if f&ACC_FINAL != 0 {
+	if f&JVM_ACC_FINAL != 0 {
 		fs = append(fs, "ACC_FINAL")
 	}
 
-	if f&ACC_SUPER != 0 {
+	if f&JVM_ACC_SUPER != 0 {
 		fs = append(fs, "ACC_SUPER")
 	}
 
-	if f&ACC_INTERFACE != 0 {
+	if f&JVM_ACC_INTERFACE != 0 {
 		fs = append(fs, "ACC_INTERFACE")
 	}
-	if f&ACC_ABSTRACT != 0 {
+	if f&JVM_ACC_ABSTRACT != 0 {
 		fs = append(fs, "ACC_ABSTRACT")
 	}
 
-	if f&ACC_SYNTHETIC != 0 {
+	if f&JVM_ACC_SYNTHETIC != 0 {
 		fs = append(fs, "ACC_SYNTHETIC")
 
 	}
-	if f&ACC_ANNOTATION != 0 {
+	if f&JVM_ACC_ANNOTATION != 0 {
 		fs = append(fs, "ACC_ANNOTATION")
 
 	}
-	if f&ACC_ENUM != 0 {
+	if f&JVM_ACC_ENUM != 0 {
 		fs = append(fs, "ACC_ENUM")
 	}
 
