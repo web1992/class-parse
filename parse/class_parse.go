@@ -242,6 +242,8 @@ func (cp *ClassParse) methods(cpInfos core.CpInfos, count core.MethodCount) core
 		// parse method attribute
 		fmt.Println("method name is", mn)
 		m.Attributes = cp.attributes(cpInfos, m.AttributeCount)
+		fmt.Println("********************")
+
 		ms = append(ms, *m)
 	}
 

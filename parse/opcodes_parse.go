@@ -17,7 +17,8 @@ func parseOpCodes(codeLength int, bs []byte) core.OpCodes {
 		opObj := core.CreateOpCode(op)
 		if o, ok := opObj.(core.Reader); ok {
 			i := o.ReadObj(_bs)
-			fmt.Println("read len ", i, desc)
+			//fmt.Printf("read len %d %d: %s \n", i, hadReadLen, desc)
+			fmt.Printf("%d: %s \n", hadReadLen, desc)
 			hadReadLen = i + hadReadLen
 			ops = append(ops, o)
 		}
