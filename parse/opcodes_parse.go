@@ -1,15 +1,25 @@
 package parse
 
-import "goclass/core"
+import (
+	"fmt"
+	"goclass/core"
+)
 
-func (cp *ClassParse) parseOpCodes(codeLength int, bs []byte) core.OpCodes {
+func parseOpCodes(codeLength int, bs []byte) core.OpCodes {
 
 	var ops core.OpCodes
-	for i := 1; i <= codeLength; i++ {
-		// 182-186
-		op := core.Byte2U1(bs[0:core.U1_L])
-		if int(op) >= 182 || int(op) <= 186 {
+	hadReadLen := 0
+	for hadReadLen < codeLength {
 
+		op := core.Byte2U1(bs[hadReadLen : hadReadLen+core.U1_L])
+		_bs := bs[hadReadLen:]
+		desc := core.GetOpDesc(int(op))
+		opObj := core.CreateOpCode(op)
+		if o, ok := opObj.(core.Reader); ok {
+			i := o.ReadObj(_bs)
+			fmt.Println("read len ", i, desc)
+			hadReadLen = i + hadReadLen
+			ops = append(ops, o)
 		}
 	}
 

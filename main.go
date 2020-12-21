@@ -6,6 +6,6 @@ import (
 
 func main() {
 
-	fmt.Printf("|%6s|%6s|\n", "foo", "b")
+	fmt.Printf("goclass")
 
 }

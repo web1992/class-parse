@@ -5,7 +5,7 @@ type AttributeLength int32
 type ConstantValueIndex int32
 type MaxStack int32
 type MaxLocals int32
-type CodeLength int32
+type CodeBytesLength int32
 type ExceptionTableLength int32
 type NumberOfExceptions int32
 type ExceptionIndexTable []int32
@@ -69,7 +69,7 @@ type CodeAttribute struct {
 	AttributeLength
 	MaxStack
 	MaxLocals
-	CodeLength
+	CodeBytesLength
 	CodeBytes []byte
 	OpCodes
 	ExceptionTableLength
@@ -96,7 +96,7 @@ func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 	ca.MaxLocals = MaxLocals(ml)
 
 	cl := Byte2U4(bytes[u2+u4+u2+u2 : u2+u4+u2+u2+u4])
-	ca.CodeLength = CodeLength(cl)
+	ca.CodeBytesLength = CodeBytesLength(cl)
 
 	bs := bytes[u2+u4+u2+u2+u4 : u2+u4+u2+u2+u4+cl]
 	ca.CodeBytes = bs

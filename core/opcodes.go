@@ -209,26 +209,495 @@ const (
 	JVM_OPC_ifnonnull       = 199
 	JVM_OPC_goto_w          = 200
 	JVM_OPC_jsr_w           = 201
-	JVM_OPC_MAX             = 201
 )
 
 type OpCodes []interface{}
 
+// OpCode 1 byte
 type OpCode struct {
 	Desc string
 	Opc  int32
 	Args []int32
 }
 
-type OpCodeInvoke struct {
-	Desc string
-	Opc  int32
-	Args []int32
+// OpCode2 2 bytes
+type OpCode2 struct {
+	OpCode
 }
 
-func (op *OpCodeInvoke) ReadObj(bytes []byte) int {
+// OpCode3 3 bytes
+type OpCode3 struct {
+	OpCode
+}
+
+// 4 bytes
+type OpCode4 struct {
+	OpCode
+}
+
+// 5 bytes
+type OpCode5 struct {
+	OpCode
+}
+
+func (op *OpCode) ReadObj(bytes []byte) int {
+	op.Opc = Byte2U1(bytes[0:u1])
+	op.Desc = GetOpDesc(int(op.Opc))
+	return u1
+}
+func (op *OpCode) ObjLen() int {
 	return 0
 }
-func (op *OpCodeInvoke) ObjLen() int {
+
+func (op *OpCode2) ReadObj(bytes []byte) int {
+	op.Opc = Byte2U1(bytes[0:u1])
+	op.Desc = GetOpDesc(int(op.Opc))
+	op.Args = append(op.Args, Byte2U1(bytes[u1:u1+u1]))
+	return u1 + u1
+}
+func (op *OpCode2) ObjLen() int {
 	return 0
+}
+
+func (op *OpCode3) ReadObj(bytes []byte) int {
+	op.Opc = Byte2U1(bytes[0:u1])
+	op.Desc = GetOpDesc(int(op.Opc))
+	op.Args = append(op.Args, Byte2U2(bytes[u1:u1+u2]))
+	return u1 + u2
+}
+func (op *OpCode3) ObjLen() int {
+	return 0
+}
+
+func (op *OpCode4) ReadObj(bytes []byte) int {
+	op.Opc = Byte2U1(bytes[0:u1])
+	op.Desc = GetOpDesc(int(op.Opc))
+	op.Args = append(op.Args, Byte2U2(bytes[u1:u1+u2]))
+	op.Args = append(op.Args, Byte2U1(bytes[u1+u2:u1+u2+u1]))
+	return u1 + u2 + u1
+}
+func (op *OpCode4) ObjLen() int {
+	return 0
+}
+
+func (op *OpCode5) ReadObj(bytes []byte) int {
+	op.Opc = Byte2U1(bytes[0:u1])
+	op.Desc = GetOpDesc(int(op.Opc))
+	return u1 * 5
+}
+func (op *OpCode5) ObjLen() int {
+	return 0
+}
+
+func GetOpDesc(opcode int) string {
+
+	switch opcode {
+
+	case JVM_OPC_nop:
+		return "nop"
+	case JVM_OPC_aconst_null:
+		return "aconst_null"
+	case JVM_OPC_iconst_m1:
+		return "iconst_m1"
+	case JVM_OPC_iconst_0:
+		return "iconst_0"
+	case JVM_OPC_iconst_1:
+		return "iconst_1"
+	case JVM_OPC_iconst_2:
+		return "iconst_2"
+	case JVM_OPC_iconst_3:
+		return "iconst_3"
+	case JVM_OPC_iconst_4:
+		return "iconst_4"
+	case JVM_OPC_iconst_5:
+		return "iconst_5"
+	case JVM_OPC_lconst_0:
+		return "lconst_0"
+	case JVM_OPC_lconst_1:
+		return "lconst_1"
+	case JVM_OPC_fconst_0:
+		return "fconst_0"
+	case JVM_OPC_fconst_1:
+		return "fconst_1"
+	case JVM_OPC_fconst_2:
+		return "fconst_2"
+	case JVM_OPC_dconst_0:
+		return "dconst_0"
+	case JVM_OPC_dconst_1:
+		return "dconst_1"
+	case JVM_OPC_bipush:
+		return "bipush"
+	case JVM_OPC_sipush:
+		return "sipush"
+	case JVM_OPC_ldc:
+		return "ldc"
+	case JVM_OPC_ldc_w:
+		return "ldc_w"
+	case JVM_OPC_ldc2_w:
+		return "ldc2_w"
+	case JVM_OPC_iload:
+		return "iload"
+	case JVM_OPC_lload:
+		return "lload"
+	case JVM_OPC_fload:
+		return "fload"
+	case JVM_OPC_dload:
+		return "dload"
+	case JVM_OPC_aload:
+		return "aload"
+	case JVM_OPC_iload_0:
+		return "iload_0"
+	case JVM_OPC_iload_1:
+		return "iload_1"
+	case JVM_OPC_iload_2:
+		return "iload_2"
+	case JVM_OPC_iload_3:
+		return "iload_3"
+	case JVM_OPC_lload_0:
+		return "lload_0"
+	case JVM_OPC_lload_1:
+		return "lload_1"
+	case JVM_OPC_lload_2:
+		return "lload_2"
+	case JVM_OPC_lload_3:
+		return "lload_3"
+	case JVM_OPC_fload_0:
+		return "fload_0"
+	case JVM_OPC_fload_1:
+		return "fload_1"
+	case JVM_OPC_fload_2:
+		return "fload_2"
+	case JVM_OPC_fload_3:
+		return "fload_3"
+	case JVM_OPC_dload_0:
+		return "dload_0"
+	case JVM_OPC_dload_1:
+		return "dload_1"
+	case JVM_OPC_dload_2:
+		return "dload_2"
+	case JVM_OPC_dload_3:
+		return "dload_3"
+	case JVM_OPC_aload_0:
+		return "aload_0"
+	case JVM_OPC_aload_1:
+		return "aload_1"
+	case JVM_OPC_aload_2:
+		return "aload_2"
+	case JVM_OPC_aload_3:
+		return "aload_3"
+	case JVM_OPC_iaload:
+		return "iaload"
+	case JVM_OPC_laload:
+		return "laload"
+	case JVM_OPC_faload:
+		return "faload"
+	case JVM_OPC_daload:
+		return "daload"
+	case JVM_OPC_aaload:
+		return "aaload"
+	case JVM_OPC_baload:
+		return "baload"
+	case JVM_OPC_caload:
+		return "caload"
+	case JVM_OPC_saload:
+		return "saload"
+	case JVM_OPC_istore:
+		return "istore"
+	case JVM_OPC_lstore:
+		return "lstore"
+	case JVM_OPC_fstore:
+		return "fstore"
+	case JVM_OPC_dstore:
+		return "dstore"
+	case JVM_OPC_astore:
+		return "astore"
+	case JVM_OPC_istore_0:
+		return "istore_0"
+	case JVM_OPC_istore_1:
+		return "istore_1"
+	case JVM_OPC_istore_2:
+		return "istore_2"
+	case JVM_OPC_istore_3:
+		return "istore_3"
+	case JVM_OPC_lstore_0:
+		return "lstore_0"
+	case JVM_OPC_lstore_1:
+		return "lstore_1"
+	case JVM_OPC_lstore_2:
+		return "lstore_2"
+	case JVM_OPC_lstore_3:
+		return "lstore_3"
+	case JVM_OPC_fstore_0:
+		return "fstore_0"
+	case JVM_OPC_fstore_1:
+		return "fstore_1"
+	case JVM_OPC_fstore_2:
+		return "fstore_2"
+	case JVM_OPC_fstore_3:
+		return "fstore_3"
+	case JVM_OPC_dstore_0:
+		return "dstore_0"
+	case JVM_OPC_dstore_1:
+		return "dstore_1"
+	case JVM_OPC_dstore_2:
+		return "dstore_2"
+	case JVM_OPC_dstore_3:
+		return "dstore_3"
+	case JVM_OPC_astore_0:
+		return "astore_0"
+	case JVM_OPC_astore_1:
+		return "astore_1"
+	case JVM_OPC_astore_2:
+		return "astore_2"
+	case JVM_OPC_astore_3:
+		return "astore_3"
+	case JVM_OPC_iastore:
+		return "iastore"
+	case JVM_OPC_lastore:
+		return "lastore"
+	case JVM_OPC_fastore:
+		return "fastore"
+	case JVM_OPC_dastore:
+		return "dastore"
+	case JVM_OPC_aastore:
+		return "aastore"
+	case JVM_OPC_bastore:
+		return "bastore"
+	case JVM_OPC_castore:
+		return "castore"
+	case JVM_OPC_sastore:
+		return "sastore"
+	case JVM_OPC_pop:
+		return "pop"
+	case JVM_OPC_pop2:
+		return "pop2"
+	case JVM_OPC_dup:
+		return "dup"
+	case JVM_OPC_dup_x1:
+		return "dup_x1"
+	case JVM_OPC_dup_x2:
+		return "dup_x2"
+	case JVM_OPC_dup2:
+		return "dup2"
+	case JVM_OPC_dup2_x1:
+		return "dup2_x1"
+	case JVM_OPC_dup2_x2:
+		return "dup2_x2"
+	case JVM_OPC_swap:
+		return "swap"
+	case JVM_OPC_iadd:
+		return "iadd"
+	case JVM_OPC_ladd:
+		return "ladd"
+	case JVM_OPC_fadd:
+		return "fadd"
+	case JVM_OPC_dadd:
+		return "dadd"
+	case JVM_OPC_isub:
+		return "isub"
+	case JVM_OPC_lsub:
+		return "lsub"
+	case JVM_OPC_fsub:
+		return "fsub"
+	case JVM_OPC_dsub:
+		return "dsub"
+	case JVM_OPC_imul:
+		return "imul"
+	case JVM_OPC_lmul:
+		return "lmul"
+	case JVM_OPC_fmul:
+		return "fmul"
+	case JVM_OPC_dmul:
+		return "dmul"
+	case JVM_OPC_idiv:
+		return "idiv"
+	case JVM_OPC_ldiv:
+		return "ldiv"
+	case JVM_OPC_fdiv:
+		return "fdiv"
+	case JVM_OPC_ddiv:
+		return "ddiv"
+	case JVM_OPC_irem:
+		return "irem"
+	case JVM_OPC_lrem:
+		return "lrem"
+	case JVM_OPC_frem:
+		return "frem"
+	case JVM_OPC_drem:
+		return "drem"
+	case JVM_OPC_ineg:
+		return "ineg"
+	case JVM_OPC_lneg:
+		return "lneg"
+	case JVM_OPC_fneg:
+		return "fneg"
+	case JVM_OPC_dneg:
+		return "dneg"
+	case JVM_OPC_ishl:
+		return "ishl"
+	case JVM_OPC_lshl:
+		return "lshl"
+	case JVM_OPC_ishr:
+		return "ishr"
+	case JVM_OPC_lshr:
+		return "lshr"
+	case JVM_OPC_iushr:
+		return "iushr"
+	case JVM_OPC_lushr:
+		return "lushr"
+	case JVM_OPC_iand:
+		return "iand"
+	case JVM_OPC_land:
+		return "land"
+	case JVM_OPC_ior:
+		return "ior"
+	case JVM_OPC_lor:
+		return "lor"
+	case JVM_OPC_ixor:
+		return "ixor"
+	case JVM_OPC_lxor:
+		return "lxor"
+	case JVM_OPC_iinc:
+		return "iinc"
+	case JVM_OPC_i2l:
+		return "i2l"
+	case JVM_OPC_i2f:
+		return "i2f"
+	case JVM_OPC_i2d:
+		return "i2d"
+	case JVM_OPC_l2i:
+		return "l2i"
+	case JVM_OPC_l2f:
+		return "l2f"
+	case JVM_OPC_l2d:
+		return "l2d"
+	case JVM_OPC_f2i:
+		return "f2i"
+	case JVM_OPC_f2l:
+		return "f2l"
+	case JVM_OPC_f2d:
+		return "f2d"
+	case JVM_OPC_d2i:
+		return "d2i"
+	case JVM_OPC_d2l:
+		return "d2l"
+	case JVM_OPC_d2f:
+		return "d2f"
+	case JVM_OPC_i2b:
+		return "i2b"
+	case JVM_OPC_i2c:
+		return "i2c"
+	case JVM_OPC_i2s:
+		return "i2s"
+	case JVM_OPC_lcmp:
+		return "lcmp"
+	case JVM_OPC_fcmpl:
+		return "fcmpl"
+	case JVM_OPC_fcmpg:
+		return "fcmpg"
+	case JVM_OPC_dcmpl:
+		return "dcmpl"
+	case JVM_OPC_dcmpg:
+		return "dcmpg"
+	case JVM_OPC_ifeq:
+		return "ifeq"
+	case JVM_OPC_ifne:
+		return "ifne"
+	case JVM_OPC_iflt:
+		return "iflt"
+	case JVM_OPC_ifge:
+		return "ifge"
+	case JVM_OPC_ifgt:
+		return "ifgt"
+	case JVM_OPC_ifle:
+		return "ifle"
+	case JVM_OPC_if_icmpeq:
+		return "if_icmpeq"
+	case JVM_OPC_if_icmpne:
+		return "if_icmpne"
+	case JVM_OPC_if_icmplt:
+		return "if_icmplt"
+	case JVM_OPC_if_icmpge:
+		return "if_icmpge"
+	case JVM_OPC_if_icmpgt:
+		return "if_icmpgt"
+	case JVM_OPC_if_icmple:
+		return "if_icmple"
+	case JVM_OPC_if_acmpeq:
+		return "if_acmpeq"
+	case JVM_OPC_if_acmpne:
+		return "if_acmpne"
+	case JVM_OPC_goto:
+		return "goto"
+	case JVM_OPC_jsr:
+		return "jsr"
+	case JVM_OPC_ret:
+		return "ret"
+	case JVM_OPC_tableswitch:
+		return "tableswitch"
+	case JVM_OPC_lookupswitch:
+		return "lookupswitch"
+	case JVM_OPC_ireturn:
+		return "ireturn"
+	case JVM_OPC_lreturn:
+		return "lreturn"
+	case JVM_OPC_freturn:
+		return "freturn"
+	case JVM_OPC_dreturn:
+		return "dreturn"
+	case JVM_OPC_areturn:
+		return "areturn"
+	case JVM_OPC_return:
+		return "return"
+	case JVM_OPC_getstatic:
+		return "getstatic"
+	case JVM_OPC_putstatic:
+		return "putstatic"
+	case JVM_OPC_getfield:
+		return "getfield"
+	case JVM_OPC_putfield:
+		return "putfield"
+	case JVM_OPC_invokevirtual:
+		return "invokevirtual"
+	case JVM_OPC_invokespecial:
+		return "invokespecial"
+	case JVM_OPC_invokestatic:
+		return "invokestatic"
+	case JVM_OPC_invokeinterface:
+		return "invokeinterface"
+	case JVM_OPC_invokedynamic:
+		return "invokedynamic"
+	case JVM_OPC_new:
+		return "new"
+	case JVM_OPC_newarray:
+		return "newarray"
+	case JVM_OPC_anewarray:
+		return "anewarray"
+	case JVM_OPC_arraylength:
+		return "arraylength"
+	case JVM_OPC_athrow:
+		return "athrow"
+	case JVM_OPC_checkcast:
+		return "checkcast"
+	case JVM_OPC_instanceof:
+		return "instanceof"
+	case JVM_OPC_monitorenter:
+		return "monitorenter"
+	case JVM_OPC_monitorexit:
+		return "monitorexit"
+	case JVM_OPC_wide:
+		return "wide"
+	case JVM_OPC_multianewarray:
+		return "multianewarray"
+	case JVM_OPC_ifnull:
+		return "ifnull"
+	case JVM_OPC_ifnonnull:
+		return "ifnonnull"
+	case JVM_OPC_goto_w:
+		return "goto_w"
+	case JVM_OPC_jsr_w:
+		return "jsr_w"
+	}
+
+	return "unknown"
 }
