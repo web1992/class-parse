@@ -242,15 +242,12 @@ func CreateOpCode(op int32) interface{} {
 		return &OpCode3{}
 	case JVM_OPC_invokestatic:
 		return &OpCode3{}
-		// todo
 	case JVM_OPC_invokeinterface:
 		return &OpCode5{}
-		// todo
 	case JVM_OPC_invokedynamic:
-		return &OpCode3{}
+		return &OpCode5{}
 	case JVM_OPC_new:
 		return &OpCode3{}
-		// todo
 	case JVM_OPC_newarray:
 		return &OpCode{}
 	case JVM_OPC_anewarray:

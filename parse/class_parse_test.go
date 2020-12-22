@@ -106,7 +106,7 @@ func Test_get_cp_info(t *testing.T) {
 	cpInfos := classFile.CpInfos
 	v := cpInfos.String()
 	fmt.Println(v)
-	f, _ := os.Create("cp_test.txt")
+	f, _ := os.Create("../testfiles/cp_test.txt")
 	defer f.Close()
 	f.Write([]byte(v))
 }

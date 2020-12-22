@@ -240,6 +240,10 @@ type OpCode5 struct {
 	OpCode
 }
 
+type OpCodeJsrW struct {
+	OpCode
+}
+
 func (op *OpCode) ReadObj(bytes []byte) int {
 	op.Opc = Byte2U1(bytes[0:u1])
 	op.Desc = GetOpDesc(int(op.Opc))
@@ -283,9 +287,22 @@ func (op *OpCode4) ObjLen() int {
 func (op *OpCode5) ReadObj(bytes []byte) int {
 	op.Opc = Byte2U1(bytes[0:u1])
 	op.Desc = GetOpDesc(int(op.Opc))
+	op.Args = append(op.Args, Byte2U2(bytes[u1:u1+u2]))
+	op.Args = append(op.Args, Byte2U1(bytes[u1+u2:u1+u2+u1]))
+	op.Args = append(op.Args, Byte2U1(bytes[u1+u2+u1:u1+u2+u1+u1]))
 	return u1 * 5
 }
 func (op *OpCode5) ObjLen() int {
+	return 0
+}
+
+func (op *OpCodeJsrW) ReadObj(bytes []byte) int {
+	op.Opc = Byte2U1(bytes[0:u1])
+	op.Desc = GetOpDesc(int(op.Opc))
+	op.Args = append(op.Args, Byte2U4(bytes[u1:u1*5]))
+	return u1 * 5
+}
+func (op *OpCodeJsrW) ObjLen() int {
 	return 0
 }
 
