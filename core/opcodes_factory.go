@@ -25,10 +25,8 @@ func CreateOpCode(op int32) interface{} {
 	case JVM_OPC_dconst_0,
 		JVM_OPC_dconst_1:
 		return &OpCode{}
-		// todo
 	case JVM_OPC_bipush:
-		return &OpCode{}
-		// todo
+		return &OpCode2{}
 	case JVM_OPC_sipush:
 		return &OpCode3{}
 	case JVM_OPC_ldc:
@@ -171,12 +169,11 @@ func CreateOpCode(op int32) interface{} {
 		JVM_OPC_ixor,
 		JVM_OPC_lxor:
 		return &OpCode{}
-		// todo
 	case JVM_OPC_iinc:
-		return &OpCode{}
-	case JVM_OPC_i2l:
-		return &OpCode{}
-	case JVM_OPC_i2f,
+		return &OpCode3{}
+	case
+		JVM_OPC_i2l,
+		JVM_OPC_i2f,
 		JVM_OPC_i2d,
 		JVM_OPC_l2i,
 		JVM_OPC_l2f,
@@ -266,9 +263,8 @@ func CreateOpCode(op int32) interface{} {
 		// todo
 	case JVM_OPC_wide:
 		return &OpCode{}
-		// todo
 	case JVM_OPC_multianewarray:
-		return &OpCode{}
+		return &OpCode3{}
 	case JVM_OPC_ifnull,
 		JVM_OPC_ifnonnull:
 		return &OpCode3{}
@@ -279,5 +275,4 @@ func CreateOpCode(op int32) interface{} {
 		return &OpCode{}
 	}
 
-	return &OpCode{}
 }
