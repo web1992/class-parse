@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
+	"goclass/core"
 )
 
 func main() {
 
 	fmt.Printf("goclass")
-	a := []int{1, 2, 3, 4, 5}
-	fmt.Println(a[1:5])
+	a := []byte{0, 32, 0, 0}
+	fmt.Println(core.Byte2U4(a))
 }

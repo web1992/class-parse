@@ -33,6 +33,20 @@ public class Main extends AbstractMain implements InterfaceMain {
         };
 
         r.run();
+
+        int a = 1;
+        String A = "";
+        switch (a) {
+            case 1: {
+                A = "a";
+            }
+            case 2: {
+                A = "c";
+            }
+            default: {
+                A = "Z";
+            }
+        }
     }
 
     @Override
