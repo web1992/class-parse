@@ -105,7 +105,7 @@ func (cp *ClassParse) parseAttr(ca interface{}, cpInfos core.CpInfos, name strin
 	}
 	if attr, ok := ca.(*core.CodeAttribute); ok {
 		cp.Read(attr)
-		attr.OpCodes = parseOpCodes(int(attr.CodeBytesLength), attr.CodeBytes)
+		attr.OpCodes = parseOpCodes(cp.pointer, int(attr.CodeBytesLength), attr.CodeBytes)
 		return attr
 	}
 

@@ -220,7 +220,7 @@ func CreateOpCode(op int32) interface{} {
 		return &OpCode{}
 		// todo
 	case JVM_OPC_lookupswitch:
-		return &OpCode{}
+		return &OpCodeLookupSwitch{}
 	case JVM_OPC_ireturn,
 		JVM_OPC_lreturn,
 		JVM_OPC_freturn,
