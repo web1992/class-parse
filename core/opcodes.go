@@ -254,6 +254,7 @@ type OpCodeLookupSwitch struct {
 type Pair struct {
 	Default bool
 	Case    int32
+	Offset  int32
 	LineNo  int32
 }
 
@@ -265,6 +266,7 @@ func (op *OpCodeLookupSwitch) ReadObj(bytes []byte) int {
 	var p Pair
 	p.Default = true
 	p.LineNo = defaultOffset + op.Base
+	p.Offset = defaultOffset
 	op.Pairs = append(op.Pairs, p)
 	npairsLen := int(Byte2U4(bytes[pad+u1+u4 : pad+u1+u4+u4]))
 
@@ -275,7 +277,8 @@ func (op *OpCodeLookupSwitch) ReadObj(bytes []byte) int {
 		p.Default = false
 		p.Case = Byte2U4(bytes[start+offset : start+offset*2])
 		offset = offset + 4
-		p.LineNo = op.Base + Byte2U4(bytes[start+offset:start+offset*2])
+		p.Offset = Byte2U4(bytes[start+offset : start+offset*2])
+		p.LineNo = op.Base + p.Offset
 		offset = offset + 4
 		op.Pairs = append(op.Pairs, p)
 	}
