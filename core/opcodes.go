@@ -258,6 +258,49 @@ type Pair struct {
 	LineNo  int32
 }
 
+type OpCodeTableSwitch struct {
+	OpCode
+	Offset int
+	Base   int32
+	Low    int32
+	High   int32
+	Pairs  []Pair
+}
+
+func (op *OpCodeTableSwitch) ReadObj(bytes []byte) int {
+	op.Opc = Byte2U1(bytes[0:u1])
+	op.Desc = GetOpDesc(int(op.Opc))
+	pad := (op.Offset + 1) % 4
+	defaultOffset := Byte2U4(bytes[pad+u1 : pad+u1+u4])
+
+	var p Pair
+	p.Default = true
+	p.Offset = defaultOffset
+	p.LineNo = p.Offset + op.Base
+	op.Pairs = append(op.Pairs, p)
+
+	low := Byte2U4(bytes[pad+u1+u4 : pad+u1+u4+u4])
+	high := Byte2U4(bytes[pad+u1+u4+u4 : pad+u1+u4+u4+u4])
+	op.Low = low
+	op.High = high
+	targetsLength := int((high - low) + 1)
+
+	start := pad + u1 + u4 + u4 + u4
+	for i := 0; i < targetsLength; i++ {
+		var p Pair
+		p.Case = low
+		p.Offset = Byte2U4(bytes[start+u4*i : start+u4*(i+1)])
+		p.LineNo = p.Offset + op.Base
+		op.Pairs = append(op.Pairs, p)
+		low = low + 1
+	}
+
+	return u1 + pad + u4 + u4 + u4 + u4*targetsLength
+}
+func (op *OpCodeTableSwitch) ObjLen() int {
+	return 0
+}
+
 func (op *OpCodeLookupSwitch) ReadObj(bytes []byte) int {
 	op.Opc = Byte2U1(bytes[0:u1])
 	op.Desc = GetOpDesc(int(op.Opc))

@@ -43,6 +43,9 @@ public class Main extends AbstractMain implements InterfaceMain {
             case 2: {
                 A = "c";
             }
+             case 3: {
+                A = "D";
+             }
             default: {
                 A = "Z";
             }
