@@ -213,11 +213,20 @@ const (
 
 type OpCodes []interface{}
 
+type OpCoder interface {
+	SetLineNo(lineNo int)
+}
+
 // OpCode 1 byte
 type OpCode struct {
-	Desc string
-	Opc  int32
-	Args []int32
+	LineNo int
+	Desc   string
+	Opc    int32
+	Args   []int32
+}
+
+func (oc *OpCode) SetLineNo(lineNo int) {
+	oc.LineNo = lineNo
 }
 
 // OpCode2 2 bytes

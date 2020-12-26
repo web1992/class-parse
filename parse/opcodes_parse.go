@@ -19,26 +19,32 @@ func parseOpCodes(pointer int, codeLength int, bs []byte) core.OpCodes {
 		if o, ok := opObj.(*core.OpCodeTableSwitch); ok {
 			o.Offset = pointer - codeLength + hadReadLen
 			o.Base = int32(hadReadLen)
-			i := o.ReadObj(_bs)
+			o.LineNo = hadReadLen
+			readLen := o.ReadObj(_bs)
 			fmt.Printf("%d: %s \n", hadReadLen, getTableSwitchDesc(*o, desc))
-			hadReadLen = i + hadReadLen
+			hadReadLen = readLen + hadReadLen
 			ops = append(ops, o)
 			continue
 		}
 		if o, ok := opObj.(*core.OpCodeLookupSwitch); ok {
 			o.Offset = pointer - codeLength + hadReadLen
 			o.Base = int32(hadReadLen)
-			i := o.ReadObj(_bs)
+			o.LineNo = hadReadLen
+			readLen := o.ReadObj(_bs)
 			fmt.Printf("%d: %s \n", hadReadLen, getLookupSwitchDesc(*o, desc))
-			hadReadLen = i + hadReadLen
+			hadReadLen = readLen + hadReadLen
 			ops = append(ops, o)
 			continue
 		}
 		if o, ok := opObj.(core.Reader); ok {
-			i := o.ReadObj(_bs)
-			//fmt.Printf("read len %d %d: %s \n", i, hadReadLen, desc)
+			readLen := o.ReadObj(_bs)
 			fmt.Printf("%d: %s \n", hadReadLen, desc)
-			hadReadLen = i + hadReadLen
+
+			if opc, ok := opObj.(core.OpCoder); ok {
+				opc.SetLineNo(hadReadLen)
+			}
+
+			hadReadLen = readLen + hadReadLen
 			ops = append(ops, o)
 			continue
 		} else {
@@ -49,6 +55,14 @@ func parseOpCodes(pointer int, codeLength int, bs []byte) core.OpCodes {
 	return ops
 }
 
+/**
+26: tableswitch   { // 1 to 3
+                 1: 52
+                 2: 55
+                 3: 58
+           default: 61
+   }
+*/
 func getTableSwitchDesc(ts core.OpCodeTableSwitch, desc string) string {
 
 	var s []string
