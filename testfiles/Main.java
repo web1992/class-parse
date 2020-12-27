@@ -43,12 +43,20 @@ public class Main extends AbstractMain implements InterfaceMain {
             case 2: {
                 A = "c";
             }
-             case 3: {
+            case 3: {
                 A = "D";
-             }
+            }
             default: {
                 A = "Z";
             }
+        }
+
+        try {
+            System.out.println("try");
+        } catch (Exception e) {
+            System.out.println("catch");
+        } finally {
+            System.out.println("finally");
         }
     }
 
