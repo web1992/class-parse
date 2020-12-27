@@ -73,14 +73,25 @@ type CodeAttribute struct {
 	CodeBytes []byte
 	OpCodes
 	ExceptionTableLength
-	ExceptionTable []struct {
-		StartPc
-		EndPc
-		HandlerPc
-		CatchType
-	}
+	ExceptionTable []ExceptionTable
 	AttributeCount
+	AttributesBytes []byte
 	Attributes
+}
+
+/**
+  Exception table:
+     from    to  target type
+        64    72    83   Class java/lang/Exception
+        64    72   104   any
+        83    93   104   any
+       104   106   104   any
+*/
+type ExceptionTable struct {
+	StartPc
+	EndPc
+	HandlerPc
+	CatchType
 }
 
 func (ca *CodeAttribute) ReadObj(bytes []byte) int {
@@ -101,6 +112,27 @@ func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 	bs := bytes[u2+u4+u2+u2+u4 : u2+u4+u2+u2+u4+cl]
 	ca.CodeBytes = bs
 
+	etl := Byte2U2(bytes[u2+u4+u2+u2+u4+cl : u2+u4+u2+u2+u4+cl+u2])
+	ca.ExceptionTableLength = ExceptionTableLength(etl)
+
+	var readLen = int(u2 + u4 + u2 + u2 + u4 + cl + u2)
+	for i := 0; i < int(etl); i++ {
+		var et ExceptionTable
+		et.StartPc = StartPc(Byte2U2(bytes[readLen : readLen+u2]))
+		readLen = readLen + u2
+		et.EndPc = EndPc(Byte2U2(bytes[readLen : readLen+u2]))
+		readLen = readLen + u2
+		et.HandlerPc = HandlerPc(Byte2U2(bytes[readLen : readLen+u2]))
+		readLen = readLen + u2
+		et.CatchType = CatchType(Byte2U2(bytes[readLen : readLen+u2]))
+		readLen = readLen + u2
+		ca.ExceptionTable = append(ca.ExceptionTable, et)
+	}
+
+	ac := int(Byte2U2(bytes[readLen : readLen+u2]))
+	ca.AttributeCount = AttributeCount{Count: int32(ac)}
+	readLen = readLen + u2
+	ca.AttributesBytes = bytes[readLen:]
 	return int(l)
 }
 
