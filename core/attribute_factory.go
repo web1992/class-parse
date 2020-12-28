@@ -67,11 +67,17 @@ Deprecated
 
 end
 */
-func CreateAttribute(name string) interface{} {
+func CreateAttribute(name string, cpInfos CpInfos) interface{} {
 
 	switch name {
 	case SourceFile:
-		return &SourceFileAttribute{Name: SourceFile}
+		return &SourceFileAttribute{
+			AttributeName: SourceFile,
+			Attribute: Attribute{
+				CpInfos: cpInfos,
+				Name:    name,
+			},
+		}
 	case BootstrapMethods:
 		return &BootstrapMethodsAttribute{Name: BootstrapMethods}
 	case InnerClasses:

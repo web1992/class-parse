@@ -22,8 +22,8 @@ func AttributeNew(name string) *Attribute {
 // Must read bytes from file,change the pointer
 // make other bytes can read success
 type Attribute struct {
-	Name string
-	Bytes
+	CpInfos
+	Name               string
 	AttributeNameIndex int32
 	AttributeLength    int32
 }

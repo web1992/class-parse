@@ -69,7 +69,7 @@ func (cp *ClassParse) attributes(cpInfos core.CpInfos, attributeCount core.Attri
 
 		attributeNameIndex := core.Byte2U2(tagByte)
 		name := core.GetCp(cpInfos, int(attributeNameIndex))
-		ca := core.CreateAttribute(name)
+		ca := core.CreateAttribute(name, cpInfos)
 
 		attr := cp.parseAttr(ca, cpInfos, name)
 		attrs = append(attrs, attr)
@@ -83,7 +83,7 @@ func (cp *ClassParse) parseAttr(ca interface{}, cpInfos core.CpInfos, name strin
 	if attr, ok := ca.(*core.SourceFileAttribute); ok {
 		cp.Read(attr)
 		attr.AttributeName = name
-		attr.SourceFileName = core.GetCp(cpInfos, int(attr.SourceFileIndex))
+		//attr.SourceFileName = core.GetCp(cpInfos, int(attr.SourceFileIndex))
 		return attr
 	}
 
