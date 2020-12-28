@@ -75,7 +75,7 @@ func Test_get_cp(t *testing.T) {
 	constPoolCount := cp.ClassFile().ConstantPoolCount
 	v := constPoolCount.Count
 
-	except := int32(139)
+	except := int32(162)
 	if v != except {
 		t.Fatalf("constPoolCount is %d  except is %d", v, except)
 	}

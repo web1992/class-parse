@@ -38,11 +38,8 @@ func (cva *ConstantValueAttribute) ReadObj(bytes []byte) int {
 
 	ii := Byte2U2(bytes[u2+u4 : u2+u4+l])
 	cva.ConstantValueIndex = ConstantValueIndex(ii)
-	return int(l)
-}
-
-func (cva *ConstantValueAttribute) ObjLen() int {
-	return u2 + u4
+	//return int(l)
+	return u2 + u4 + int(l)
 }
 
 /*
@@ -141,11 +138,7 @@ func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 	ca.AttributeCount = AttributeCount{Count: int32(ac)}
 	//readLen = readLen + u2
 	//ca.AttributesBytes = bytes[readLen:]
-	return int(l)
-}
-
-func (ca *CodeAttribute) ObjLen() int {
-	return u2 + u4
+	return u2 + u4 + int(l)
 }
 
 /*
@@ -172,11 +165,7 @@ func (ea *ExceptionsAttribute) ReadObj(bytes []byte) int {
 	l := Byte2U4(bytes[u2 : u2+u4])
 	ea.AttributeLength = AttributeLength(l)
 
-	return int(l)
-}
-
-func (ea *ExceptionsAttribute) ObjLen() int {
-	return u2 + u4
+	return u2 + u4 + int(l)
 }
 
 /*
@@ -207,11 +196,7 @@ func (lnta *LineNumberTableAttribute) ReadObj(bytes []byte) int {
 	l := Byte2U4(bytes[u2 : u2+u4])
 	lnta.AttributeLength = AttributeLength(l)
 
-	return int(l)
-}
-
-func (lnta *LineNumberTableAttribute) ObjLen() int {
-	return u2 + u4
+	return u2 + u4 + int(l)
 }
 
 /*
@@ -231,10 +216,6 @@ func (da *DeprecatedAttribute) ReadObj(bytes []byte) int {
 	l := Byte2U4(bytes[u2 : u2+u4])
 	da.AttributeLength = AttributeLength(l)
 
-	return 0
-}
-
-func (da *DeprecatedAttribute) ObjLen() int {
 	return u2 + u4
 }
 
@@ -263,10 +244,6 @@ func (sfa *SourceFileAttribute) ReadObj(bytes []byte) int {
 
 	sfa.SourceFileIndex = Byte2U2(bytes[u2+u4 : u2+u4+u2])
 
-	return 0
-}
-
-func (sfa *SourceFileAttribute) ObjLen() int {
 	return u2 + u4 + u2
 }
 
@@ -303,11 +280,7 @@ func (sfa *InnerClassesAttribute) ReadObj(bytes []byte) int {
 	l := Byte2U4(bytes[u2 : u2+u4])
 	sfa.AttributeLength = AttributeLength(l)
 
-	return int(l)
-}
-
-func (sfa *InnerClassesAttribute) ObjLen() int {
-	return u2 + u4
+	return u2 + u4 + int(l)
 }
 
 /*
@@ -370,9 +343,5 @@ func (bma *BootstrapMethodsAttribute) ReadObj(bytes []byte) int {
 		}
 		bma.BootstrapMethods = append(bma.BootstrapMethods, bm)
 	}
-	return int(l)
-}
-
-func (bma *BootstrapMethodsAttribute) ObjLen() int {
-	return u2 + u4
+	return u2 + u4 + int(l)
 }

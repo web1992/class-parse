@@ -17,9 +17,5 @@ func MajorVersionNew() *MajorVersion {
 func (mv *MajorVersion) ReadObj(bytes []byte) int {
 	mv.Bytes = bytes[0:u2]
 	mv.Version = Byte2U2(bytes)
-	return 0
-}
-
-func (mv *MajorVersion) ObjLen() int {
 	return u2
 }

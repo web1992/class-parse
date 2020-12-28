@@ -17,9 +17,5 @@ func ConstantPoolCountNew() *ConstantPoolCount {
 func (cpc *ConstantPoolCount) ReadObj(bytes []byte) int {
 	cpc.Bytes = bytes[0:u2]
 	cpc.Count = Byte2U2(bytes)
-	return 0
-}
-
-func (cpc *ConstantPoolCount) ObjLen() int {
 	return u2
 }

@@ -39,10 +39,6 @@ func (tc *FieldsCount) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
 	tc.Bytes = bs
 	tc.Count = Byte2U2(bs)
-	return 0
-}
-
-func (tc *FieldsCount) ObjLen() int {
 	return u2
 }
 
@@ -68,9 +64,5 @@ func (tc *Field) ReadObj(bytes []byte) int {
 	ac.Count = Byte2U2(acBytes)
 	ac.Bytes = acBytes
 	tc.AttributeCount = ac
-	return 0
-}
-
-func (tc *Field) ObjLen() int {
 	return u2 * 4
 }

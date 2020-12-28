@@ -17,9 +17,5 @@ func MagicNew() *Magic {
 func (magic *Magic) ReadObj(bytes []byte) int {
 	magic.Bytes = bytes[0:u4]
 	magic.Hex = HexByte(magic.Bytes)
-	return 0
-}
-
-func (magic *Magic) ObjLen() int {
 	return u4
 }

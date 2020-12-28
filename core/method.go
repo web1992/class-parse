@@ -38,10 +38,6 @@ func (tc *MethodCount) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
 	tc.Bytes = bs
 	tc.Count = Byte2U2(bs)
-	return 0
-}
-
-func (tc *MethodCount) ObjLen() int {
 	return u2
 }
 
@@ -65,9 +61,5 @@ func (tc *Method) ReadObj(bytes []byte) int {
 	ac.Count = Byte2U2(bs)
 	ac.Bytes = bs
 	tc.AttributeCount = ac
-	return 0
-}
-
-func (tc *Method) ObjLen() int {
 	return u2 * 4
 }

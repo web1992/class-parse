@@ -37,11 +37,7 @@ func (af *Attribute) ReadObj(bytes []byte) int {
 
 	//af.Bytes = bytes[u2+u4: u2+u4+l]
 	// just ignore left bytes
-	return int(l)
-}
-
-func (af *Attribute) ObjLen() int {
-	return u2 + u4
+	return u2 + u4 + int(l)
 }
 
 //u2             attributes_count;
@@ -59,9 +55,5 @@ func (af *AttributeCount) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
 	af.Bytes = bs
 	af.Count = Byte2U2(bs)
-	return 0
-}
-
-func (af *AttributeCount) ObjLen() int {
 	return u2
 }

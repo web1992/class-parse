@@ -14,10 +14,6 @@ func (tc *Interface) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
 	tc.Bytes = bs
 	tc.ClassIndex = ClassIndex(Byte2U2(bs))
-	return 0
-}
-
-func (tc *Interface) ObjLen() int {
 	return u2
 }
 
@@ -35,9 +31,5 @@ func (tc *InterfacesCount) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
 	tc.Bytes = bs
 	tc.Count = Byte2U2(bs)
-	return 0
-}
-
-func (tc *InterfacesCount) ObjLen() int {
 	return u2
 }

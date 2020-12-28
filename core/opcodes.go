@@ -306,9 +306,6 @@ func (op *OpCodeTableSwitch) ReadObj(bytes []byte) int {
 
 	return u1 + pad + u4 + u4 + u4 + u4*targetsLength
 }
-func (op *OpCodeTableSwitch) ObjLen() int {
-	return 0
-}
 
 func (op *OpCodeLookupSwitch) ReadObj(bytes []byte) int {
 	op.Opc = Byte2U1(bytes[0:u1])
@@ -338,17 +335,11 @@ func (op *OpCodeLookupSwitch) ReadObj(bytes []byte) int {
 	//fmt.Println(defaultOffset)
 	return 1 + pad + u4 + +u4 + npairsLen*8
 }
-func (op *OpCodeLookupSwitch) ObjLen() int {
-	return 0
-}
 
 func (op *OpCode) ReadObj(bytes []byte) int {
 	op.Opc = Byte2U1(bytes[0:u1])
 	op.Desc = GetOpDesc(int(op.Opc))
 	return u1
-}
-func (op *OpCode) ObjLen() int {
-	return 0
 }
 
 func (op *OpCode2) ReadObj(bytes []byte) int {
@@ -357,18 +348,12 @@ func (op *OpCode2) ReadObj(bytes []byte) int {
 	op.Args = append(op.Args, Byte2U1(bytes[u1:u1+u1]))
 	return u1 + u1
 }
-func (op *OpCode2) ObjLen() int {
-	return 0
-}
 
 func (op *OpCode3) ReadObj(bytes []byte) int {
 	op.Opc = Byte2U1(bytes[0:u1])
 	op.Desc = GetOpDesc(int(op.Opc))
 	op.Args = append(op.Args, Byte2U2(bytes[u1:u1+u2]))
 	return u1 + u2
-}
-func (op *OpCode3) ObjLen() int {
-	return 0
 }
 
 func (op *OpCode4) ReadObj(bytes []byte) int {
@@ -377,9 +362,6 @@ func (op *OpCode4) ReadObj(bytes []byte) int {
 	op.Args = append(op.Args, Byte2U2(bytes[u1:u1+u2]))
 	op.Args = append(op.Args, Byte2U1(bytes[u1+u2:u1+u2+u1]))
 	return u1 + u2 + u1
-}
-func (op *OpCode4) ObjLen() int {
-	return 0
 }
 
 func (op *OpCode5) ReadObj(bytes []byte) int {
@@ -390,18 +372,12 @@ func (op *OpCode5) ReadObj(bytes []byte) int {
 	op.Args = append(op.Args, Byte2U1(bytes[u1+u2+u1:u1+u2+u1+u1]))
 	return u1 * 5
 }
-func (op *OpCode5) ObjLen() int {
-	return 0
-}
 
 func (op *OpCodeJsrW) ReadObj(bytes []byte) int {
 	op.Opc = Byte2U1(bytes[0:u1])
 	op.Desc = GetOpDesc(int(op.Opc))
 	op.Args = append(op.Args, Byte2U4(bytes[u1:u1*5]))
 	return u1 * 5
-}
-func (op *OpCodeJsrW) ObjLen() int {
-	return 0
 }
 
 func GetOpDesc(opcode int) string {

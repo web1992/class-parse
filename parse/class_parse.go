@@ -25,14 +25,9 @@ func (cp *ClassParse) IncrPointer(num int) {
 }
 
 func (cp *ClassParse) Read(r core.Reader) {
-
 	bytes := cp.Bytes()
-
-	l := r.ObjLen()
-	b := bytes[cp.pointer : cp.pointer+l]
-	readL := r.ReadObj(b)
-
-	cp.IncrPointer(l + readL)
+	readL := r.ReadObj(bytes[cp.pointer:])
+	cp.IncrPointer(readL)
 }
 
 func (cp *ClassParse) Name() string {

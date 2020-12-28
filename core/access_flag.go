@@ -53,10 +53,6 @@ func AccessFlagNew() *AccessFlag {
 
 func (af *AccessFlag) ReadObj(bytes []byte) int {
 	af.Bytes = bytes[0:u2]
-	return 0
-}
-
-func (af *AccessFlag) ObjLen() int {
 	return u2
 }
 
