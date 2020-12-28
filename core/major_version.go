@@ -6,10 +6,6 @@ type MajorVersion struct {
 	Version int32
 }
 
-func (mv *MajorVersion) ByteLen() int {
-	return U2_L
-}
-
 func MajorVersionNew() *MajorVersion {
 	return &MajorVersion{}
 }
