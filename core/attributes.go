@@ -139,8 +139,8 @@ func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 
 	ac := int(Byte2U2(bytes[readLen : readLen+u2]))
 	ca.AttributeCount = AttributeCount{Count: int32(ac)}
-	readLen = readLen + u2
-	ca.AttributesBytes = bytes[readLen:]
+	//readLen = readLen + u2
+	//ca.AttributesBytes = bytes[readLen:]
 	return int(l)
 }
 
