@@ -62,6 +62,13 @@ u2 catch_type;
 u2 attributes_count;
 attribute_info attributes[attributes_count];
 }
+
+attribute_info {
+    u2 attribute_name_index;
+    u4 attribute_length;
+    u1 info[attribute_length];
+}
+
 */
 type CodeAttribute struct {
 	Name string
@@ -91,7 +98,8 @@ type ExceptionTable struct {
 	StartPc
 	EndPc
 	HandlerPc
-	CatchType
+	CatchType int32
+	TypeDesc  string
 }
 
 func (ca *CodeAttribute) ReadObj(bytes []byte) int {
@@ -124,7 +132,7 @@ func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 		readLen = readLen + u2
 		et.HandlerPc = HandlerPc(Byte2U2(bytes[readLen : readLen+u2]))
 		readLen = readLen + u2
-		et.CatchType = CatchType(Byte2U2(bytes[readLen : readLen+u2]))
+		et.CatchType = Byte2U2(bytes[readLen : readLen+u2])
 		readLen = readLen + u2
 		ca.ExceptionTable = append(ca.ExceptionTable, et)
 	}
