@@ -15,7 +15,7 @@ func (cp *ClassParse) cpInfos(cpc core.ConstantPoolCount) core.CpInfos {
 	fmt.Printf("constant pool count is %d \n", count)
 
 	for i := 1; i <= count-1; i++ {
-		bytes := cp.Bytes()
+		bytes := cp.bytes
 
 		//fmt.Println("CpInfos c is", i)
 		p := cp.pointer

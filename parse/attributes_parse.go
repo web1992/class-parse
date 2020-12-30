@@ -63,7 +63,7 @@ func (cp *ClassParse) attributes(cpInfos core.CpInfos, attributeCount core.Attri
 	c := int(attributeCount.Count)
 	for i := 0; i < c; i++ {
 
-		bytes := cp.Bytes()
+		bytes := cp.bytes
 		p := cp.pointer
 		tagByte := bytes[p : p+core.U2_L]
 

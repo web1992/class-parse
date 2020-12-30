@@ -15,9 +15,9 @@ var fileSuffixInvalid = errors.New("file must has suffix " + fileSuffix)
 var byteNoUsed = errors.New("byte not all used")
 
 type ClassParse struct {
-	filePath  string // file paths
-	fileBytes []byte // files bytes
-	pointer   int    // []byte index
+	filePath string // file path
+	bytes    []byte // files bytes
+	pointer  int    // []byte index
 }
 
 func (cp *ClassParse) IncrPointer(num int) {
@@ -25,17 +25,9 @@ func (cp *ClassParse) IncrPointer(num int) {
 }
 
 func (cp *ClassParse) Read(r core.Reader) {
-	bytes := cp.Bytes()
+	bytes := cp.bytes
 	readL := r.ReadObj(bytes[cp.pointer:])
 	cp.IncrPointer(readL)
-}
-
-func (cp *ClassParse) Name() string {
-	return cp.filePath
-}
-
-func (cp *ClassParse) Bytes() []byte {
-	return cp.fileBytes
 }
 
 func (cp *ClassParse) String() string {
@@ -61,7 +53,7 @@ func (cp *ClassParse) parseFile(filePath string) error {
 		return e
 	}
 
-	cp.fileBytes = bytes
+	cp.bytes = bytes
 	return nil
 }
 
@@ -87,7 +79,7 @@ func (cp *ClassParse) ClassFile() core.ClassFile {
 	attributes := cp.attributes(cpInfos, attributeCount)
 
 	// check pointer and bytes len
-	if cp.pointer != len(cp.fileBytes) {
+	if cp.pointer != len(cp.bytes) {
 		panic(byteNoUsed)
 	}
 	return core.ClassFile{
