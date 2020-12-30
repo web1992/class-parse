@@ -3,7 +3,6 @@ package core
 // u2             methods_count;
 // method_info    methods[methods_count];
 type MethodCount struct {
-	Bytes
 	Count int32
 }
 
@@ -17,7 +16,6 @@ attribute_info attributes[attributes_count];
 }
 */
 type Method struct {
-	Bytes
 	AccessFlag
 	NameIndex
 	DescriptorIndex
@@ -36,7 +34,6 @@ func MethodCountNew() *MethodCount {
 
 func (tc *MethodCount) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
-	tc.Bytes = bs
 	tc.Count = Byte2U2(bs)
 	return u2
 }
@@ -46,11 +43,9 @@ func MethodNew() *Method {
 }
 
 func (tc *Method) ReadObj(bytes []byte) int {
-	tc.Bytes = bytes
 
 	var af AccessFlag
 	af.ReadObj(bytes[0:u2])
-	af.Flag = int(Byte2U2(af.Bytes))
 	af.FlagString = GetFlag(af)
 	tc.AccessFlag = af
 	tc.NameIndex = NameIndex(Byte2U2(bytes[u2 : u2+u2]))
@@ -59,7 +54,6 @@ func (tc *Method) ReadObj(bytes []byte) int {
 	var ac AttributeCount
 	bs := bytes[u2+u2+u2 : u2+u2+u2+u2]
 	ac.Count = Byte2U2(bs)
-	ac.Bytes = bs
 	tc.AttributeCount = ac
 	return u2 * 4
 }

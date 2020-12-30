@@ -86,7 +86,6 @@ u2 name_index;
 type CpClass struct {
 	Tag
 	NameIndex
-	Bytes
 }
 
 func CpClassNew() *CpClass {
@@ -97,7 +96,6 @@ func CpClassNew() *CpClass {
 
 func (class *CpClass) ReadObj(bytes []byte) int {
 	class.NameIndex = NameIndex(Byte2U2(bytes[u1 : u1+u2]))
-	class.Bytes = bytes
 	return u1 + u2
 }
 
@@ -112,7 +110,6 @@ type CpFieldRef struct {
 	Tag
 	ClassIndex
 	NameAndTypeIndex
-	Bytes
 }
 
 func CpFieldRefNew() *CpFieldRef {
@@ -120,7 +117,6 @@ func CpFieldRefNew() *CpFieldRef {
 }
 
 func (f *CpFieldRef) ReadObj(bytes []byte) int {
-	f.Bytes = bytes
 	f.ClassIndex = ClassIndex(Byte2U2(bytes[u1 : u1+u2]))
 	f.NameAndTypeIndex = NameAndTypeIndex(Byte2U2(bytes[u1+u2 : u1+u2+u2]))
 	return u1 + u2 + u2
@@ -139,7 +135,6 @@ type CpMethodRef struct {
 	Tag
 	ClassIndex
 	NameAndTypeIndex
-	Bytes
 }
 
 func CpMethodRefNew() *CpMethodRef {
@@ -151,7 +146,6 @@ func CpMethodRefNew() *CpMethodRef {
 func (method *CpMethodRef) ReadObj(bytes []byte) int {
 	method.ClassIndex = ClassIndex(Byte2U2(bytes[u1 : u1+u2]))
 	method.NameAndTypeIndex = NameAndTypeIndex(Byte2U2(bytes[u1+u2 : u1+u2+u2]))
-	method.Bytes = bytes
 	return u1 + u2 + u2
 }
 
@@ -167,7 +161,6 @@ type CpInterfaceMethodRef struct {
 	Tag
 	ClassIndex
 	NameAndTypeIndex
-	Bytes
 }
 
 func CpInterfaceMethodRefNew() *CpInterfaceMethodRef {
@@ -179,7 +172,6 @@ func CpInterfaceMethodRefNew() *CpInterfaceMethodRef {
 func (im *CpInterfaceMethodRef) ReadObj(bytes []byte) int {
 	im.ClassIndex = ClassIndex(Byte2U2(bytes[u1 : u1+u2]))
 	im.NameAndTypeIndex = NameAndTypeIndex(Byte2U2(bytes[u1+u2 : u1+u2+u2]))
-	im.Bytes = bytes
 	return u1 + u2 + u2
 }
 
@@ -193,7 +185,6 @@ u2 string_index;
 type CpString struct {
 	Tag
 	StringIndex
-	Bytes
 }
 
 func CpStringNew() *CpString {
@@ -204,7 +195,6 @@ func CpStringNew() *CpString {
 
 func (s *CpString) ReadObj(bytes []byte) int {
 	s.StringIndex = StringIndex(Byte2U2(bytes[u1 : u1+u2]))
-	s.Bytes = bytes
 	return u1 + u2
 }
 
@@ -218,7 +208,6 @@ u4 bytes;
 // The bytes of the value are stored in big-endian (high byte first) order.
 type CpInteger struct {
 	Tag
-	Bytes
 	Integer // bytes to integer
 	Hex
 }
@@ -231,9 +220,8 @@ func CpIntegerNew() *CpInteger {
 
 func (i *CpInteger) ReadObj(bytes []byte) int {
 	b := bytes[u1 : u1+u4]
-	i.Bytes = b
 	i.Integer = Integer(Byte2U4(b))
-	i.Hex = HexByte(i.Bytes)
+	i.Hex = HexByte(b)
 	return u1 + u4
 }
 
@@ -246,7 +234,6 @@ CONSTANT_Float_info {
 */
 type CpFloat struct {
 	Tag
-	Bytes
 	Float // bytes to float
 	Hex
 }
@@ -259,7 +246,6 @@ func CpFloatNew() *CpFloat {
 
 func (f *CpFloat) ReadObj(bytes []byte) int {
 	b := bytes[u1 : u1+u4]
-	f.Bytes = b
 	f.Float = Float(Byte2Float(b))
 	f.Hex = HexByte(b)
 	return u1 + u4
@@ -274,10 +260,9 @@ CONSTANT_Long_info {
 }
 */
 type CpLong struct {
-	Tag   // tag =5
-	Bytes // high_bytes + low_bytes
-	Long  // bytes to long
-	Hex   // Hex to view
+	Tag  // tag =5
+	Long // bytes to long
+	Hex  // Hex to view
 }
 
 func CpLongNew() *CpLong {
@@ -288,7 +273,6 @@ func CpLongNew() *CpLong {
 
 func (l *CpLong) ReadObj(bytes []byte) int {
 	b := bytes[u1 : u1+u4+u4]
-	l.Bytes = b
 	l.Long = Long(Byte2Long(b))
 	l.Hex = HexByte(b)
 	return u1 + u4 + u4
@@ -305,7 +289,6 @@ CONSTANT_Double_info {
 
 type CpDouble struct {
 	Tag    // tag =6
-	Bytes  // high_bytes + low_bytes
 	Double // bytes to long
 	Hex
 }
@@ -317,7 +300,6 @@ func CpDoubleNew() *CpDouble {
 }
 func (d *CpDouble) ReadObj(bytes []byte) int {
 	b := bytes[u1 : u1+u4+u4]
-	d.Bytes = b
 	d.Double = Double(Byte2Double(b))
 	d.Hex = HexByte(b)
 	return u1 + u4 + u4
@@ -335,7 +317,6 @@ type CpNameAndType struct {
 	Tag
 	NameIndex
 	DescriptorIndex
-	Bytes
 }
 
 func CpNameAndTypeNew() *CpNameAndType {
@@ -348,7 +329,6 @@ func CpNameAndTypeNew() *CpNameAndType {
 func (cnat *CpNameAndType) ReadObj(bytes []byte) int {
 	cnat.NameIndex = NameIndex(Byte2U2(bytes[u1 : u1+u2]))
 	cnat.DescriptorIndex = DescriptorIndex(Byte2U2(bytes[u1+u2 : u1+u2+u2]))
-	cnat.Bytes = bytes
 	return u1 + u2 + u2
 }
 
@@ -362,8 +342,7 @@ CONSTANT_Utf8_info {
 */
 type CpUTF8 struct {
 	Tag
-	len int32
-	Bytes
+	len    int32
 	String // bytes to string
 
 }
@@ -379,7 +358,6 @@ func (u *CpUTF8) ReadObj(bytes []byte) int {
 	l := Byte2U2(bytes[u1 : u1+u2])
 	u.len = l
 	bs := bytes[u1+u2 : u1+u2+l]
-	u.Bytes = bs
 	u.String = String(bs)
 
 	return u1 + u2 + int(l)
@@ -399,7 +377,6 @@ type CpMethodHandle struct {
 	Tag
 	ReferenceKind
 	ReferenceIndex
-	Bytes
 }
 
 func CpMethodHandleNew() *CpMethodHandle {
@@ -409,7 +386,6 @@ func CpMethodHandleNew() *CpMethodHandle {
 }
 
 func (mh *CpMethodHandle) ReadObj(bytes []byte) int {
-	mh.Bytes = bytes
 	mh.ReferenceKind = ReferenceKind(Byte2U1(bytes[u1 : u1+u1]))
 	mh.ReferenceIndex = ReferenceIndex(Byte2U2(bytes[u1+u1 : u1+u1+u2]))
 	return u1 + u1 + u2
@@ -424,7 +400,6 @@ u2 descriptor_index;
 type CpMethodType struct {
 	Tag
 	DescriptorIndex
-	Bytes
 }
 
 func CpMethodTypeNew() *CpMethodType {
@@ -434,7 +409,6 @@ func CpMethodTypeNew() *CpMethodType {
 }
 
 func (mt *CpMethodType) ReadObj(bytes []byte) int {
-	mt.Bytes = bytes
 	mt.DescriptorIndex = DescriptorIndex(Byte2U2(bytes[u1 : u1+u2]))
 	return u1 + u2
 }
@@ -451,7 +425,6 @@ type CpInvokeDynamic struct {
 	Tag
 	BootstrapMethodAttrIndex
 	NameAndTypeIndex
-	Bytes
 }
 
 func CpInvokeDynamicNew() *CpInvokeDynamic {
@@ -462,7 +435,6 @@ func CpInvokeDynamicNew() *CpInvokeDynamic {
 
 func (id *CpInvokeDynamic) ReadObj(bytes []byte) int {
 
-	id.Bytes = bytes
 	id.BootstrapMethodAttrIndex = BootstrapMethodAttrIndex(Byte2U2(bytes[u1 : u1+u2]))
 	id.NameAndTypeIndex = NameAndTypeIndex(Byte2U2(bytes[u1+u2 : u1+u2+u2]))
 	return u1 + u2 + u2

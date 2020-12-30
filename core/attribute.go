@@ -43,7 +43,6 @@ func (af *Attribute) ReadObj(bytes []byte) int {
 //u2             attributes_count;
 //attribute_info attributes[attributes_count];
 type AttributeCount struct {
-	Bytes
 	Count int32
 }
 
@@ -53,7 +52,6 @@ func AttributeCountNew() *AttributeCount {
 
 func (af *AttributeCount) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
-	af.Bytes = bs
 	af.Count = Byte2U2(bs)
 	return u2
 }

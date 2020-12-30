@@ -2,7 +2,6 @@ package core
 
 // Magic class file Magic num
 type Magic struct {
-	Bytes
 	Hex
 }
 
@@ -14,8 +13,8 @@ func MagicNew() *Magic {
 	return &Magic{}
 }
 
-func (magic *Magic) ReadObj(bytes []byte) int {
-	magic.Bytes = bytes[0:u4]
-	magic.Hex = HexByte(magic.Bytes)
+func (m *Magic) ReadObj(bytes []byte) int {
+	bs := bytes[0:u4]
+	m.Hex = HexByte(bs)
 	return u4
 }

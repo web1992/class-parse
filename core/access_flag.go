@@ -42,7 +42,6 @@ ACC_ENUM	0x4000	Declared as an enum type.
 
 // access_flags u2
 type AccessFlag struct {
-	Bytes
 	Flag       int
 	FlagString string
 }
@@ -52,23 +51,20 @@ func AccessFlagNew() *AccessFlag {
 }
 
 func (af *AccessFlag) ReadObj(bytes []byte) int {
-	af.Bytes = bytes[0:u2]
+	af.Flag = int(Byte2U2(bytes[0:u2]))
 	return u2
 }
 
 func (af *AccessFlag) String() string {
-	b := af.Bytes
-	f := Byte2U2(b)
-	return getFlag(f)
+	return getFlag(af.Flag)
 }
 
 // GetFlag get int vale to convert to string
 func GetFlag(f AccessFlag) string {
-	u := Byte2U2(f.Bytes)
-	return getFlag(u)
+	return getFlag(f.Flag)
 }
 
-func getFlag(f int32) string {
+func getFlag(f int) string {
 
 	var fs []string
 	if f&JVM_ACC_PUBLIC != 0 {

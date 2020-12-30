@@ -2,7 +2,6 @@ package core
 
 // Interface u2  interfaces[interfaces_count]
 type Interface struct {
-	Bytes
 	ClassIndex
 	NameString string
 }
@@ -12,14 +11,12 @@ type Interfaces []Interface
 
 func (tc *Interface) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
-	tc.Bytes = bs
 	tc.ClassIndex = ClassIndex(Byte2U2(bs))
 	return u2
 }
 
 // InterfacesCount u2 interfaces_count
 type InterfacesCount struct {
-	Bytes
 	Count int32
 }
 
@@ -29,7 +26,6 @@ func InterfacesCountNew() *InterfacesCount {
 
 func (tc *InterfacesCount) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
-	tc.Bytes = bs
 	tc.Count = Byte2U2(bs)
 	return u2
 }

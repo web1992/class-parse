@@ -3,7 +3,6 @@ package core
 // FieldsCount
 // u2 fields_count
 type FieldsCount struct {
-	Bytes
 	Count int32
 }
 
@@ -18,7 +17,6 @@ attribute_info attributes[attributes_count];
 }
 */
 type Field struct {
-	Bytes
 	AccessFlag
 	NameIndex
 	DescriptorIndex
@@ -37,7 +35,6 @@ func FieldsCountNew() *FieldsCount {
 
 func (tc *FieldsCount) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
-	tc.Bytes = bs
 	tc.Count = Byte2U2(bs)
 	return u2
 }
@@ -47,12 +44,10 @@ func FieldNew() *Field {
 }
 
 func (tc *Field) ReadObj(bytes []byte) int {
-	tc.Bytes = bytes
 
 	var af AccessFlag
 	afBytes := bytes[0:u2]
-	af.Bytes = afBytes
-	af.Flag = int(Byte2U2(af.Bytes))
+	af.Flag = int(Byte2U2(afBytes))
 	af.FlagString = GetFlag(af)
 	tc.AccessFlag = af
 
@@ -62,7 +57,6 @@ func (tc *Field) ReadObj(bytes []byte) int {
 	var ac AttributeCount
 	acBytes := bytes[u2*3 : u2*4]
 	ac.Count = Byte2U2(acBytes)
-	ac.Bytes = acBytes
 	tc.AttributeCount = ac
 	return u2 * 4
 }
