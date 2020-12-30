@@ -1,20 +1,20 @@
 package core
 
-type AttributeNameIndex int32
-type AttributeLength int32
-type ConstantValueIndex int32
-type MaxStack int32
-type MaxLocals int32
-type CodeBytesLength int32
-type ExceptionTableLength int32
-type NumberOfExceptions int32
-type ExceptionIndexTable []int32
-type LineNumberTableLength int32
-type StartPc int32
-type EndPc int32
-type HandlerPc int32
-type CatchType int32
-type LineNumber int32
+type AttributeNameIndex int
+type AttributeLength int
+type ConstantValueIndex int
+type MaxStack int
+type MaxLocals int
+type CodeBytesLength int
+type ExceptionTableLength int
+type NumberOfExceptions int
+type ExceptionIndexTable []int
+type LineNumberTableLength int
+type StartPc int
+type EndPc int
+type HandlerPc int
+type CatchType int
+type LineNumber int
 
 /*
 ConstantValue_attribute {
