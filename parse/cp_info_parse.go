@@ -11,7 +11,7 @@ func (cp *ClassParse) cpInfos(cpc core.ConstantPoolCount) core.CpInfos {
 
 	var cpInfos core.CpInfos
 	cpInfos = append(cpInfos, nil)
-	count := int(cpc.Count)
+	count := cpc.Count
 	fmt.Printf("constant pool count is %d \n", count)
 
 	for i := 1; i <= count-1; i++ {

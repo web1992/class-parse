@@ -51,7 +51,7 @@ func Test_get_Minor_Version(t *testing.T) {
 	mv := cp.ClassFile().MinorVersion
 	v := mv.Version
 	log.Println("minor_Version is ", v)
-	expect := int32(0)
+	expect := 0
 	if v != expect {
 		t.Fatalf("minor version is %d,except is %d", v, expect)
 	}
@@ -63,7 +63,7 @@ func Test_get_major_version(t *testing.T) {
 	mv := cp.ClassFile().MajorVersion
 	expect := 58
 
-	if int32(expect) != mv.Version {
+	if (expect) != mv.Version {
 		t.Fatalf("major version is %d,except is %d", mv.Version, expect)
 	}
 
@@ -75,7 +75,7 @@ func Test_get_cp(t *testing.T) {
 	constPoolCount := cp.ClassFile().ConstantPoolCount
 	v := constPoolCount.Count
 
-	except := int32(162)
+	except := 162
 	if v != except {
 		t.Fatalf("constPoolCount is %d  except is %d", v, except)
 	}

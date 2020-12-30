@@ -52,7 +52,7 @@ func (tc *Field) ReadObj(bytes []byte) int {
 	var af AccessFlag
 	afBytes := bytes[0:u2]
 	af.Bytes = afBytes
-	af.Flag = Byte2U2(af.Bytes)
+	af.Flag = int(Byte2U2(af.Bytes))
 	af.FlagString = GetFlag(af)
 	tc.AccessFlag = af
 

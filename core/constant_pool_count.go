@@ -3,7 +3,7 @@ package core
 // ConstantPoolCount constant_pool_count
 type ConstantPoolCount struct {
 	Bytes
-	Count int32
+	Count int
 }
 
 func (cp *ConstantPoolCount) ByteLen() int {
@@ -16,6 +16,6 @@ func ConstantPoolCountNew() *ConstantPoolCount {
 
 func (cpc *ConstantPoolCount) ReadObj(bytes []byte) int {
 	cpc.Bytes = bytes[0:u2]
-	cpc.Count = Byte2U2(bytes)
+	cpc.Count = int(Byte2U2(bytes))
 	return u2
 }

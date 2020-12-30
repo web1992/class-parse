@@ -50,7 +50,7 @@ func (tc *Method) ReadObj(bytes []byte) int {
 
 	var af AccessFlag
 	af.ReadObj(bytes[0:u2])
-	af.Flag = Byte2U2(af.Bytes)
+	af.Flag = int(Byte2U2(af.Bytes))
 	af.FlagString = GetFlag(af)
 	tc.AccessFlag = af
 	tc.NameIndex = NameIndex(Byte2U2(bytes[u2 : u2+u2]))
