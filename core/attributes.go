@@ -67,6 +67,16 @@ attribute_info {
 }
 
 */
+
+type LineNumberTableAttr struct {
+	Attribute
+}
+
+func (lnt *LineNumberTableAttr) ReadObj(bytes []byte) int {
+
+	return 0
+}
+
 type CodeAttribute struct {
 	Attribute
 	Name string
@@ -139,6 +149,9 @@ func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 	readLen = readLen + u2
 	for i := 0; i < ac; i++ {
 		attributeNameIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
+		readLen = readLen + u2
+		attributeLen := int(Byte2U4(bytes[readLen : readLen+u4]))
+		readLen = readLen + (u4 + attributeLen)
 		attr := CreateAttributeByIndex(attributeNameIndex, ca.Attribute.CpInfos)
 		ca.Attributes = append(ca.Attributes, attr)
 	}
@@ -188,10 +201,7 @@ type LineNumberTableAttribute struct {
 	AttributeNameIndex
 	AttributeLength
 	LineNumberTableLength
-	LineNumberTable []struct {
-		StartPc
-		LineNumber
-	}
+	LineNumberTable []LineNumberTableAttr
 }
 
 func (lnta *LineNumberTableAttribute) ReadObj(bytes []byte) int {
