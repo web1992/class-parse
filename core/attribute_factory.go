@@ -81,14 +81,40 @@ func CreateAttribute(name string, cpInfos CpInfos) interface{} {
 			},
 		}
 	case BootstrapMethods:
-		return &BootstrapMethodsAttribute{Name: BootstrapMethods}
+		return &BootstrapMethodsAttribute{
+			Name: BootstrapMethods,
+			Attribute: Attribute{
+				CpInfos: cpInfos,
+				Name:    name,
+			}}
 	case InnerClasses:
-		return &InnerClassesAttribute{Name: InnerClasses}
+		return &InnerClassesAttribute{
+			Name: InnerClasses,
+			Attribute: Attribute{
+				CpInfos: cpInfos,
+				Name:    name,
+			}}
 	case Code:
-		return &CodeAttribute{Name: Code}
+		return &CodeAttribute{
+			Name: Code,
+			Attribute: Attribute{
+				CpInfos: cpInfos,
+				Name:    name,
+			}}
 	case Exceptions:
-		return &ExceptionsAttribute{Name: Exceptions}
+		return &ExceptionsAttribute{
+			Name: Exceptions,
+			Attribute: Attribute{
+				CpInfos: cpInfos,
+				Name:    name,
+			}}
 	default:
-		return AttributeNew(name)
+		return AttributeNew(name, cpInfos)
 	}
+}
+
+func CreateAttributeByIndex(nameIndex int, cpInfos CpInfos) interface{} {
+	_ = cpInfos[nameIndex]
+	name := GetCp(cpInfos, nameIndex)
+	return CreateAttribute(name, cpInfos)
 }

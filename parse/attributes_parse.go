@@ -111,7 +111,7 @@ func (cp *ClassParse) parseAttr(ca interface{}, cpInfos core.CpInfos, name strin
 	}
 
 	// default
-	attr := core.AttributeNew("")
+	attr := core.AttributeNew(name, cpInfos)
 	cp.Read(attr)
 	attr.Name = name
 

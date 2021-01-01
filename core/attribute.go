@@ -14,8 +14,11 @@ u4 attribute_length;
 u1 info[attribute_length];
 }
 */
-func AttributeNew(name string) *Attribute {
-	return &Attribute{Name: name}
+func AttributeNew(name string, cpInfo CpInfos) *Attribute {
+	return &Attribute{
+		Name:    name,
+		CpInfos: cpInfo,
+	}
 }
 
 // Attribute as default attribute_info

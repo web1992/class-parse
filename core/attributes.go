@@ -68,6 +68,7 @@ attribute_info {
 
 */
 type CodeAttribute struct {
+	Attribute
 	Name string
 	AttributeNameIndex
 	AttributeLength
@@ -79,7 +80,6 @@ type CodeAttribute struct {
 	ExceptionTableLength
 	ExceptionTable []ExceptionTable
 	AttributeCount
-	AttributesBytes []byte
 	Attributes
 }
 
@@ -136,8 +136,12 @@ func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 
 	ac := int(Byte2U2(bytes[readLen : readLen+u2]))
 	ca.AttributeCount = AttributeCount{Count: int32(ac)}
-	//readLen = readLen + u2
-	//ca.AttributesBytes = bytes[readLen:]
+	readLen = readLen + u2
+	for i := 0; i < ac; i++ {
+		attributeNameIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
+		attr := CreateAttributeByIndex(attributeNameIndex, ca.Attribute.CpInfos)
+		ca.Attributes = append(ca.Attributes, attr)
+	}
 	return u2 + u4 + int(l)
 }
 
@@ -151,6 +155,7 @@ u2 exception_index_table[number_of_exceptions];
 */
 
 type ExceptionsAttribute struct {
+	Attribute
 	Name string
 	AttributeNameIndex
 	AttributeLength
@@ -259,6 +264,7 @@ u2 inner_class_access_flags;
 */
 
 type InnerClassesAttribute struct {
+	Attribute
 	Name string
 	AttributeNameIndex
 	AttributeLength
@@ -296,6 +302,7 @@ u2 bootstrap_arguments[num_bootstrap_arguments];
 */
 
 type BootstrapMethodsAttribute struct {
+	Attribute
 	Name string
 	AttributeNameIndex
 	AttributeLength
