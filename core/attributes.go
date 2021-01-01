@@ -110,27 +110,34 @@ type ExceptionTable struct {
 }
 
 func (ca *CodeAttribute) ReadObj(bytes []byte) int {
+	readLen := 0
 	i := Byte2U2(bytes[0:u2])
+	readLen += u2
 	ca.AttributeNameIndex = AttributeNameIndex(i)
-	l := Byte2U4(bytes[u2 : u2+u4])
+	l := Byte2U4(bytes[readLen : readLen+u4])
+	readLen += u4
 	ca.AttributeLength = AttributeLength(l)
 
-	ms := Byte2U2(bytes[u2+u4 : u2+u4+u2])
+	ms := Byte2U2(bytes[readLen : readLen+u2])
 	ca.MaxStack = MaxStack(ms)
+	readLen += u2
 
-	ml := Byte2U2(bytes[u2+u4+u2 : u2+u4+u2+u2])
+	ml := Byte2U2(bytes[readLen : readLen+u2])
 	ca.MaxLocals = MaxLocals(ml)
+	readLen += u2
 
-	cl := Byte2U4(bytes[u2+u4+u2+u2 : u2+u4+u2+u2+u4])
+	cl := int(Byte2U4(bytes[readLen : readLen+u4]))
 	ca.CodeBytesLength = CodeBytesLength(cl)
+	readLen += u4
 
-	bs := bytes[u2+u4+u2+u2+u4 : u2+u4+u2+u2+u4+cl]
+	bs := bytes[readLen : readLen+cl]
 	ca.CodeBytes = bs
+	readLen += cl
 
-	etl := Byte2U2(bytes[u2+u4+u2+u2+u4+cl : u2+u4+u2+u2+u4+cl+u2])
+	etl := Byte2U2(bytes[readLen : readLen+u2])
 	ca.ExceptionTableLength = ExceptionTableLength(etl)
+	readLen += u2
 
-	var readLen = int(u2 + u4 + u2 + u2 + u4 + cl + u2)
 	for i := 0; i < int(etl); i++ {
 		var et ExceptionTable
 		et.StartPc = StartPc(Byte2U2(bytes[readLen : readLen+u2]))
