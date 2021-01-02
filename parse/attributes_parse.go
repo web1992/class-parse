@@ -1,6 +1,9 @@
 package parse
 
-import "goclass/core"
+import (
+	"goclass/core"
+	"log"
+)
 
 func (cp *ClassParse) attributeCount() core.AttributeCount {
 
@@ -114,7 +117,7 @@ func (cp *ClassParse) parseAttr(ca interface{}, cpInfos core.CpInfos, name strin
 	attr := core.AttributeNew(name, cpInfos)
 	cp.Read(attr)
 	attr.Name = name
-
+	log.Println("skip attribute name: " + name)
 	return attr
 
 }

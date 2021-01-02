@@ -66,6 +66,14 @@ attribute_info {
     u1 info[attribute_length];
 }
 
+For all attributes, the attribute_name_index must be a valid unsigned
+16-bit index into the constant pool of the class.
+The constant_pool entry at attribute_name_index must be a
+CONSTANT_Utf8_info structure (§4.4.7) representing the name of the attribute.
+The value of the attribute_length item indicates the length of the subsequent information in bytes.
+The length does not include the initial six bytes that
+contain the attribute_name_index and attribute_length items.
+
 */
 
 type CodeAttribute struct {
@@ -177,11 +185,12 @@ func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 		attributeNameIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
 		readLen = readLen + u2
 		attributeLen := int(Byte2U4(bytes[readLen : readLen+u4]))
-		readLen = readLen + (u4 + attributeLen)
+		readLen += u4
 		attr := CreateAttributeByIndex(attributeNameIndex, ca.Attribute.CpInfos)
 		if obj, ok := attr.(Reader); ok {
-			obj.ReadObj(bytes[readLen:])
+			obj.ReadObj(bytes[readLen-u2-u4 : readLen+attributeLen])
 		}
+		readLen += attributeLen
 		ca.Attributes = append(ca.Attributes, attr)
 	}
 	return u2 + u4 + int(l)
@@ -264,7 +273,7 @@ func (lnta *LineNumberTableAttribute) ReadObj(bytes []byte) int {
 	rl := 0
 	for i := 0; i < tableLen; i++ {
 		var lt LineTable
-		rl = lt.ReadObj(bs[rl:])
+		rl += lt.ReadObj(bs[rl:])
 		lnta.LineNumberTable = append(lnta.LineNumberTable, lt)
 	}
 
