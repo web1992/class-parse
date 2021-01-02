@@ -108,6 +108,14 @@ func CreateAttribute(name string, cpInfos CpInfos) interface{} {
 				CpInfos: cpInfos,
 				Name:    name,
 			}}
+	case LineNumberTable:
+		return &LineNumberTableAttribute{
+			Name: LineNumberTable,
+			Attribute: Attribute{
+				CpInfos: cpInfos,
+				Name:    name,
+			},
+		}
 	default:
 		return AttributeNew(name, cpInfos)
 	}

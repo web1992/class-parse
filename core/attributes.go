@@ -68,15 +68,6 @@ attribute_info {
 
 */
 
-type LineNumberTableAttr struct {
-	Attribute
-}
-
-func (lnt *LineNumberTableAttr) ReadObj(bytes []byte) int {
-
-	return 0
-}
-
 type CodeAttribute struct {
 	Attribute
 	Name string
@@ -94,6 +85,13 @@ type CodeAttribute struct {
 }
 
 /**
+	u2 exception_table_length;
+    {   u2 start_pc;
+        u2 end_pc;
+        u2 handler_pc;
+        u2 catch_type;
+    } exception_table[exception_table_length];
+
   Exception table:
      from    to  target type
         64    72    83   Class java/lang/Exception
@@ -107,6 +105,32 @@ type ExceptionTable struct {
 	HandlerPc
 	CatchType int32
 	TypeDesc  string
+}
+
+func (et *ExceptionTable) getDesc(cpInfo CpInfos) string {
+
+	if et.CatchType == 0 {
+		return "any"
+	}
+	return GetCp(cpInfo, int(et.CatchType))
+}
+func (et *ExceptionTable) ReadObj(bytes []byte) int {
+
+	readLen := 0
+
+	et.StartPc = StartPc(Byte2U2(bytes[0:u2]))
+	readLen += u2
+
+	et.EndPc = EndPc(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
+
+	et.HandlerPc = HandlerPc(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen = readLen + u2
+
+	et.CatchType = Byte2U2(bytes[readLen : readLen+u2])
+	readLen = readLen + u2
+
+	return u2 * 4
 }
 
 func (ca *CodeAttribute) ReadObj(bytes []byte) int {
@@ -140,14 +164,9 @@ func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 
 	for i := 0; i < int(etl); i++ {
 		var et ExceptionTable
-		et.StartPc = StartPc(Byte2U2(bytes[readLen : readLen+u2]))
-		readLen = readLen + u2
-		et.EndPc = EndPc(Byte2U2(bytes[readLen : readLen+u2]))
-		readLen = readLen + u2
-		et.HandlerPc = HandlerPc(Byte2U2(bytes[readLen : readLen+u2]))
-		readLen = readLen + u2
-		et.CatchType = Byte2U2(bytes[readLen : readLen+u2])
-		readLen = readLen + u2
+		rl := et.ReadObj(bytes[readLen:])
+		et.TypeDesc = et.getDesc(ca.CpInfos)
+		readLen += rl
 		ca.ExceptionTable = append(ca.ExceptionTable, et)
 	}
 
@@ -160,6 +179,9 @@ func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 		attributeLen := int(Byte2U4(bytes[readLen : readLen+u4]))
 		readLen = readLen + (u4 + attributeLen)
 		attr := CreateAttributeByIndex(attributeNameIndex, ca.Attribute.CpInfos)
+		if obj, ok := attr.(Reader); ok {
+			obj.ReadObj(bytes[readLen:])
+		}
 		ca.Attributes = append(ca.Attributes, attr)
 	}
 	return u2 + u4 + int(l)
@@ -205,20 +227,48 @@ u2 line_number;
 */
 
 type LineNumberTableAttribute struct {
+	Attribute
+	Name string
 	AttributeNameIndex
 	AttributeLength
 	LineNumberTableLength
-	LineNumberTable []LineNumberTableAttr
+	LineNumberTable []LineTable
+}
+
+type LineTable struct {
+	StartPc
+	LineNumber
+}
+
+func (lt *LineTable) ReadObj(bytes []byte) int {
+	lt.StartPc = StartPc(Byte2U2(bytes[0:u2]))
+	lt.LineNumber = LineNumber(Byte2U2(bytes[u2 : u2+u2]))
+	return u2 + u2
 }
 
 func (lnta *LineNumberTableAttribute) ReadObj(bytes []byte) int {
-	i := Byte2U2(bytes[0:u2])
+	readLen := 0
+	i := Byte2U2(bytes[readLen : readLen+u2])
 	lnta.AttributeNameIndex = AttributeNameIndex(i)
+	readLen += u2
 
-	l := Byte2U4(bytes[u2 : u2+u4])
+	l := int(Byte2U4(bytes[readLen : readLen+u4]))
 	lnta.AttributeLength = AttributeLength(l)
+	readLen += u4
 
-	return u2 + u4 + int(l)
+	tableLen := int(Byte2U2(bytes[readLen : readLen+u2]))
+	lnta.LineNumberTableLength = LineNumberTableLength(tableLen)
+	readLen += u2
+
+	bs := bytes[readLen:]
+	rl := 0
+	for i := 0; i < tableLen; i++ {
+		var lt LineTable
+		rl = lt.ReadObj(bs[rl:])
+		lnta.LineNumberTable = append(lnta.LineNumberTable, lt)
+	}
+
+	return u2 + u4 + l
 }
 
 /*
