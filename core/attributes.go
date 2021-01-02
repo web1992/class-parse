@@ -338,17 +338,21 @@ type BootstrapMethod struct {
 }
 
 func (bma *BootstrapMethodsAttribute) ReadObj(bytes []byte) int {
-	i := Byte2U2(bytes[0:u2])
+	readLen := 0
+	i := Byte2U2(bytes[0 : readLen+u2])
+	readLen += u2
 	bma.AttributeNameIndex = AttributeNameIndex(i)
 
-	l := Byte2U4(bytes[u2 : u2+u4])
+	l := int(Byte2U4(bytes[readLen : readLen+u4]))
 	bma.AttributeLength = AttributeLength(l)
+	readLen += u4
 
-	m := Byte2U2(bytes[u2+u4 : u2+u4+u2])
+	m := Byte2U2(bytes[readLen : readLen+u2])
 	bma.NumBootstrapMethods = m
+	readLen += u2
 
-	bs := bytes[u2+u4+u2 : u2+u4+u2+l]
-
+	bs := bytes[readLen : readLen+l]
+	readLen += l
 	mNum := int(m)
 	for i := 0; i < mNum; i++ {
 		base := i * u2
@@ -365,5 +369,5 @@ func (bma *BootstrapMethodsAttribute) ReadObj(bytes []byte) int {
 		}
 		bma.BootstrapMethods = append(bma.BootstrapMethods, bm)
 	}
-	return u2 + u4 + int(l)
+	return u2 + u4 + l
 }
