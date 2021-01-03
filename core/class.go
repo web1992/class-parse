@@ -1,5 +1,10 @@
 package core
 
+import (
+	"fmt"
+	"strings"
+)
+
 const (
 	U1_L = 1 // 1 byte
 	U2_L = 2 // 2 bytes
@@ -69,4 +74,23 @@ type ClassFile struct {
 	Methods
 	AttributeCount
 	Attributes
+}
+
+func (classFile ClassFile) String() string {
+
+	// public class Main extends AbstractMain implements InterfaceMain
+	var str []string
+	sm := fmt.Sprintf("%s", classFile.Magic.Hex)
+	str = append(str, sm)
+	stc := fmt.Sprintf("%s", classFile.ThisClass.String)
+	str = append(str, stc)
+
+	ssc := fmt.Sprintf("%s", classFile.SuperClass.String)
+	str = append(str, ssc)
+
+	for _, m := range classFile.Methods {
+		fmt.Println(m.NameString)
+	}
+
+	return strings.Join(str, "\n")
 }

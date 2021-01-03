@@ -1,5 +1,10 @@
 package core
 
+import (
+	"fmt"
+	"strings"
+)
+
 const (
 
 	// Reserved Opcodes
@@ -225,6 +230,10 @@ type OpCode struct {
 	Args   []int32
 }
 
+func (op *OpCode) String() string {
+	desc := GetOpDesc(int(op.Opc))
+	return fmt.Sprintf("%d: %s \n", op.LineNo, desc)
+}
 func (oc *OpCode) SetLineNo(lineNo int) {
 	oc.LineNo = lineNo
 }
@@ -274,6 +283,41 @@ type OpCodeTableSwitch struct {
 	Low    int32
 	High   int32
 	Pairs  []Pair
+}
+
+func (op *OpCodeTableSwitch) String() string {
+	desc := GetOpDesc(int(op.Opc))
+	return fmt.Sprintf("%d: %s \n", op.LineNo, GetTableSwitchDesc(*op, desc))
+
+}
+
+/**
+26: tableswitch   { // 1 to 3
+                 1: 52
+                 2: 55
+                 3: 58
+           default: 61
+   }
+*/
+func GetTableSwitchDesc(ts OpCodeTableSwitch, desc string) string {
+
+	var s []string
+	s = append(s, fmt.Sprintf("%s { // %d-%d", desc, ts.Low, ts.High))
+
+	for _, v := range ts.Pairs {
+		if !v.Default {
+			s = append(s, fmt.Sprintf("%16v:%v", v.Case, v.LineNo))
+		}
+	}
+
+	for _, v := range ts.Pairs {
+		if v.Default {
+			s = append(s, fmt.Sprintf("%16v:%v", "default", v.LineNo))
+		}
+	}
+	s = append(s, "}")
+
+	return strings.Join(s, "\n")
 }
 
 func (op *OpCodeTableSwitch) ReadObj(bytes []byte) int {
@@ -334,6 +378,32 @@ func (op *OpCodeLookupSwitch) ReadObj(bytes []byte) int {
 	//fmt.Println(npairsLen)
 	//fmt.Println(defaultOffset)
 	return 1 + pad + u4 + +u4 + npairsLen*8
+}
+
+func (op *OpCodeLookupSwitch) String() string {
+	desc := GetOpDesc(int(op.Opc))
+	return fmt.Sprintf("%d: %s \n", op.LineNo, GetLookupSwitchDesc(*op, desc))
+}
+
+func GetLookupSwitchDesc(lsw OpCodeLookupSwitch, desc string) string {
+
+	var s []string
+	s = append(s, fmt.Sprintf("%s { // %d", desc, len(lsw.Pairs)-1))
+
+	for _, v := range lsw.Pairs {
+		if !v.Default {
+			s = append(s, fmt.Sprintf("%16v:%v", v.Case, v.LineNo))
+		}
+	}
+
+	for _, v := range lsw.Pairs {
+		if v.Default {
+			s = append(s, fmt.Sprintf("%16v:%v", "default", v.LineNo))
+		}
+	}
+	s = append(s, "}")
+
+	return strings.Join(s, "\n")
 }
 
 func (op *OpCode) ReadObj(bytes []byte) int {

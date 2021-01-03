@@ -172,5 +172,6 @@ func Test_get_attributes(t *testing.T) {
 
 	classFile := cp.ClassFile()
 
-	fmt.Println(classFile)
+	fmt.Println("-------------------")
+	fmt.Println(classFile.String())
 }
