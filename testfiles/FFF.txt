@@ -1,0 +1,42 @@
+Classfile /Users/zl/Documents/DEV/github/class-parse/testfiles/FFF.class
+  Last modified 2021年1月4日; size 385 bytes
+  SHA-256 checksum 6f3de583d63b3cac4536f56ce397e754d663760fe0a4e08ddf028bc69813c063
+  Compiled from "Main.java"
+interface FFF extends java.lang.annotation.Annotation
+  minor version: 0
+  major version: 58
+  flags: (0x2600) ACC_INTERFACE, ACC_ABSTRACT, ACC_ANNOTATION
+  this_class: #1                          // FFF
+  super_class: #3                         // java/lang/Object
+  interfaces: 1, fields: 0, methods: 0, attributes: 2
+Constant pool:
+   #1 = Class              #2             // FFF
+   #2 = Utf8               FFF
+   #3 = Class              #4             // java/lang/Object
+   #4 = Utf8               java/lang/Object
+   #5 = Class              #6             // java/lang/annotation/Annotation
+   #6 = Utf8               java/lang/annotation/Annotation
+   #7 = Utf8               SourceFile
+   #8 = Utf8               Main.java
+   #9 = Utf8               RuntimeVisibleAnnotations
+  #10 = Utf8               Ljava/lang/annotation/Target;
+  #11 = Utf8               value
+  #12 = Utf8               Ljava/lang/annotation/ElementType;
+  #13 = Utf8               METHOD
+  #14 = Utf8               FIELD
+  #15 = Utf8               TYPE
+  #16 = Utf8               Ljava/lang/annotation/Retention;
+  #17 = Utf8               Ljava/lang/annotation/RetentionPolicy;
+  #18 = Utf8               RUNTIME
+{
+}
+SourceFile: "Main.java"
+RuntimeVisibleAnnotations:
+  0: #10(#11=[e#12.#13,e#12.#14,e#12.#15])
+    java.lang.annotation.Target(
+      value=[Ljava/lang/annotation/ElementType;.METHOD,Ljava/lang/annotation/ElementType;.FIELD,Ljava/lang/annotation/ElementType;.TYPE]
+    )
+  1: #16(#11=e#17.#18)
+    java.lang.annotation.Retention(
+      value=Ljava/lang/annotation/RetentionPolicy;.RUNTIME
+    )
