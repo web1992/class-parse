@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@FFF
+@FFF()
 public class Main extends AbstractMain implements InterfaceMain {
 
     @FFF
@@ -61,7 +61,7 @@ public class Main extends AbstractMain implements InterfaceMain {
     }
 
     @Override
-    @FFF
+    @FFF("3FFF")
     public void say() {
         System.out.println("ha ha ha ha");
     }
@@ -80,7 +80,7 @@ abstract class AbstractMain {
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @interface FFF {
-
+    String value() default "FFF_DEFAULT";
 }
 
 
