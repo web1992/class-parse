@@ -1,5 +1,7 @@
 package core
 
+import "fmt"
+
 type AttributeNameIndex int
 type AttributeLength int
 type ConstantValueIndex int
@@ -52,9 +54,9 @@ u4 code_length;
 u1 code[code_length];
 u2 exception_table_length;
 {   u2 start_pc;
-u2 end_pc;
-u2 handler_pc;
-u2 catch_type;
+	u2 end_pc;
+	u2 handler_pc;
+	u2 catch_type;
 } exception_table[exception_table_length];
 u2 attributes_count;
 attribute_info attributes[attributes_count];
@@ -194,6 +196,57 @@ func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 		ca.Attributes = append(ca.Attributes, attr)
 	}
 	return u2 + u4 + int(l)
+}
+
+//  attr.OpCodes = parseOpCodes(cp.pointer, int(attr.CodeBytesLength), attr.CodeBytes)
+
+func (ca *CodeAttribute) ParseOpCodes(pointer int, codeLength int, bs []byte) OpCodes {
+
+	var ops OpCodes
+	hadReadLen := 0
+	for hadReadLen < codeLength {
+
+		op := Byte2U1(bs[hadReadLen : hadReadLen+U1_L])
+		_bs := bs[hadReadLen:]
+		//desc := core.GetOpDesc(int(op))
+		opObj := CreateOpCode(op)
+		if o, ok := opObj.(*OpCodeTableSwitch); ok {
+			o.Offset = pointer - codeLength + hadReadLen
+			o.Base = int32(hadReadLen)
+			o.LineNo = hadReadLen
+			readLen := o.ReadObj(_bs)
+			//fmt.Printf("%d: %s \n", hadReadLen, core.GetTableSwitchDesc(*o, desc))
+			hadReadLen = readLen + hadReadLen
+			ops = append(ops, o)
+			continue
+		}
+		if o, ok := opObj.(*OpCodeLookupSwitch); ok {
+			o.Offset = pointer - codeLength + hadReadLen
+			o.Base = int32(hadReadLen)
+			o.LineNo = hadReadLen
+			readLen := o.ReadObj(_bs)
+			//fmt.Printf("%d: %s \n", hadReadLen, core.GetLookupSwitchDesc(*o, desc))
+			hadReadLen = readLen + hadReadLen
+			ops = append(ops, o)
+			continue
+		}
+		if o, ok := opObj.(Reader); ok {
+			readLen := o.ReadObj(_bs)
+			//fmt.Printf("%d: %s \n", hadReadLen, desc)
+
+			if opc, ok := opObj.(OpCoder); ok {
+				opc.SetLineNo(hadReadLen)
+			}
+
+			hadReadLen = readLen + hadReadLen
+			ops = append(ops, o)
+			continue
+		} else {
+			panic(fmt.Sprintf("Error opObj %v", opObj))
+		}
+	}
+
+	return ops
 }
 
 /*
