@@ -1,6 +1,6 @@
 Classfile /Users/zl/Documents/DEV/github/class-parse/testfiles/Main.class
-  Last modified 2020年12月27日; size 2453 bytes
-  SHA-256 checksum 863649301616c0cf03832e12cd7e519e0bdcc88c580ca1afb0d909d2b5b31dd4
+  Last modified 2021年1月4日; size 2525 bytes
+  SHA-256 checksum a4d4efcc3ff6a0013517036eea0a809085721606e532a707941802fae5106d0b
   Compiled from "Main.java"
 public class Main extends AbstractMain implements InterfaceMain
   minor version: 0
@@ -8,7 +8,7 @@ public class Main extends AbstractMain implements InterfaceMain
   flags: (0x0021) ACC_PUBLIC, ACC_SUPER
   this_class: #58                         // Main
   super_class: #2                         // AbstractMain
-  interfaces: 1, fields: 10, methods: 5, attributes: 3
+  interfaces: 1, fields: 10, methods: 5, attributes: 4
 Constant pool:
     #1 = Methodref          #2.#3         // AbstractMain."<init>":()V
     #2 = Class              #4            // AbstractMain
@@ -132,45 +132,50 @@ Constant pool:
   #124 = Utf8               SHORT_MIN
   #125 = Class              #126          // InterfaceMain
   #126 = Utf8               InterfaceMain
-  #127 = Utf8               Code
-  #128 = Utf8               LineNumberTable
-  #129 = Utf8               main
-  #130 = Utf8               ([Ljava/lang/String;)V
-  #131 = Utf8               StackMapTable
-  #132 = Class              #133          // java/lang/String
-  #133 = Utf8               java/lang/String
-  #134 = Class              #135          // java/lang/Throwable
-  #135 = Utf8               java/lang/Throwable
-  #136 = Utf8               Exceptions
-  #137 = Class              #138          // java/io/IOException
-  #138 = Utf8               java/io/IOException
-  #139 = Utf8               say
-  #140 = Utf8               lambda$main$0
-  #141 = Utf8               <clinit>
-  #142 = Utf8               SourceFile
-  #143 = Utf8               Main.java
-  #144 = Utf8               BootstrapMethods
-  #145 = MethodHandle       6:#146        // REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
-  #146 = Methodref          #147.#148     // java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
-  #147 = Class              #149          // java/lang/invoke/LambdaMetafactory
-  #148 = NameAndType        #150:#151     // metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
-  #149 = Utf8               java/lang/invoke/LambdaMetafactory
-  #150 = Utf8               metafactory
-  #151 = Utf8               (Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
-  #152 = MethodType         #6            //  ()V
-  #153 = MethodHandle       6:#154        // REF_invokeStatic Main.lambda$main$0:()V
-  #154 = Methodref          #58.#155      // Main.lambda$main$0:()V
-  #155 = NameAndType        #140:#6       // lambda$main$0:()V
-  #156 = Utf8               InnerClasses
-  #157 = Class              #158          // java/lang/invoke/MethodHandles$Lookup
-  #158 = Utf8               java/lang/invoke/MethodHandles$Lookup
-  #159 = Class              #160          // java/lang/invoke/MethodHandles
-  #160 = Utf8               java/lang/invoke/MethodHandles
-  #161 = Utf8               Lookup
+  #127 = Utf8               RuntimeVisibleAnnotations
+  #128 = Utf8               LFFF;
+  #129 = Utf8               Code
+  #130 = Utf8               LineNumberTable
+  #131 = Utf8               main
+  #132 = Utf8               ([Ljava/lang/String;)V
+  #133 = Utf8               StackMapTable
+  #134 = Class              #135          // java/lang/String
+  #135 = Utf8               java/lang/String
+  #136 = Class              #137          // java/lang/Throwable
+  #137 = Utf8               java/lang/Throwable
+  #138 = Utf8               Exceptions
+  #139 = Class              #140          // java/io/IOException
+  #140 = Utf8               java/io/IOException
+  #141 = Utf8               say
+  #142 = Utf8               lambda$main$0
+  #143 = Utf8               <clinit>
+  #144 = Utf8               SourceFile
+  #145 = Utf8               Main.java
+  #146 = Utf8               BootstrapMethods
+  #147 = MethodHandle       6:#148        // REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+  #148 = Methodref          #149.#150     // java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+  #149 = Class              #151          // java/lang/invoke/LambdaMetafactory
+  #150 = NameAndType        #152:#153     // metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+  #151 = Utf8               java/lang/invoke/LambdaMetafactory
+  #152 = Utf8               metafactory
+  #153 = Utf8               (Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+  #154 = MethodType         #6            //  ()V
+  #155 = MethodHandle       6:#156        // REF_invokeStatic Main.lambda$main$0:()V
+  #156 = Methodref          #58.#157      // Main.lambda$main$0:()V
+  #157 = NameAndType        #142:#6       // lambda$main$0:()V
+  #158 = Utf8               InnerClasses
+  #159 = Class              #160          // java/lang/invoke/MethodHandles$Lookup
+  #160 = Utf8               java/lang/invoke/MethodHandles$Lookup
+  #161 = Class              #162          // java/lang/invoke/MethodHandles
+  #162 = Utf8               java/lang/invoke/MethodHandles
+  #163 = Utf8               Lookup
 {
   public static final java.lang.Integer INT_MAX;
     descriptor: Ljava/lang/Integer;
     flags: (0x0019) ACC_PUBLIC, ACC_STATIC, ACC_FINAL
+    RuntimeVisibleAnnotations:
+      0: #128()
+        FFF
 
   public static final java.lang.Integer INT_MIN;
     descriptor: Ljava/lang/Integer;
@@ -326,6 +331,9 @@ Constant pool:
       LineNumberTable:
         line 66: 0
         line 67: 8
+    RuntimeVisibleAnnotations:
+      0: #128()
+        FFF
 
   static {};
     descriptor: ()V
@@ -376,11 +384,14 @@ Constant pool:
         line 25: 77
 }
 SourceFile: "Main.java"
+RuntimeVisibleAnnotations:
+  0: #128()
+    FFF
 BootstrapMethods:
-  0: #145 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+  0: #147 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
     Method arguments:
-      #152 ()V
-      #153 REF_invokeStatic Main.lambda$main$0:()V
-      #152 ()V
+      #154 ()V
+      #155 REF_invokeStatic Main.lambda$main$0:()V
+      #154 ()V
 InnerClasses:
-  public static final #161= #157 of #159; // Lookup=class java/lang/invoke/MethodHandles$Lookup of class java/lang/invoke/MethodHandles
+  public static final #163= #159 of #161; // Lookup=class java/lang/invoke/MethodHandles$Lookup of class java/lang/invoke/MethodHandles

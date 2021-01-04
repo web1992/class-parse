@@ -78,7 +78,7 @@ abstract class AbstractMain {
 }
 
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.TYPE})
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME)
 @interface FFF {
 
 }
