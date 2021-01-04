@@ -45,18 +45,32 @@ func FieldNew() *Field {
 
 func (tc *Field) ReadObj(bytes []byte) int {
 
+	readLen := 0
 	var af AccessFlag
-	afBytes := bytes[0:u2]
-	af.Flag = int(Byte2U2(afBytes))
+	af.Flag = int(Byte2U2(bytes[0 : readLen+u2]))
+	readLen += u2
 	af.FlagString = GetFlag(af)
 	tc.AccessFlag = af
 
-	tc.NameIndex = NameIndex(Byte2U2(bytes[u2 : u2*2]))
-	tc.DescriptorIndex = DescriptorIndex(Byte2U2(bytes[u2*2 : u2*3]))
+	tc.NameIndex = NameIndex(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
+	tc.DescriptorIndex = DescriptorIndex(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
 
 	var ac AttributeCount
-	acBytes := bytes[u2*3 : u2*4]
-	ac.Count = Byte2U2(acBytes)
+	ac.Count = Byte2U2(bytes[readLen : readLen+u2])
+	readLen += u2
+
 	tc.AttributeCount = ac
 	return u2 * 4
 }
+
+/*
+field_info {
+u2             access_flags;
+u2             name_index;
+u2             descriptor_index;
+u2             attributes_count;
+attribute_info attributes[attributes_count];
+}
+*/

@@ -201,6 +201,7 @@ func (cp *ClassParse) fields(cpInfos core.CpInfos, count core.FieldsCount) core.
 		field.NameString = core.GetCp(cpInfos, int(field.NameIndex))
 		field.DescriptorString = core.GetCp(cpInfos, int(field.DescriptorIndex))
 		field.AccessFlagString = core.GetFlag(field.AccessFlag)
+		field.Attributes = cp.attributes(cpInfos, field.AttributeCount)
 		fields = append(fields, *field)
 	}
 

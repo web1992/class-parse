@@ -208,14 +208,14 @@ func (ca *CodeAttribute) ParseOpCodes(pointer int, codeLength int, bs []byte) Op
 
 		op := Byte2U1(bs[hadReadLen : hadReadLen+U1_L])
 		_bs := bs[hadReadLen:]
-		//desc := core.GetOpDesc(int(op))
+		desc := GetOpDesc(int(op))
 		opObj := CreateOpCode(op)
 		if o, ok := opObj.(*OpCodeTableSwitch); ok {
 			o.Offset = pointer - codeLength + hadReadLen
 			o.Base = int32(hadReadLen)
 			o.LineNo = hadReadLen
 			readLen := o.ReadObj(_bs)
-			//fmt.Printf("%d: %s \n", hadReadLen, core.GetTableSwitchDesc(*o, desc))
+			fmt.Printf("%d: %s \n", hadReadLen, GetTableSwitchDesc(*o, desc))
 			hadReadLen = readLen + hadReadLen
 			ops = append(ops, o)
 			continue
@@ -225,14 +225,14 @@ func (ca *CodeAttribute) ParseOpCodes(pointer int, codeLength int, bs []byte) Op
 			o.Base = int32(hadReadLen)
 			o.LineNo = hadReadLen
 			readLen := o.ReadObj(_bs)
-			//fmt.Printf("%d: %s \n", hadReadLen, core.GetLookupSwitchDesc(*o, desc))
+			fmt.Printf("%d: %s \n", hadReadLen, GetLookupSwitchDesc(*o, desc))
 			hadReadLen = readLen + hadReadLen
 			ops = append(ops, o)
 			continue
 		}
 		if o, ok := opObj.(Reader); ok {
 			readLen := o.ReadObj(_bs)
-			//fmt.Printf("%d: %s \n", hadReadLen, desc)
+			fmt.Printf("%d: %s \n", hadReadLen, desc)
 
 			if opc, ok := opObj.(OpCoder); ok {
 				opc.SetLineNo(hadReadLen)
@@ -482,4 +482,140 @@ func (bma *BootstrapMethodsAttribute) ReadObj(bytes []byte) int {
 		bma.BootstrapMethods = append(bma.BootstrapMethods, bm)
 	}
 	return u2 + u4 + l
+}
+
+/**
+
+RuntimeVisibleAnnotations_attribute {
+    u2         attribute_name_index;
+    u4         attribute_length;
+    u2         num_annotations;
+    annotation annotations[num_annotations];
+}
+
+annotation {
+    u2 type_index;
+    u2 num_element_value_pairs;
+    {   u2            element_name_index;
+        element_value value;
+    } element_value_pairs[num_element_value_pairs];
+}
+
+*/
+type RuntimeVisibleAnnotationsAttr struct {
+	Attribute
+	NumAnnotations int
+	Annotations    []Annotation
+}
+
+func (rva *RuntimeVisibleAnnotationsAttr) ReadObj(bytes []byte) int {
+
+	readLen := 0
+	i := Byte2U2(bytes[0:u2])
+	readLen += u2
+	rva.AttributeNameIndex = i
+
+	l := Byte2U4(bytes[readLen : readLen+u4])
+	rva.AttributeLength = l
+	readLen += u4
+
+	rva.NumAnnotations = int(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
+
+	for i := 0; i < rva.NumAnnotations; i++ {
+		var ann Annotation
+
+		typeIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
+		readLen += u2
+
+		pairsNum := int(Byte2U2(bytes[readLen : readLen+u2]))
+		readLen += u2
+
+		for i := 0; i < pairsNum; i++ {
+			element_name_index := int(Byte2U2(bytes[readLen : readLen+u2]))
+			readLen += u2
+			fmt.Println(element_name_index)
+
+		}
+		fmt.Println(typeIndex)
+		fmt.Println(pairsNum)
+		rva.Annotations = append(rva.Annotations, ann)
+	}
+
+	return u2 + u4 + int(l)
+}
+
+/**
+
+annotation {
+    u2 type_index;
+    u2 num_element_value_pairs;
+    {   u2            element_name_index;
+        element_value value;
+    } element_value_pairs[num_element_value_pairs];
+}
+*/
+type Annotation struct {
+	TypeIndex int
+	NumPairs  int
+	Pairs     []ElementValuePair
+}
+
+type ElementValuePair struct {
+	ElementNameIndex int
+	ElementValue
+}
+
+/**
+element_value {
+    u1 tag;
+    union {
+        u2 const_value_index;
+
+        {   u2 type_name_index;
+            u2 const_name_index;
+        } enum_const_value;
+
+        u2 class_info_index;
+
+        annotation annotation_value;
+
+        {   u2            num_values;
+            element_value values[num_values];
+        } array_value;
+    } value;
+}
+*/
+
+/*
+tag Item	Type	value Item	Constant Type
+B	byte	const_value_index	CONSTANT_Integer
+C	char	const_value_index	CONSTANT_Integer
+D	double	const_value_index	CONSTANT_Double
+F	float	const_value_index	CONSTANT_Float
+I	int		const_value_index	CONSTANT_Integer
+J	long	const_value_index	CONSTANT_Long
+S	short	const_value_index	CONSTANT_Integer
+Z	boolean	const_value_index	CONSTANT_Integer
+s	String	const_value_index	CONSTANT_Utf8
+e	Enum type	enum_const_value	Not applicable
+c	Class	class_info_index	Not applicable
+@	Annotation type	annotation_value	Not applicable
+[	Array type	array_value	Not applicable
+*/
+type ElementValue struct {
+	Tag
+	Value struct {
+		ConstValueIndex int
+		EnumConstValue  struct {
+			TypeNameIndex  int
+			ConstNameIndex int
+		}
+		ClassInfoIndex  int
+		AnnotationValue Annotation
+		ArrayValue      struct {
+			NumValues int
+			Values    []ElementValue
+		}
+	}
 }

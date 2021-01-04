@@ -116,6 +116,13 @@ func CreateAttribute(name string, cpInfos CpInfos) interface{} {
 				Name:    name,
 			},
 		}
+	/*case RuntimeVisibleAnnotations:
+	return &RuntimeVisibleAnnotationsAttr{
+		Attribute: Attribute{
+			CpInfos: cpInfos,
+			Name:    name,
+		},
+	}*/
 	default:
 		return AttributeNew(name, cpInfos)
 	}
