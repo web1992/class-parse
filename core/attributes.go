@@ -312,18 +312,18 @@ func (lt *LineTable) ReadObj(bytes []byte) int {
 	return u2 + u2
 }
 
-func (lnta *LineNumberTableAttribute) ReadObj(bytes []byte) int {
+func (lineTable *LineNumberTableAttribute) ReadObj(bytes []byte) int {
 	readLen := 0
 	i := Byte2U2(bytes[readLen : readLen+u2])
-	lnta.AttributeNameIndex = AttributeNameIndex(i)
+	lineTable.AttributeNameIndex = AttributeNameIndex(i)
 	readLen += u2
 
 	l := int(Byte2U4(bytes[readLen : readLen+u4]))
-	lnta.AttributeLength = AttributeLength(l)
+	lineTable.AttributeLength = AttributeLength(l)
 	readLen += u4
 
 	tableLen := int(Byte2U2(bytes[readLen : readLen+u2]))
-	lnta.LineNumberTableLength = LineNumberTableLength(tableLen)
+	lineTable.LineNumberTableLength = LineNumberTableLength(tableLen)
 	readLen += u2
 
 	bs := bytes[readLen:]
@@ -331,7 +331,7 @@ func (lnta *LineNumberTableAttribute) ReadObj(bytes []byte) int {
 	for i := 0; i < tableLen; i++ {
 		var lt LineTable
 		rl += lt.ReadObj(bs[rl:])
-		lnta.LineNumberTable = append(lnta.LineNumberTable, lt)
+		lineTable.LineNumberTable = append(lineTable.LineNumberTable, lt)
 	}
 
 	return u2 + u4 + l
