@@ -536,9 +536,9 @@ func (rva *RuntimeVisibleAnnotationsAttr) ReadObj(bytes []byte) int {
 		readLen += u2
 
 		for i := 0; i < pairsNum; i++ {
-			element_name_index := int(Byte2U2(bytes[readLen : readLen+u2]))
+			elementNameIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
 			readLen += u2
-			fmt.Println(element_name_index)
+			fmt.Println(elementNameIndex)
 
 		}
 		fmt.Println(typeIndex)

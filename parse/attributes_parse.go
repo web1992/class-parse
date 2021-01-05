@@ -115,6 +115,11 @@ func (cp *ClassParse) parseAttr(ca interface{}, cpInfos core.CpInfos, name strin
 		return attr
 	}
 
+	if attr, ok := ca.(*core.RuntimeVisibleAnnotationsAttr); ok {
+		cp.Read(attr)
+		return attr
+	}
+
 	// default
 	attr := core.AttributeNew(name, cpInfos)
 	cp.Read(attr)
