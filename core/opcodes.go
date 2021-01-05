@@ -358,32 +358,34 @@ func (op *OpCodeTableSwitch) ReadObj(bytes []byte) int {
 }
 
 func (op *OpCodeLookupSwitch) ReadObj(bytes []byte) int {
-	op.Opc = Byte2U1(bytes[0:u1])
+	readLen := 0
+	op.Opc = Byte2U1(bytes[readLen:u1])
+	readLen += u1
 	op.Desc = GetOpDesc(int(op.Opc))
-	pad := (op.Offset + 1) % 4
-	defaultOffset := Byte2U4(bytes[pad+u1 : pad+u1+u4])
+	pad := op.Offset % 4
+	readLen += pad
+	defaultOffset := Byte2U4(bytes[readLen : readLen+u4])
+	readLen += u4
+
 	var p Pair
 	p.Default = true
 	p.LineNo = defaultOffset + op.Base
 	p.Offset = defaultOffset
 	op.Pairs = append(op.Pairs, p)
-	npairsLen := int(Byte2U4(bytes[pad+u1+u4 : pad+u1+u4+u4]))
+	npairsLen := int(Byte2U4(bytes[readLen : readLen+u4]))
+	readLen += u4
 
-	start := pad + u1 + u4
-	offset := 4
 	for i := 0; i < npairsLen; i++ {
 		var p Pair
 		p.Default = false
-		p.Case = Byte2U4(bytes[start+offset : start+offset*2])
-		offset = offset + 4
-		p.Offset = Byte2U4(bytes[start+offset : start+offset*2])
+		p.Case = Byte2U4(bytes[readLen : readLen+u4])
+		readLen += u4
+		p.Offset = Byte2U4(bytes[readLen : readLen+u4])
+		readLen += u4
 		p.LineNo = op.Base + p.Offset
-		offset = offset + 4
 		op.Pairs = append(op.Pairs, p)
 	}
-	//fmt.Println(npairsLen)
-	//fmt.Println(defaultOffset)
-	return 1 + pad + u4 + +u4 + npairsLen*8
+	return readLen
 }
 
 func (op *OpCodeLookupSwitch) String() string {

@@ -79,6 +79,7 @@ contain the attribute_name_index and attribute_length items.
 */
 
 type CodeAttribute struct {
+	Offset int
 	Attribute
 	Name string
 	AttributeNameIndex
@@ -163,10 +164,13 @@ func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 	cl := int(Byte2U4(bytes[readLen : readLen+u4]))
 	ca.CodeBytesLength = CodeBytesLength(cl)
 	readLen += u4
+	offset := ca.Offset + readLen
 
 	bs := bytes[readLen : readLen+cl]
 	ca.CodeBytes = bs
 	readLen += cl
+
+	ca.OpCodes = ca.ParseOpCodes(offset, cl, bs)
 
 	etl := Byte2U2(bytes[readLen : readLen+u2])
 	ca.ExceptionTableLength = ExceptionTableLength(etl)
@@ -198,9 +202,7 @@ func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 	return u2 + u4 + int(l)
 }
 
-//  attr.OpCodes = parseOpCodes(cp.pointer, int(attr.CodeBytesLength), attr.CodeBytes)
-
-func (ca *CodeAttribute) ParseOpCodes(pointer int, codeLength int, bs []byte) OpCodes {
+func (ca *CodeAttribute) ParseOpCodes(offset int, codeLength int, bs []byte) OpCodes {
 
 	var ops OpCodes
 	hadReadLen := 0
@@ -213,7 +215,7 @@ func (ca *CodeAttribute) ParseOpCodes(pointer int, codeLength int, bs []byte) Op
 		if o, ok := opObj.(*OpCodeTableSwitch); ok {
 			// The alignment required of the 4-byte operands of the tableswitch instruction guarantees 4-byte alignment of those operands if
 			// and only if the method that contains the tableswitch starts on a 4-byte boundary.
-			o.Offset = pointer - hadReadLen
+			o.Offset = offset + hadReadLen
 			o.Base = int32(hadReadLen)
 			o.LineNo = hadReadLen
 			readLen := o.ReadObj(_bs)
@@ -223,7 +225,7 @@ func (ca *CodeAttribute) ParseOpCodes(pointer int, codeLength int, bs []byte) Op
 			continue
 		}
 		if o, ok := opObj.(*OpCodeLookupSwitch); ok {
-			o.Offset = pointer - codeLength + hadReadLen
+			o.Offset = offset + hadReadLen
 			o.Base = int32(hadReadLen)
 			o.LineNo = hadReadLen
 			readLen := o.ReadObj(_bs)
