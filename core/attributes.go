@@ -528,21 +528,8 @@ func (rva *RuntimeVisibleAnnotationsAttr) ReadObj(bytes []byte) int {
 
 	for i := 0; i < rva.NumAnnotations; i++ {
 		var ann Annotation
-
-		typeIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
-		readLen += u2
-
-		pairsNum := int(Byte2U2(bytes[readLen : readLen+u2]))
-		readLen += u2
-
-		for i := 0; i < pairsNum; i++ {
-			elementNameIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
-			readLen += u2
-			fmt.Println(elementNameIndex)
-
-		}
-		fmt.Println(typeIndex)
-		fmt.Println(pairsNum)
+		ann.CpInfos = rva.Attribute.CpInfos
+		readLen += ann.ReadObj(bytes[readLen:])
 		rva.Annotations = append(rva.Annotations, ann)
 	}
 
@@ -560,14 +547,86 @@ annotation {
 }
 */
 type Annotation struct {
-	TypeIndex int
-	NumPairs  int
-	Pairs     []ElementValuePair
+	CpInfos
+	TypeIndex        int
+	TypeName         string
+	NumPairs         int
+	ElementValuePair []ElementValuePair
+}
+
+func (ann *Annotation) ReadObj(bytes []byte) int {
+
+	readLen := 0
+	typeIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
+	ann.TypeIndex = typeIndex
+	ann.TypeName = GetCp(ann.CpInfos, typeIndex)
+	fmt.Printf("Annotation name is %s \n", ann.TypeName)
+	pairsNum := int(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
+	ann.NumPairs = pairsNum
+
+	for i := 0; i < pairsNum; i++ {
+		var evp ElementValuePair
+		elementNameIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
+		readLen += u2
+		evp.ElementNameIndex = elementNameIndex
+		evp.ElementName = GetCp(ann.CpInfos, elementNameIndex)
+
+		var ev ElementValue
+		ev.CpInfos = ann.CpInfos
+		readLen += ev.ReadObj(bytes[readLen:])
+		evp.ElementValue = ev
+
+		ann.ElementValuePair = append(ann.ElementValuePair, evp)
+	}
+
+	return readLen
 }
 
 type ElementValuePair struct {
 	ElementNameIndex int
+	ElementName      string
 	ElementValue
+}
+
+/*
+tag Item	Type	value Item	Constant Type
+B	byte	const_value_index	CONSTANT_Integer
+C	char	const_value_index	CONSTANT_Integer
+D	double	const_value_index	CONSTANT_Double
+F	float	const_value_index	CONSTANT_Float
+I	int		const_value_index	CONSTANT_Integer
+J	long	const_value_index	CONSTANT_Long
+S	short	const_value_index	CONSTANT_Integer
+Z	boolean	const_value_index	CONSTANT_Integer
+s	String	const_value_index	CONSTANT_Utf8
+e	Enum type	enum_const_value	Not applicable
+c	Class	class_info_index	Not applicable
+@	Annotation type	annotation_value	Not applicable
+[	Array type	array_value	Not applicable
+*/
+type ElementValue struct {
+	CpInfos
+	Tag
+	Value
+}
+
+type Value struct {
+	ConstValueIndex int
+	EnumConstValue
+	ClassInfoIndex int
+	Annotation
+	ArrayValue
+}
+type EnumConstValue struct {
+	TypeNameIndex  int
+	ConstNameIndex int
+}
+
+type ArrayValue struct {
+	NumValues int
+	Values    []ElementValue
 }
 
 /**
@@ -590,36 +649,47 @@ element_value {
     } value;
 }
 */
+func (rva *ElementValue) zxReadObj(bytes []byte) int {
 
-/*
-tag Item	Type	value Item	Constant Type
-B	byte	const_value_index	CONSTANT_Integer
-C	char	const_value_index	CONSTANT_Integer
-D	double	const_value_index	CONSTANT_Double
-F	float	const_value_index	CONSTANT_Float
-I	int		const_value_index	CONSTANT_Integer
-J	long	const_value_index	CONSTANT_Long
-S	short	const_value_index	CONSTANT_Integer
-Z	boolean	const_value_index	CONSTANT_Integer
-s	String	const_value_index	CONSTANT_Utf8
-e	Enum type	enum_const_value	Not applicable
-c	Class	class_info_index	Not applicable
-@	Annotation type	annotation_value	Not applicable
-[	Array type	array_value	Not applicable
-*/
-type ElementValue struct {
-	Tag
-	Value struct {
-		ConstValueIndex int
-		EnumConstValue  struct {
-			TypeNameIndex  int
-			ConstNameIndex int
-		}
-		ClassInfoIndex  int
-		AnnotationValue Annotation
-		ArrayValue      struct {
-			NumValues int
-			Values    []ElementValue
-		}
+	readLen := 0
+	rva.Tag = Tag(Byte2U1(bytes[readLen : readLen+u1]))
+	readLen += u1
+
+	var v Value
+	rva.Value = v
+	v.ConstValueIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
+
+	typeNameIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
+	constNameIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
+
+	var ecv EnumConstValue
+	ecv.ConstNameIndex = constNameIndex
+	ecv.TypeNameIndex = typeNameIndex
+	v.EnumConstValue = ecv
+
+	v.ClassInfoIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
+
+	var ann Annotation
+	ann.CpInfos = rva.CpInfos
+	readLen += ann.ReadObj(bytes[readLen:])
+	v.Annotation = ann
+
+	numValues := int(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
+
+	var av ArrayValue
+	v.ArrayValue = av
+	av.NumValues = numValues
+
+	for i := 0; i < numValues; i++ {
+		var ev ElementValue
+		readLen += ev.ReadObj(bytes[readLen:])
+		av.Values = append(av.Values, ev)
 	}
+
+	return readLen
 }

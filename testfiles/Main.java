@@ -62,6 +62,7 @@ public class Main extends AbstractMain implements InterfaceMain {
 
     @Override
     @FFF("3FFF")
+    @Name(name="My Name",index=666)
     public void say() {
         System.out.println("ha ha ha ha");
     }
@@ -83,4 +84,10 @@ abstract class AbstractMain {
     String value() default "FFF_DEFAULT";
 }
 
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@interface Name {
+    String name() default "Name";
+    int index() default -1;
+}
 
