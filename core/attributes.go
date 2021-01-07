@@ -372,15 +372,18 @@ type SourceFileAttribute struct {
 }
 
 func (sfa *SourceFileAttribute) ReadObj(bytes []byte) int {
-	sfa.AttributeNameIndex = Byte2U2(bytes[0:u2])
-
-	l := Byte2U4(bytes[u2 : u2+u4])
+	readLen := 0
+	sfa.AttributeNameIndex = Byte2U2(bytes[0 : readLen+u2])
+	readLen += u2
+	l := Byte2U4(bytes[readLen : readLen+u4])
 	sfa.AttributeLength = l
+	readLen += u4
 
-	sfa.SourceFileIndex = Byte2U2(bytes[u2+u4 : u2+u4+u2])
+	sfa.SourceFileIndex = Byte2U2(bytes[readLen : readLen+u2])
+	readLen += u2
 	sfa.SourceFileName = GetCp(sfa.CpInfos, int(sfa.SourceFileIndex))
 
-	return u2 + u4 + u2
+	return readLen
 }
 
 /*
