@@ -467,20 +467,19 @@ func (bma *BootstrapMethodsAttribute) ReadObj(bytes []byte) int {
 	bma.NumBootstrapMethods = m
 	readLen += u2
 
-	bs := bytes[readLen : readLen+l]
-	readLen += l
 	mNum := int(m)
 	for i := 0; i < mNum; i++ {
-		base := i * u2
 		var bm BootstrapMethod
-		bm.BootstrapMethodRef = Byte2U2(bs[base : base+u2])
-		nba := Byte2U2(bs[base+u2 : base+u2+u2])
-		bm.NumBootstrapArguments = nba
+		bm.BootstrapMethodRef = Byte2U2(bytes[readLen : readLen+u2])
+		readLen += u2
 
-		bs2 := bs[base+u2+u2 : base+u2+u2+u2]
+		nba := Byte2U2(bytes[readLen : readLen+u2])
+		bm.NumBootstrapArguments = nba
+		readLen += u2
+
 		for j := 0; j < int(nba); j++ {
-			base2 := j * u2
-			nba := Byte2U2(bs2[base2 : base2+u2])
+			nba := Byte2U2(bytes[readLen : readLen+u2])
+			readLen += u2
 			bm.BootstrapArguments = append(bm.BootstrapArguments, nba)
 		}
 		bma.BootstrapMethods = append(bma.BootstrapMethods, bm)
@@ -533,7 +532,7 @@ func (rva *RuntimeVisibleAnnotationsAttr) ReadObj(bytes []byte) int {
 		rva.Annotations = append(rva.Annotations, ann)
 	}
 
-	return u2 + u4 + int(l)
+	return readLen
 }
 
 /**
@@ -649,14 +648,14 @@ element_value {
     } value;
 }
 */
-func (rva *ElementValue) zxReadObj(bytes []byte) int {
+func (ev *ElementValue) ReadObj(bytes []byte) int {
 
 	readLen := 0
-	rva.Tag = Tag(Byte2U1(bytes[readLen : readLen+u1]))
+	ev.Tag = Tag(Byte2U1(bytes[readLen : readLen+u1]))
 	readLen += u1
 
 	var v Value
-	rva.Value = v
+	ev.Value = v
 	v.ConstValueIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
 	readLen += u2
 
@@ -674,7 +673,7 @@ func (rva *ElementValue) zxReadObj(bytes []byte) int {
 	readLen += u2
 
 	var ann Annotation
-	ann.CpInfos = rva.CpInfos
+	ann.CpInfos = ev.CpInfos
 	readLen += ann.ReadObj(bytes[readLen:])
 	v.Annotation = ann
 
@@ -686,9 +685,10 @@ func (rva *ElementValue) zxReadObj(bytes []byte) int {
 	av.NumValues = numValues
 
 	for i := 0; i < numValues; i++ {
-		var ev ElementValue
-		readLen += ev.ReadObj(bytes[readLen:])
-		av.Values = append(av.Values, ev)
+		var _ev ElementValue
+		_ev.CpInfos = ev.CpInfos
+		readLen += _ev.ReadObj(bytes[readLen:])
+		av.Values = append(av.Values, _ev)
 	}
 
 	return readLen
