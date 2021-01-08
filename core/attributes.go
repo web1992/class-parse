@@ -535,7 +535,7 @@ func (rva *RuntimeVisibleAnnotationsAttr) ReadObj(bytes []byte) int {
 		rva.Annotations = append(rva.Annotations, ann)
 	}
 
-	return readLen
+	return u2 + u4 + int(l)
 }
 
 /**
@@ -611,6 +611,7 @@ c	Class	class_info_index	Not applicable
 type ElementValue struct {
 	CpInfos
 	Tag
+	TagDesc string
 	Value
 }
 
@@ -656,7 +657,10 @@ func (ev *ElementValue) ReadObj(bytes []byte) int {
 	readLen := 0
 	ev.Tag = Tag(Byte2U1(bytes[readLen : readLen+u1]))
 	readLen += u1
+	cpInfos := ev.CpInfos
+	ev.TagDesc = GetCp(cpInfos, int(ev.Tag))
 
+	fmt.Printf("ev.Tag %s \n", ev.TagDesc)
 	var v Value
 	ev.Value = v
 	v.ConstValueIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
@@ -676,7 +680,7 @@ func (ev *ElementValue) ReadObj(bytes []byte) int {
 	readLen += u2
 
 	var ann Annotation
-	ann.CpInfos = ev.CpInfos
+	ann.CpInfos = cpInfos
 	readLen += ann.ReadObj(bytes[readLen:])
 	v.Annotation = ann
 
@@ -689,7 +693,7 @@ func (ev *ElementValue) ReadObj(bytes []byte) int {
 
 	for i := 0; i < numValues; i++ {
 		var _ev ElementValue
-		_ev.CpInfos = ev.CpInfos
+		_ev.CpInfos = cpInfos
 		readLen += _ev.ReadObj(bytes[readLen:])
 		av.Values = append(av.Values, _ev)
 	}
