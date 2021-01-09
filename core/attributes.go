@@ -10,7 +10,6 @@ type MaxLocals int
 type CodeBytesLength int
 type ExceptionTableLength int
 type NumberOfExceptions int
-type ExceptionIndexTable []int
 type LineNumberTableLength int
 type StartPc int
 type EndPc int
@@ -267,16 +266,39 @@ type ExceptionsAttribute struct {
 	AttributeNameIndex
 	AttributeLength
 	NumberOfExceptions
-	ExceptionIndexTable
+	ExceptionIndexTable []ExceptionIndexTable
+}
+
+type ExceptionIndexTable struct {
+	Index int
+	Name  string
 }
 
 func (ea *ExceptionsAttribute) ReadObj(bytes []byte) int {
-	i := Byte2U2(bytes[0:u2])
+	readLen := 0
+	i := Byte2U2(bytes[readLen:u2])
 	ea.AttributeNameIndex = AttributeNameIndex(i)
-
-	l := Byte2U4(bytes[u2 : u2+u4])
+	readLen += u2
+	l := Byte2U4(bytes[readLen : readLen+u4])
 	ea.AttributeLength = AttributeLength(l)
+	readLen += u4
 
+	nums := int(Byte2U2(bytes[readLen : readLen+u2]))
+	ea.NumberOfExceptions = NumberOfExceptions(nums)
+	readLen += u2
+
+	var ts []ExceptionIndexTable
+	for n := 0; n < nums; n++ {
+
+		var table ExceptionIndexTable
+		table.Index = int(Byte2U2(bytes[readLen : readLen+u2]))
+		table.Name = GetCp(ea.Attribute.CpInfos, table.Index)
+
+		readLen += u2
+
+		ts = append(ts, table)
+	}
+	ea.ExceptionIndexTable = ts
 	return u2 + u4 + int(l)
 }
 
