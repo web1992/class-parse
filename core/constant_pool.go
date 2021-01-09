@@ -32,44 +32,36 @@ package core
 // 8	REF_newInvokeSpecial	new C; dup; invokespecial C.<init>:(A*)V
 // 9	REF_invokeInterface	invokeinterface C.m:(A*)T
 
+const (
+	_ = iota
+	REF_getField
+	REF_getStatic
+	REF_putField
+	REF_putStatic
+	REF_invokeVirtual
+	REF_invokeStatic
+	REF_invokeSpecial
+	REF_newInvokeSpecial
+	REF_invokeInterface
+)
+
+var referenceMap = make(map[int]string)
+
+func init() {
+	referenceMap[REF_getField] = "REF_getField"
+	referenceMap[REF_getStatic] = "REF_getStatic"
+	referenceMap[REF_putField] = "REF_putField"
+	referenceMap[REF_putStatic] = "REF_putStatic"
+	referenceMap[REF_invokeVirtual] = "REF_invokeVirtual"
+	referenceMap[REF_invokeStatic] = "REF_invokeStatic"
+	referenceMap[REF_invokeSpecial] = "REF_invokeSpecial"
+	referenceMap[REF_newInvokeSpecial] = "REF_newInvokeSpecial"
+	referenceMap[REF_invokeInterface] = "REF_invokeInterface"
+}
+
 func getReferenceKind(referenceKind int32) string {
 
-	if referenceKind == 1 {
-		return "REF_getField"
-	}
-
-	if referenceKind == 2 {
-		return "REF_getStatic"
-	}
-
-	if referenceKind == 3 {
-		return "REF_putField"
-	}
-
-	if referenceKind == 4 {
-		return "REF_putStatic"
-	}
-	if referenceKind == 5 {
-		return "REF_invokeVirtual"
-	}
-
-	if referenceKind == 6 {
-		return "REF_invokeStatic"
-	}
-
-	if referenceKind == 7 {
-		return "REF_invokeSpecial"
-	}
-
-	if referenceKind == 8 {
-		return "REF_newInvokeSpecial"
-	}
-
-	if referenceKind == 9 {
-		return "REF_invokeInterface"
-	}
-
-	return ""
+	return referenceMap[int(referenceKind)]
 }
 
 // CpInfos is a array for CpInfo
