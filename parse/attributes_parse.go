@@ -85,33 +85,17 @@ func (cp *ClassParse) parseAttr(ca interface{}, cpInfos core.CpInfos, name strin
 
 	if attr, ok := ca.(*core.SourceFileAttribute); ok {
 		cp.Read(attr)
-		attr.AttributeName = name
-		//attr.SourceFileName = core.GetCp(cpInfos, int(attr.SourceFileIndex))
 		return attr
 	}
 
 	if attr, ok := ca.(*core.BootstrapMethodsAttribute); ok {
 		cp.Read(attr)
-		attr.AttributeName = core.GetCp(cpInfos, int(attr.AttributeNameIndex))
-		bms := attr.BootstrapMethods
-		var t []core.BootstrapMethod
-		for _, b := range bms {
-			b.BootstrapMethodRefName = core.GetCp(cpInfos, int(b.BootstrapMethodRef))
-			for _, bi := range b.BootstrapArguments {
-				bn := core.GetCp(cpInfos, int(bi))
-				b.BootstrapArgumentName = append(b.BootstrapArgumentName, bn)
-			}
-			t = append(t, b)
-		}
-		attr.BootstrapMethods = t
 		return attr
 	}
 	if attr, ok := ca.(*core.CodeAttribute); ok {
 		// p........p+readLen......
 		attr.Offset = cp.pointer
 		cp.Read(attr)
-		//attr.OpCodes = attr.ParseOpCodes(pointerStart, int(attr.CodeBytesLength), attr.CodeBytes)
-		//attr.Attributes = cp.attributes(cpInfos, attr.AttributeCount)
 		return attr
 	}
 

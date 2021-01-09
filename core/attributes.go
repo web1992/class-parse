@@ -458,9 +458,10 @@ type BootstrapMethod struct {
 
 func (bma *BootstrapMethodsAttribute) ReadObj(bytes []byte) int {
 	readLen := 0
-	i := Byte2U2(bytes[0 : readLen+u2])
+	i := int(Byte2U2(bytes[0 : readLen+u2]))
 	readLen += u2
 	bma.AttributeNameIndex = AttributeNameIndex(i)
+	bma.AttributeName = GetCp(bma.CpInfos, i)
 
 	l := int(Byte2U4(bytes[readLen : readLen+u4]))
 	bma.AttributeLength = AttributeLength(l)
@@ -474,6 +475,7 @@ func (bma *BootstrapMethodsAttribute) ReadObj(bytes []byte) int {
 	for i := 0; i < mNum; i++ {
 		var bm BootstrapMethod
 		bm.BootstrapMethodRef = Byte2U2(bytes[readLen : readLen+u2])
+		bm.BootstrapMethodRefName = GetCp(bma.CpInfos, int(bm.BootstrapMethodRef))
 		readLen += u2
 
 		nba := Byte2U2(bytes[readLen : readLen+u2])
@@ -484,6 +486,7 @@ func (bma *BootstrapMethodsAttribute) ReadObj(bytes []byte) int {
 			nba := Byte2U2(bytes[readLen : readLen+u2])
 			readLen += u2
 			bm.BootstrapArguments = append(bm.BootstrapArguments, nba)
+			bm.BootstrapArgumentName = append(bm.BootstrapArgumentName, GetCp(bma.CpInfos, int(nba)))
 		}
 		bma.BootstrapMethods = append(bma.BootstrapMethods, bm)
 	}
@@ -563,7 +566,7 @@ func (ann *Annotation) ReadObj(bytes []byte) int {
 	readLen += u2
 	ann.TypeIndex = typeIndex
 	ann.TypeName = GetCp(ann.CpInfos, typeIndex)
-	fmt.Printf("Annotation name is %s \n", ann.TypeName)
+	//fmt.Printf("Annotation name is %s \n", ann.TypeName)
 	pairsNum := int(Byte2U2(bytes[readLen : readLen+u2]))
 	readLen += u2
 	ann.NumPairs = pairsNum
