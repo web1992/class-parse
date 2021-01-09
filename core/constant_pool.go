@@ -67,6 +67,37 @@ func getReferenceKind(referenceKind int32) string {
 // CpInfos is a array for CpInfo
 type CpInfos []interface{}
 
+type ConstantIndexU2 int
+type ConstantIndexU4 int
+
+func (ci ConstantIndexU2) ReadObj(bytes []byte) int {
+
+	return u2
+}
+
+func (ci ConstantIndexU4) ReadObj(bytes []byte) int {
+
+	return u4
+}
+
+// ConstantPoolCount constant_pool_count
+type ConstantPoolCount struct {
+	Count int
+}
+
+func (cp *ConstantPoolCount) ByteLen() int {
+	return u2
+}
+
+func ConstantPoolCountNew() *ConstantPoolCount {
+	return &ConstantPoolCount{}
+}
+
+func (cpc *ConstantPoolCount) ReadObj(bytes []byte) int {
+	cpc.Count = int(Byte2U2(bytes[0:u2]))
+	return u2
+}
+
 /**
 tag =7
 CONSTANT_Class_info {

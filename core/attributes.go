@@ -425,22 +425,61 @@ type InnerClassesAttribute struct {
 	Name string
 	AttributeNameIndex
 	AttributeLength
-	NumberOfClasses int32
-	Classes         []struct {
-		InnerClassInfoIndex   int32
-		OuterClassInfoIndex   int32
-		InnerNameIndex        int32
-		InnerClassAccessFlags int32
-	}
+	NumberOfClasses int
+	Classes         []Classes
+}
+type Classes struct {
+	InnerClassInfoIndex   int
+	OuterClassInfoIndex   int
+	InnerNameIndex        int
+	InnerClassAccessFlags int
+
+	InnerClassInfoIndexDesc   string
+	OuterClassInfoIndexDesc   string
+	InnerNameIndexDesc        string
+	InnerClassAccessFlagsDesc string
 }
 
 func (sfa *InnerClassesAttribute) ReadObj(bytes []byte) int {
+	readLen := 0
 	i := Byte2U2(bytes[0:u2])
 	sfa.AttributeNameIndex = AttributeNameIndex(i)
+	readLen += u2
 
-	l := Byte2U4(bytes[u2 : u2+u4])
+	l := Byte2U4(bytes[readLen : readLen+u4])
+	readLen += u4
 	sfa.AttributeLength = AttributeLength(l)
 
+	num := Byte2U2(bytes[readLen : readLen+u2])
+	sfa.NumberOfClasses = int(num)
+	readLen += u2
+	var cl []Classes
+	cpInfos := sfa.CpInfos
+	for n := 0; n < int(num); n++ {
+
+		var classes Classes
+
+		classes.InnerClassInfoIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
+		classes.InnerClassInfoIndexDesc = GetCp(cpInfos, classes.InnerClassInfoIndex)
+		readLen += u2
+
+		classes.OuterClassInfoIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
+		classes.OuterClassInfoIndexDesc = GetCp(cpInfos, classes.OuterClassInfoIndex)
+		readLen += u2
+
+		classes.InnerNameIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
+		classes.InnerNameIndexDesc = GetCp(cpInfos, classes.InnerNameIndex)
+		readLen += u2
+
+		classes.InnerClassAccessFlags = int(Byte2U2(bytes[readLen : readLen+u2]))
+		af := AccessFlag{}
+		af.Flag = classes.InnerClassAccessFlags
+		classes.InnerClassAccessFlagsDesc = GetFlag(af)
+		readLen += u2
+
+		cl = append(cl, classes)
+	}
+	sfa.Classes = cl
 	return u2 + u4 + int(l)
 }
 

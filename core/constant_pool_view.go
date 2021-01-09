@@ -22,9 +22,6 @@ const InterfaceMethodref = "InterfaceMethodref"
 const MethodHandle = "MethodHandle"
 const MethodType = "MethodType"
 
-const INIT = "\"<init>\""
-const INIT_S = "<init>"
-
 // View print constant pool
 func (cpInfos CpInfos) String() string {
 
