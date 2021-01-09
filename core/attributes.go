@@ -616,11 +616,21 @@ type ElementValue struct {
 }
 
 type Value struct {
-	ConstValueIndex int
+	ConstValue
 	EnumConstValue
-	ClassInfoIndex int
+	ClassInfoValue
 	Annotation
 	ArrayValue
+}
+
+type ConstValue struct {
+	ConstValueIndex int
+	Name            string
+}
+
+type ClassInfoValue struct {
+	ClassInfoIndex int
+	Name           string
 }
 type EnumConstValue struct {
 	TypeNameIndex  int
@@ -658,45 +668,76 @@ func (ev *ElementValue) ReadObj(bytes []byte) int {
 	ev.Tag = Tag(Byte2U1(bytes[readLen : readLen+u1]))
 	readLen += u1
 	cpInfos := ev.CpInfos
-	ev.TagDesc = GetCp(cpInfos, int(ev.Tag))
+	ev.TagDesc = GetTagDesc(ev.Tag)
 
-	fmt.Printf("ev.Tag %s \n", ev.TagDesc)
-	var v Value
-	ev.Value = v
-	v.ConstValueIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
-	readLen += u2
+	switch ev.Tag {
+	case 'B', 'C', 'D', 'F', 'I', 'J', 'S', 'Z', 's':
+		{
+			var v Value
+			ev.Value = v
+			v.ConstValueIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
+			v.ConstValue.Name = GetCp(cpInfos, v.ConstValueIndex)
+			readLen += u2
+		}
+	case 'e':
+		{
+			var v Value
+			ev.Value = v
 
-	typeNameIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
-	readLen += u2
-	constNameIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
-	readLen += u2
+			typeNameIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
+			readLen += u2
+			constNameIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
+			readLen += u2
 
-	var ecv EnumConstValue
-	ecv.ConstNameIndex = constNameIndex
-	ecv.TypeNameIndex = typeNameIndex
-	v.EnumConstValue = ecv
+			var ecv EnumConstValue
+			ecv.ConstNameIndex = constNameIndex
+			ecv.TypeNameIndex = typeNameIndex
+			v.EnumConstValue = ecv
+		}
+	case 'c':
+		{
+			var v Value
+			ev.Value = v
+			v.ClassInfoIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
+			v.ClassInfoValue.Name = GetCp(cpInfos, v.ClassInfoIndex)
+			readLen += u2
+		}
+	case '@':
+		{
+			var v Value
+			ev.Value = v
+			var ann Annotation
+			ann.CpInfos = cpInfos
+			readLen += ann.ReadObj(bytes[readLen:])
+			v.Annotation = ann
+		}
+	case '[':
+		{
+			var v Value
+			ev.Value = v
 
-	v.ClassInfoIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
-	readLen += u2
+			numValues := int(Byte2U2(bytes[readLen : readLen+u2]))
+			readLen += u2
 
-	var ann Annotation
-	ann.CpInfos = cpInfos
-	readLen += ann.ReadObj(bytes[readLen:])
-	v.Annotation = ann
+			var av ArrayValue
+			v.ArrayValue = av
+			av.NumValues = numValues
 
-	numValues := int(Byte2U2(bytes[readLen : readLen+u2]))
-	readLen += u2
-
-	var av ArrayValue
-	v.ArrayValue = av
-	av.NumValues = numValues
-
-	for i := 0; i < numValues; i++ {
-		var _ev ElementValue
-		_ev.CpInfos = cpInfos
-		readLen += _ev.ReadObj(bytes[readLen:])
-		av.Values = append(av.Values, _ev)
+			for i := 0; i < numValues; i++ {
+				var _ev ElementValue
+				_ev.CpInfos = cpInfos
+				readLen += _ev.ReadObj(bytes[readLen:])
+				av.Values = append(av.Values, _ev)
+			}
+		}
+	default:
+		panic(fmt.Sprintf("error for tag %d", ev.Tag))
 	}
 
 	return readLen
+}
+
+func GetTagDesc(tag Tag) string {
+
+	return string(tag)
 }
