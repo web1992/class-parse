@@ -72,7 +72,7 @@ func (cp *ClassParse) attributes(cpInfos core.CpInfos, attributeCount core.Attri
 
 		attributeNameIndex := core.Byte2U2(tagByte)
 		name := core.GetCp(cpInfos, int(attributeNameIndex))
-		ca := core.CreateAttribute(name, cpInfos)
+		ca := core.CreateAttribute(name, cpInfos, cp.pointer)
 
 		attr := cp.parseAttr(ca, cpInfos, name)
 		attrs = append(attrs, attr)
@@ -83,32 +83,15 @@ func (cp *ClassParse) attributes(cpInfos core.CpInfos, attributeCount core.Attri
 
 func (cp *ClassParse) parseAttr(ca interface{}, cpInfos core.CpInfos, name string) interface{} {
 
-	if attr, ok := ca.(*core.SourceFileAttribute); ok {
+	if reader, ok := ca.(core.Reader); ok {
+		cp.Read(reader)
+		return reader
+	} else {
+		// default
+		attr := core.AttributeNew(name, cpInfos)
 		cp.Read(attr)
+		attr.Name = name
+		log.Println("skip attribute name: " + name)
 		return attr
 	}
-
-	if attr, ok := ca.(*core.BootstrapMethodsAttribute); ok {
-		cp.Read(attr)
-		return attr
-	}
-	if attr, ok := ca.(*core.CodeAttribute); ok {
-		// p........p+readLen......
-		attr.Offset = cp.pointer
-		cp.Read(attr)
-		return attr
-	}
-
-	if attr, ok := ca.(*core.RuntimeVisibleAnnotationsAttr); ok {
-		cp.Read(attr)
-		return attr
-	}
-
-	// default
-	attr := core.AttributeNew(name, cpInfos)
-	cp.Read(attr)
-	attr.Name = name
-	log.Println("skip attribute name: " + name)
-	return attr
-
 }

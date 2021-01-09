@@ -26,6 +26,7 @@ func AttributeNew(name string, cpInfo CpInfos) *Attribute {
 // make other bytes can read success
 type Attribute struct {
 	CpInfos
+	Offset             int
 	Name               string
 	AttributeNameIndex int32
 	AttributeLength    int32

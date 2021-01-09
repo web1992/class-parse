@@ -69,7 +69,7 @@ Deprecated
 
 end
 */
-func CreateAttribute(name string, cpInfos CpInfos) interface{} {
+func CreateAttribute(name string, cpInfos CpInfos, pointer int) interface{} {
 
 	switch name {
 	case SourceFile:
@@ -99,6 +99,7 @@ func CreateAttribute(name string, cpInfos CpInfos) interface{} {
 			Name: Code,
 			Attribute: Attribute{
 				CpInfos: cpInfos,
+				Offset:  pointer,
 				Name:    name,
 			}}
 	case Exceptions:
@@ -128,8 +129,8 @@ func CreateAttribute(name string, cpInfos CpInfos) interface{} {
 	}
 }
 
-func CreateAttributeByIndex(nameIndex int, cpInfos CpInfos) interface{} {
+func CreateAttributeByIndex(nameIndex int, cpInfos CpInfos, pointer int) interface{} {
 	_ = cpInfos[nameIndex]
 	name := GetCp(cpInfos, nameIndex)
-	return CreateAttribute(name, cpInfos)
+	return CreateAttribute(name, cpInfos, pointer)
 }

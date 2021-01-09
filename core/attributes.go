@@ -79,7 +79,6 @@ contain the attribute_name_index and attribute_length items.
 */
 
 type CodeAttribute struct {
-	Offset int
 	Attribute
 	Name string
 	AttributeNameIndex
@@ -192,7 +191,7 @@ func (ca *CodeAttribute) ReadObj(bytes []byte) int {
 		readLen = readLen + u2
 		attributeLen := int(Byte2U4(bytes[readLen : readLen+u4]))
 		readLen += u4
-		attr := CreateAttributeByIndex(attributeNameIndex, ca.Attribute.CpInfos)
+		attr := CreateAttributeByIndex(attributeNameIndex, ca.Attribute.CpInfos, ca.Offset)
 		if obj, ok := attr.(Reader); ok {
 			obj.ReadObj(bytes[readLen-u2-u4 : readLen+attributeLen])
 		}
