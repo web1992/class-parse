@@ -291,41 +291,12 @@ func (op *OpCodeTableSwitch) String() string {
 
 }
 
-/**
-26: tableswitch   { // 1 to 3
-                 1: 52
-                 2: 55
-                 3: 58
-           default: 61
-   }
-*/
-func GetTableSwitchDesc(ts OpCodeTableSwitch, desc string) string {
-
-	var s []string
-	s = append(s, fmt.Sprintf("%s { // %d-%d", desc, ts.Low, ts.High))
-
-	for _, v := range ts.Pairs {
-		if !v.Default {
-			s = append(s, fmt.Sprintf("%16v:%v", v.Case, v.LineNo))
-		}
-	}
-
-	for _, v := range ts.Pairs {
-		if v.Default {
-			s = append(s, fmt.Sprintf("%16v:%v", "default", v.LineNo))
-		}
-	}
-	s = append(s, "}")
-
-	return strings.Join(s, "\n")
-}
-
 func (op *OpCodeTableSwitch) ReadObj(bytes []byte) int {
 	readLen := 0
 	op.Opc = Byte2U1(bytes[0:u1])
 	readLen += u1
 	op.Desc = GetOpDesc(int(op.Opc))
-	var pad = op.Offset % 4
+	var pad = int(op.Base-1) % 4
 	readLen += pad
 	defaultOffset := Byte2U4(bytes[readLen : readLen+u4])
 	readLen += u4
@@ -357,12 +328,41 @@ func (op *OpCodeTableSwitch) ReadObj(bytes []byte) int {
 	return readLen
 }
 
+/**
+26: tableswitch   { // 1 to 3
+                 1: 52
+                 2: 55
+                 3: 58
+           default: 61
+   }
+*/
+func GetTableSwitchDesc(ts OpCodeTableSwitch, desc string) string {
+
+	var s []string
+	s = append(s, fmt.Sprintf("%s { // %d-%d", desc, ts.Low, ts.High))
+
+	for _, v := range ts.Pairs {
+		if !v.Default {
+			s = append(s, fmt.Sprintf("%16v:%v", v.Case, v.LineNo))
+		}
+	}
+
+	for _, v := range ts.Pairs {
+		if v.Default {
+			s = append(s, fmt.Sprintf("%16v:%v", "default", v.LineNo))
+		}
+	}
+	s = append(s, "}")
+
+	return strings.Join(s, "\n")
+}
+
 func (op *OpCodeLookupSwitch) ReadObj(bytes []byte) int {
 	readLen := 0
 	op.Opc = Byte2U1(bytes[readLen:u1])
 	readLen += u1
 	op.Desc = GetOpDesc(int(op.Opc))
-	pad := op.Offset % 4
+	var pad = int(op.Base-1) % 4
 	readLen += pad
 	defaultOffset := Byte2U4(bytes[readLen : readLen+u4])
 	readLen += u4

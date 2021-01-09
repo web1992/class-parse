@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @FFF()
-public class Main extends AbstractMain implements InterfaceMain {
+public class Main extends AbstractMain<String> implements InterfaceMain {
 
     @FFF
     public static final Integer INT_MAX = Integer.MAX_VALUE;
@@ -62,20 +62,24 @@ public class Main extends AbstractMain implements InterfaceMain {
 
     @Override
     @FFF("3FFF")
-    @Name(name="My Name",index=666)
+    @Name(name = "My Name", index = 666)
     public void say() {
         System.out.println("ha ha ha ha");
+    }
+
+    @Override
+    String hi() {
+        return "Hi,2021";
     }
 }
 
 
 interface InterfaceMain {
-
     void say();
 }
 
-abstract class AbstractMain {
-
+abstract class AbstractMain<T> {
+    abstract T hi();
 }
 
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.TYPE})
@@ -88,6 +92,7 @@ abstract class AbstractMain {
 @Retention(RetentionPolicy.RUNTIME)
 @interface Name {
     String name() default "Name";
+
     int index() default -1;
 }
 
