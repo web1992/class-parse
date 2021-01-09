@@ -570,6 +570,7 @@ func (ann *Annotation) ReadObj(bytes []byte) int {
 	readLen += u2
 	ann.NumPairs = pairsNum
 
+	var evps []ElementValuePair
 	for i := 0; i < pairsNum; i++ {
 		var evp ElementValuePair
 		elementNameIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
@@ -581,9 +582,9 @@ func (ann *Annotation) ReadObj(bytes []byte) int {
 		ev.CpInfos = ann.CpInfos
 		readLen += ev.ReadObj(bytes[readLen:])
 		evp.ElementValue = ev
-
-		ann.ElementValuePair = append(ann.ElementValuePair, evp)
+		evps = append(evps, evp)
 	}
+	ann.ElementValuePair = append(ann.ElementValuePair, evps...)
 
 	return readLen
 }
@@ -614,7 +615,7 @@ type ElementValue struct {
 	CpInfos
 	Tag
 	TagDesc string
-	Value
+	*Value
 }
 
 type Value struct {
@@ -671,12 +672,14 @@ func (ev *ElementValue) ReadObj(bytes []byte) int {
 	readLen += u1
 	cpInfos := ev.CpInfos
 	ev.TagDesc = GetTagDesc(ev.Tag)
+	fmt.Printf("tag is %s \n", ev.TagDesc)
 
-	switch ev.Tag {
+	tags := rune(ev.Tag)
+	switch tags {
 	case 'B', 'C', 'D', 'F', 'I', 'J', 'S', 'Z', 's':
 		{
 			var v Value
-			ev.Value = v
+			ev.Value = &v
 			v.ConstValueIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
 			v.ConstValue.Name = GetCp(cpInfos, v.ConstValueIndex)
 			readLen += u2
@@ -684,7 +687,7 @@ func (ev *ElementValue) ReadObj(bytes []byte) int {
 	case 'e':
 		{
 			var v Value
-			ev.Value = v
+			ev.Value = &v
 
 			typeNameIndex := int(Byte2U2(bytes[readLen : readLen+u2]))
 			readLen += u2
@@ -699,7 +702,7 @@ func (ev *ElementValue) ReadObj(bytes []byte) int {
 	case 'c':
 		{
 			var v Value
-			ev.Value = v
+			ev.Value = &v
 			v.ClassInfoIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
 			v.ClassInfoValue.Name = GetCp(cpInfos, v.ClassInfoIndex)
 			readLen += u2
@@ -707,7 +710,7 @@ func (ev *ElementValue) ReadObj(bytes []byte) int {
 	case '@':
 		{
 			var v Value
-			ev.Value = v
+			ev.Value = &v
 			var ann Annotation
 			ann.CpInfos = cpInfos
 			readLen += ann.ReadObj(bytes[readLen:])
@@ -716,7 +719,7 @@ func (ev *ElementValue) ReadObj(bytes []byte) int {
 	case '[':
 		{
 			var v Value
-			ev.Value = v
+			ev.Value = &v
 
 			numValues := int(Byte2U2(bytes[readLen : readLen+u2]))
 			readLen += u2
