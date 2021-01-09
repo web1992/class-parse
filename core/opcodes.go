@@ -264,9 +264,8 @@ type OpCodeJsrW struct {
 
 type OpCodeLookupSwitch struct {
 	OpCode
-	Offset int
-	Base   int32
-	Pairs  []Pair
+	Base  int32
+	Pairs []Pair
 }
 
 type Pair struct {
