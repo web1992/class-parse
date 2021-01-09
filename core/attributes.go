@@ -215,7 +215,7 @@ func (ca *CodeAttribute) ParseOpCodes(offset int, codeLength int, bs []byte) OpC
 		if o, ok := opObj.(*OpCodeTableSwitch); ok {
 			// The alignment required of the 4-byte operands of the tableswitch instruction guarantees 4-byte alignment of those operands if
 			// and only if the method that contains the tableswitch starts on a 4-byte boundary.
-			o.Offset = offset + hadReadLen
+			o.Offset = offset + hadReadLen + 1
 			o.Base = int32(hadReadLen)
 			o.LineNo = hadReadLen
 			readLen := o.ReadObj(_bs)
