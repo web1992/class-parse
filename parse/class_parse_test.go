@@ -172,6 +172,13 @@ func Test_get_attributes(t *testing.T) {
 
 	classFile := cp.ClassFile()
 
-	fmt.Println("-------------------")
+	core.Info.Println("tes output -------------------")
 	fmt.Println(classFile.String())
+}
+
+func Test_log(t *testing.T) {
+	core.Info.Println("INFO")
+	core.Trace.Println("Trace")
+	core.Warning.Println("Warning")
+	core.Error.Println("Error")
 }
