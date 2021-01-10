@@ -806,3 +806,41 @@ func GetTagDesc(tag Tag) string {
 
 	return string(tag)
 }
+
+/**
+Signature_attribute {
+    u2 attribute_name_index;
+    u4 attribute_length;
+    u2 signature_index;
+}
+*/
+
+type SignatureAttribute struct {
+	Attribute
+	AttributeNameIndex int
+	AttributeLength    int
+	SignatureIndex     int
+
+	AttributeNameIndexDesc string
+	SignatureIndexDesc     string
+}
+
+func (sa *SignatureAttribute) ReadObj(bytes []byte) int {
+
+	readLen := 0
+	sa.AttributeNameIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
+
+	sa.AttributeLength = int(Byte2U2(bytes[readLen : readLen+u4]))
+	readLen += u4
+
+	sa.SignatureIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
+
+	cpInfo := sa.Attribute.CpInfos
+
+	sa.AttributeNameIndexDesc = GetCp(cpInfo, sa.AttributeNameIndex)
+	sa.SignatureIndexDesc = GetCp(cpInfo, sa.SignatureIndex)
+
+	return readLen
+}

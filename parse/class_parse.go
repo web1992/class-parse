@@ -79,7 +79,7 @@ func (cp *ClassParse) ClassFile() core.ClassFile {
 
 	// check pointer and bytes len
 	if cp.pointer != len(cp.bytes) {
-		panic(byteNoUsed)
+		core.Error.Println(byteNoUsed)
 	}
 	return core.ClassFile{
 		Magic:             magic,
@@ -167,7 +167,7 @@ func (cp *ClassParse) interfacesCount() core.InterfacesCount {
 func (cp *ClassParse) interfaces(cpInfos core.CpInfos, count core.InterfacesCount) core.Interfaces {
 
 	var fs core.Interfaces
-	c := int(count.Count)
+	c := count.Count
 
 	for i := 0; i < c; i++ {
 		var f core.Interface

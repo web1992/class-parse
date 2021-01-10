@@ -17,7 +17,7 @@ func (tc *Interface) ReadObj(bytes []byte) int {
 
 // InterfacesCount u2 interfaces_count
 type InterfacesCount struct {
-	Count int32
+	Count int
 }
 
 func InterfacesCountNew() *InterfacesCount {
@@ -26,6 +26,6 @@ func InterfacesCountNew() *InterfacesCount {
 
 func (tc *InterfacesCount) ReadObj(bytes []byte) int {
 	bs := bytes[0:u2]
-	tc.Count = Byte2U2(bs)
+	tc.Count = int(Byte2U2(bs))
 	return u2
 }

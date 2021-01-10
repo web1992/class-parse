@@ -153,7 +153,7 @@ func Test_get_interface(t *testing.T) {
 
 	ifc := classFile.InterfacesCount
 
-	if ifc.Count != int32(1) {
+	if ifc.Count != 1 {
 		t.Fatalf("ifc is %v expect is %d", ifc, 1)
 	}
 	ifcc := classFile.Interfaces[0]

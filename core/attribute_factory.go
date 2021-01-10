@@ -124,6 +124,13 @@ func CreateAttribute(name string, cpInfos CpInfos, pointer int) interface{} {
 				Name:    name,
 			},
 		}
+	case Signature:
+		return &SignatureAttribute{
+			Attribute: Attribute{
+				CpInfos: cpInfos,
+				Name:    name,
+			},
+		}
 	default:
 		return AttributeNew(name, cpInfos)
 	}
