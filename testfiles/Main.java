@@ -27,9 +27,12 @@ public class Main extends AbstractMain<String> implements InterfaceMain {
     public static void main(String[] args) throws IOException {
 
         System.out.println("Hello word!");
+        Main main = new Main();
 
+        String p = "777";
         Runnable r = () -> {
             System.out.println("run");
+            main.hi(p);
         };
 
         r.run();
@@ -68,8 +71,8 @@ public class Main extends AbstractMain<String> implements InterfaceMain {
     }
 
     @Override
-    String hi() {
-        return "Hi,2021";
+    String hi(String p) {
+        return "Hi,2021" + p;
     }
 }
 
@@ -79,7 +82,7 @@ interface InterfaceMain {
 }
 
 abstract class AbstractMain<T> {
-    abstract T hi();
+    abstract T hi(T p);
 }
 
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.TYPE})

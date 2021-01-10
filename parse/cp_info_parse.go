@@ -17,7 +17,6 @@ func (cp *ClassParse) cpInfos(cpc core.ConstantPoolCount) core.CpInfos {
 	for i := 1; i <= count-1; i++ {
 		bytes := cp.bytes
 
-		//fmt.Println("CpInfos c is", i)
 		p := cp.pointer
 		tagByte := bytes[p : p+core.U1_L]
 		tag := core.Byte2U1(tagByte)
@@ -85,7 +84,7 @@ func (cp *ClassParse) cpInfos(cpc core.ConstantPoolCount) core.CpInfos {
 			cpInfos = append(cpInfos, id)
 
 		default:
-			fmt.Println(fmt.Sprintf("tag %d is undefined", tag))
+			core.Error.Println(fmt.Sprintf("tag %d is undefined", tag))
 		}
 	}
 	return cpInfos

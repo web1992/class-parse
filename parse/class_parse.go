@@ -2,6 +2,7 @@ package parse
 
 import (
 	"errors"
+	"fmt"
 	"goclass/core"
 	"goclass/utils"
 	"strings"
@@ -226,9 +227,9 @@ func (cp *ClassParse) methods(cpInfos core.CpInfos, count core.MethodCount) core
 		m.DescriptorString = core.GetCp(cpInfos, int(m.DescriptorIndex))
 		m.AccessFlagString = core.GetFlag(m.AccessFlag)
 		// parse method attribute
-		//fmt.Println("method name is", mn)
+		fmt.Println("method name is", mn)
 		m.Attributes = cp.attributes(cpInfos, m.AttributeCount)
-		//fmt.Println("********************")
+		fmt.Println("********************")
 
 		ms = append(ms, *m)
 	}
