@@ -44,16 +44,20 @@ func MethodNew() *Method {
 
 func (tc *Method) ReadObj(bytes []byte) int {
 
+	readLen := 0
 	var af AccessFlag
 	af.ReadObj(bytes[0:u2])
+	readLen += u2
 	af.FlagString = GetFlag(af)
 	tc.AccessFlag = af
-	tc.NameIndex = NameIndex(Byte2U2(bytes[u2 : u2+u2]))
-	tc.DescriptorIndex = DescriptorIndex(Byte2U2(bytes[u2+u2 : u2+u2+u2]))
-
+	tc.NameIndex = NameIndex(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
+	tc.DescriptorIndex = DescriptorIndex(Byte2U2(bytes[readLen : readLen+u2]))
+	readLen += u2
 	var ac AttributeCount
-	bs := bytes[u2+u2+u2 : u2+u2+u2+u2]
+	bs := bytes[readLen : readLen+u2]
+	readLen += u2
 	ac.Count = Byte2U2(bs)
 	tc.AttributeCount = ac
-	return u2 * 4
+	return readLen
 }
