@@ -135,6 +135,7 @@ func (cp *ClassParse) accessFlag() core.AccessFlag {
 	var af = core.AccessFlagNew()
 	cp.Read(af)
 	af.FlagString = core.GetFlag(*af)
+	af.FlagDesc = core.GetFlagDesc(*af)
 	return *af
 }
 

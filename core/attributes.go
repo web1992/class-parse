@@ -844,3 +844,42 @@ func (sa *SignatureAttribute) ReadObj(bytes []byte) int {
 
 	return readLen
 }
+
+/*
+StackMapTable_attribute {
+u2              attribute_name_index;
+u4              attribute_length;
+u2              number_of_entries;
+stack_map_frame entries[number_of_entries];
+}
+*/
+
+type StackMapTableAttribute struct {
+	Attribute
+	NumberOfEntries int32
+}
+
+func (smta *StackMapTableAttribute) ReadObj(bytes []byte) int {
+
+	readLen := 0
+	smta.AttributeNameIndex = Byte2U2(bytes[readLen : readLen+u2])
+	readLen += u2
+	smta.AttributeLength = Byte2U4(bytes[readLen : readLen+u4])
+	readLen += u4
+	smta.NumberOfEntries = Byte2U2(bytes[readLen : readLen+u2])
+	readLen += u2
+
+	return u2 + int(smta.AttributeLength)
+}
+
+/*
+union stack_map_frame {
+same_frame;
+same_locals_1_stack_item_frame;
+same_locals_1_stack_item_frame_extended;
+chop_frame;
+same_frame_extended;
+append_frame;
+full_frame;
+}
+*/

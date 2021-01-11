@@ -72,6 +72,14 @@ end
 func CreateAttribute(name string, cpInfos CpInfos, pointer int) interface{} {
 
 	switch name {
+
+	case StackMapTable:
+		return &StackMapTableAttribute{
+			Attribute: Attribute{
+				CpInfos: cpInfos,
+				Name:    name,
+			},
+		}
 	case SourceFile:
 		return &SourceFileAttribute{
 			AttributeName: SourceFile,

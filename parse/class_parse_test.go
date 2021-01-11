@@ -174,6 +174,18 @@ func Test_get_attributes(t *testing.T) {
 
 	core.Info.Println("tes output -------------------")
 	fmt.Println(classFile.String())
+
+	file, err := os.Create("../testfiles/Main.txt")
+	if err != nil {
+		log.Fatalln("Failed to open error log file:", err)
+	}
+	defer file.Close()
+	file.WriteString("\n")
+	file.WriteString("\n")
+	file.WriteString("\n")
+
+	file.WriteString(classFile.String())
+
 }
 
 func Test_log(t *testing.T) {

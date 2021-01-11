@@ -44,6 +44,7 @@ ACC_ENUM	0x4000	Declared as an enum type.
 type AccessFlag struct {
 	Flag       int
 	FlagString string
+	FlagDesc   string
 }
 
 func AccessFlagNew() *AccessFlag {
@@ -64,6 +65,44 @@ func GetFlag(f AccessFlag) string {
 	return getFlag(f.Flag)
 }
 
+func GetFlagDesc(f AccessFlag) string {
+	return getFlagDesc(f.Flag)
+}
+
+func getFlagDesc(f int) string {
+
+	var fs []string
+	if f&JVM_ACC_PUBLIC != 0 {
+		fs = append(fs, "public")
+	}
+
+	if f&JVM_ACC_FINAL != 0 {
+		fs = append(fs, "final")
+	}
+
+	//if f&JVM_ACC_SUPER != 0 {
+	//	fs = append(fs, "ACC_SUPER")
+	//}
+
+	if f&JVM_ACC_INTERFACE != 0 {
+		fs = append(fs, "interface")
+	}
+	if f&JVM_ACC_ABSTRACT != 0 {
+		fs = append(fs, "abstract")
+	}
+
+	//if f&JVM_ACC_SYNTHETIC != 0 {
+	//	fs = append(fs, "ACC_SYNTHETIC")
+	//}
+
+	if f&JVM_ACC_ANNOTATION != 0 {
+		fs = append(fs, "annotation")
+	}
+	if f&JVM_ACC_ENUM != 0 {
+		fs = append(fs, "enum")
+	}
+	return strings.Join(fs, " ")
+}
 func getFlag(f int) string {
 
 	var fs []string

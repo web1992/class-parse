@@ -80,8 +80,8 @@ func (classFile ClassFile) String() string {
 
 	// public class Main extends AbstractMain implements InterfaceMain
 	var str []string
-	sm := fmt.Sprintf("%s", classFile.Magic.Hex)
-	str = append(str, sm)
+	//sm := fmt.Sprintf("%s", classFile.Magic.Hex)
+	//str = append(str, sm)
 	stc := fmt.Sprintf("%s", classFile.ThisClass.String)
 	str = append(str, stc)
 
