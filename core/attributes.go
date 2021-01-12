@@ -864,12 +864,13 @@ func (smta *StackMapTableAttribute) ReadObj(bytes []byte) int {
 	readLen := 0
 	smta.AttributeNameIndex = Byte2U2(bytes[readLen : readLen+u2])
 	readLen += u2
-	smta.AttributeLength = Byte2U4(bytes[readLen : readLen+u4])
+	l := Byte2U4(bytes[readLen : readLen+u4])
+	smta.AttributeLength = l
 	readLen += u4
 	smta.NumberOfEntries = Byte2U2(bytes[readLen : readLen+u2])
 	readLen += u2
 
-	return u2 + int(smta.AttributeLength)
+	return u2 + int(l)
 }
 
 /*
