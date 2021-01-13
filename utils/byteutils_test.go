@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"goclass/core"
+	"github.com/web1992/goclass/core"
 	"testing"
 )
 

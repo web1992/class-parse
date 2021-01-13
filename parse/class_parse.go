@@ -3,8 +3,8 @@ package parse
 import (
 	"errors"
 	"fmt"
-	"goclass/core"
-	"goclass/utils"
+	"github.com/web1992/goclass/core"
+	"github.com/web1992/goclass/utils"
 	"strings"
 )
 

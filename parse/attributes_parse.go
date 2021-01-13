@@ -1,7 +1,7 @@
 package parse
 
 import (
-	"goclass/core"
+	"github.com/web1992/goclass/core"
 )
 
 func (cp *ClassParse) attributeCount() core.AttributeCount {

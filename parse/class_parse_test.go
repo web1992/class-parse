@@ -2,7 +2,7 @@ package parse
 
 import (
 	"fmt"
-	"goclass/core"
+	"github.com/web1992/goclass/core"
 	"log"
 	"os"
 	"strings"
