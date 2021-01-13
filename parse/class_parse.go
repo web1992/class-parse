@@ -33,6 +33,11 @@ func (cp *ClassParse) Read(r core.Reader) {
 func (cp *ClassParse) String() string {
 	return cp.filePath
 }
+
+func (cp *ClassParse) Parse(filePath string) error {
+	return cp.parseFile(filePath)
+}
+
 func (cp *ClassParse) parseFile(filePath string) error {
 
 	cp.filePath = filePath
