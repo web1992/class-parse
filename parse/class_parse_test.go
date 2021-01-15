@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-const file = "/Users/zl/Documents/DEV/github/class-parse/testfiles/Main.class"
+const file = "../testfiles/Main.class"
 
 func Test_class_parse(t *testing.T) {
 
