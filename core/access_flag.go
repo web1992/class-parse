@@ -28,6 +28,33 @@ const (
 	JVM_ACC_MODULE       = 0x8000
 )
 
+var accMap map[int]string
+
+func init() {
+
+	accMap = make(map[int]string)
+
+	accMap[JVM_ACC_PUBLIC] = "ACC_PUBLIC"
+	accMap[JVM_ACC_PRIVATE] = "ACC_PRIVATE"
+	accMap[JVM_ACC_PROTECTED] = "ACC_PROTECTED"
+	accMap[JVM_ACC_STATIC] = "ACC_STATIC"
+	accMap[JVM_ACC_FINAL] = "ACC_FINAL"
+	accMap[JVM_ACC_SYNCHRONIZED] = "ACC_SYNCHRONIZED"
+	accMap[JVM_ACC_SUPER] = "ACC_SUPER"
+	accMap[JVM_ACC_VOLATILE] = "ACC_VOLATILE"
+	accMap[JVM_ACC_BRIDGE] = "ACC_BRIDGE"
+	accMap[JVM_ACC_TRANSIENT] = "ACC_TRANSIENT"
+	accMap[JVM_ACC_VARARGS] = "ACC_VARARGS"
+	accMap[JVM_ACC_NATIVE] = "ACC_NATIVE"
+	accMap[JVM_ACC_INTERFACE] = "ACC_INTERFACE"
+	accMap[JVM_ACC_ABSTRACT] = "ACC_ABSTRACT"
+	accMap[JVM_ACC_STRICT] = "ACC_STRICT"
+	accMap[JVM_ACC_SYNTHETIC] = "ACC_SYNTHETIC"
+	accMap[JVM_ACC_ANNOTATION] = "ACC_ANNOTATION"
+	accMap[JVM_ACC_ENUM] = "ACC_ENUM"
+	accMap[JVM_ACC_MODULE] = "ACC_MODULE"
+}
+
 /*
 Value	Interpretation
 ACC_PUBLIC	0x0001	Declared public; may be accessed from outside its package.
@@ -86,34 +113,15 @@ func GetFlagDesc(f AccessFlag) string {
 func getFlagDesc(f int) string {
 
 	var fs []string
-	if f&JVM_ACC_PUBLIC != 0 {
-		fs = append(fs, "public")
-	}
-
-	if f&JVM_ACC_FINAL != 0 {
-		fs = append(fs, "final")
-	}
-
-	//if f&JVM_ACC_SUPER != 0 {
-	//	fs = append(fs, "ACC_SUPER")
-	//}
-
-	if f&JVM_ACC_INTERFACE != 0 {
-		fs = append(fs, "interface")
-	}
-	if f&JVM_ACC_ABSTRACT != 0 {
-		fs = append(fs, "abstract")
-	}
-
-	//if f&JVM_ACC_SYNTHETIC != 0 {
-	//	fs = append(fs, "ACC_SYNTHETIC")
-	//}
-
-	if f&JVM_ACC_ANNOTATION != 0 {
-		fs = append(fs, "annotation")
-	}
-	if f&JVM_ACC_ENUM != 0 {
-		fs = append(fs, "enum")
+	for k, v := range accMap {
+		if k == JVM_ACC_SUPER {
+			continue
+		}
+		if k&f != 0 {
+			s := strings.Replace(v, "ACC_", "", -1)
+			cv := strings.ToLower(s)
+			fs = append(fs, cv)
+		}
 	}
 	return strings.Join(fs, " ")
 }
@@ -121,40 +129,10 @@ func getFlagDesc(f int) string {
 func getFlag(f int) string {
 
 	var fs []string
-	if f&JVM_ACC_PUBLIC != 0 {
-		fs = append(fs, "ACC_PUBLIC")
+	for k, v := range accMap {
+		if k&f != 0 {
+			fs = append(fs, v)
+		}
 	}
-
-	if f&JVM_ACC_FINAL != 0 {
-		fs = append(fs, "ACC_FINAL")
-	}
-
-	if f&JVM_ACC_SUPER != 0 {
-		fs = append(fs, "ACC_SUPER")
-	}
-
-	if f&JVM_ACC_INTERFACE != 0 {
-		fs = append(fs, "ACC_INTERFACE")
-	}
-	if f&JVM_ACC_ABSTRACT != 0 {
-		fs = append(fs, "ACC_ABSTRACT")
-	}
-
-	if f&JVM_ACC_SYNTHETIC != 0 {
-		fs = append(fs, "ACC_SYNTHETIC")
-
-	}
-	if f&JVM_ACC_ANNOTATION != 0 {
-		fs = append(fs, "ACC_ANNOTATION")
-
-	}
-	if f&JVM_ACC_ENUM != 0 {
-		fs = append(fs, "ACC_ENUM")
-	}
-
-	//s := fmt.Sprintf("flag is unknown %d", f)
-	//e := errors.New(s)
-	//panic(e)
-
 	return strings.Join(fs, ",")
 }

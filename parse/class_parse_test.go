@@ -186,4 +186,15 @@ func Test_getClassDesc(t *testing.T) {
 	cf := cp.ClassFile()
 	desc := cf.ClassDesc()
 	fmt.Println(desc)
+
+	f, err := os.Create("../testfiles/Main.txt")
+	if err != nil {
+		log.Fatalln("Failed to open error log file:", err)
+	}
+	defer f.Close()
+	f.WriteString("\n")
+	f.WriteString("\n")
+	f.WriteString("\n")
+
+	f.WriteString(desc)
 }

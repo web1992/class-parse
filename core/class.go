@@ -96,18 +96,91 @@ func (cf ClassFile) ClassDesc() string {
 	str = append(str, cf.ThisDesc())
 	str = append(str, cf.SuperDesc())
 	str = append(str, cf.InterfaceDesc())
-
+	str = append(str, "\n")
+	str = append(str, cf.VersionDesc())
+	str = append(str, "\n")
+	str = append(str, cf.FlagDesc())
+	str = append(str, "\n")
+	str = append(str, cf.ConstantPool())
+	str = append(str, "\n")
+	str = append(str, cf.FieldDesc())
 	return strings.Join(str, " ")
+}
+
+/**
+  public static final java.lang.Integer INT_MAX;
+    descriptor: Ljava/lang/Integer;
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
+    RuntimeVisibleAnnotations:
+      0: #65()
+*/
+func (cf ClassFile) FieldDesc() string {
+	var str []string
+	fc := int(cf.FieldsCount.Count)
+	if fc > 0 {
+		str = append(str, "{")
+		for _, f := range cf.Fields {
+			fd := getFDesc(f)
+			str = append(str, fd)
+		}
+		str = append(str, "}")
+	}
+	return strings.Join(str, "\n")
+}
+
+func getFDesc(f Field) string {
+	var str []string
+
+	s1 := GetFlagDesc(f.AccessFlag)
+	s2 := f.DescriptorString
+	s3 := f.NameString
+	s4 := fmt.Sprintf("%s %s %s;", s1, s2, s3)
+	str = append(str, s4)
+
+	s5 := fmt.Sprintf("descriptor: %s", s2)
+	str = append(str, s5)
+
+	s6 := fmt.Sprintf("flags: %s", f.AccessFlag.String())
+	str = append(str, s6)
+
+	ac := int(f.AttributeCount.Count)
+
+	if ac > 0 {
+
+	}
+
+	return strings.Join(str, "\n") + "\n"
+
+}
+
+func (cf ClassFile) ConstantPool() string {
+	var str []string
+	str = append(str, "Constant pool:"+"\n")
+	str = append(str, cf.CpInfos.String())
+	return strings.Join(str, "")
+}
+func (cf ClassFile) FlagDesc() string {
+	return "flags: " + cf.AccessFlag.FlagString
+}
+
+func (cf ClassFile) VersionDesc() string {
+	var str []string
+	v1 := cf.MinorVersion.Version
+	v2 := cf.MajorVersion.Version
+
+	vs1 := fmt.Sprintf("%13s: %d", "minor version", v1)
+	vs2 := fmt.Sprintf("%14s: %1d", "major version", v2)
+	str = append(str, vs1)
+	str = append(str, vs2)
+	return strings.Join(str, "\n")
+
 }
 
 func (cf ClassFile) ThisDesc() string {
 	var str []string
-	if cf.AccessFlag.HasPublic() {
-		str = append(str, "public")
-	}
-	if cf.AccessFlag.HasAbstract() {
-		str = append(str, "abstract")
-	}
+	afDesc := GetFlagDesc(cf.AccessFlag)
+	str = append(str, afDesc)
+
 	str = append(str, "class")
 	str = append(str, cf.ThisClass.String)
 	return strings.Join(str, " ")
