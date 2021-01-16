@@ -11,9 +11,17 @@ const (
 	U4_L = 4 // 4 bytes
 )
 const (
-	u1 = U1_L
-	u2 = U2_L
-	u4 = U4_L
+	u1             = U1_L
+	u2             = U2_L
+	u4             = U4_L
+	NewLine        = "\n"
+	OneSpace       = " "
+	P              = ","
+	_class         = "class"
+	_extends       = "extends"
+	_implements    = "implements"
+	_minor_version = "minor version"
+	_major_version = "major version"
 )
 
 // Bytes ,binary Bytes
@@ -96,15 +104,57 @@ func (cf ClassFile) ClassDesc() string {
 	str = append(str, cf.ThisDesc())
 	str = append(str, cf.SuperDesc())
 	str = append(str, cf.InterfaceDesc())
-	str = append(str, "\n")
+	str = append(str, NewLine)
 	str = append(str, cf.VersionDesc())
-	str = append(str, "\n")
+	str = append(str, NewLine)
 	str = append(str, cf.FlagDesc())
-	str = append(str, "\n")
+	str = append(str, NewLine)
 	str = append(str, cf.ConstantPool())
-	str = append(str, "\n")
+	str = append(str, NewLine)
 	str = append(str, cf.FieldDesc())
-	return strings.Join(str, " ")
+	str = append(str, NewLine)
+	str = append(str, cf.MethodDesc())
+	return strings.Join(str, OneSpace)
+}
+
+/**
+
+  public Main();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method AbstractMain."<init>":()V
+         4: return
+      LineNumberTable:
+        line 9: 0
+*/
+func (cf ClassFile) MethodDesc() string {
+	var str []string
+
+	mc := int(cf.MethodCount.Count)
+	if mc > 0 {
+		for _, m := range cf.Methods {
+			md := getMDesc(m)
+			str = append(str, md)
+		}
+	}
+	return strings.Join(str, NewLine)
+}
+
+func getMDesc(m Method) string {
+	var str []string
+
+	s1 := GetFlagDesc(m.AccessFlag)
+	str = append(str, s1+" "+m.NameString)
+
+	s2 := fmt.Sprintf("descriptor: %s", m.DescriptorString)
+	str = append(str, s2)
+	s3 := fmt.Sprintf("flags: %s", m.AccessFlag.String())
+	str = append(str, s3)
+
+	return strings.Join(str, NewLine) + NewLine
 }
 
 /**
@@ -125,7 +175,7 @@ func (cf ClassFile) FieldDesc() string {
 		}
 		str = append(str, "}")
 	}
-	return strings.Join(str, "\n")
+	return strings.Join(str, NewLine)
 }
 
 func getFDesc(f Field) string {
@@ -149,13 +199,13 @@ func getFDesc(f Field) string {
 
 	}
 
-	return strings.Join(str, "\n") + "\n"
+	return strings.Join(str, NewLine) + NewLine
 
 }
 
 func (cf ClassFile) ConstantPool() string {
 	var str []string
-	str = append(str, "Constant pool:"+"\n")
+	str = append(str, "Constant pool:"+NewLine)
 	str = append(str, cf.CpInfos.String())
 	return strings.Join(str, "")
 }
@@ -168,11 +218,11 @@ func (cf ClassFile) VersionDesc() string {
 	v1 := cf.MinorVersion.Version
 	v2 := cf.MajorVersion.Version
 
-	vs1 := fmt.Sprintf("%13s: %d", "minor version", v1)
-	vs2 := fmt.Sprintf("%14s: %1d", "major version", v2)
+	vs1 := fmt.Sprintf("%13s: %d", _minor_version, v1)
+	vs2 := fmt.Sprintf("%14s: %1d", _major_version, v2)
 	str = append(str, vs1)
 	str = append(str, vs2)
-	return strings.Join(str, "\n")
+	return strings.Join(str, NewLine)
 
 }
 
@@ -181,20 +231,20 @@ func (cf ClassFile) ThisDesc() string {
 	afDesc := GetFlagDesc(cf.AccessFlag)
 	str = append(str, afDesc)
 
-	str = append(str, "class")
+	str = append(str, _class)
 	str = append(str, cf.ThisClass.String)
-	return strings.Join(str, " ")
+	return strings.Join(str, OneSpace)
 }
 
 func (cf ClassFile) SuperDesc() string {
 	var str []string
 	if cf.AccessFlag.HasSuper() {
 		if !cf.SuperClass.isJavaLangObject() {
-			str = append(str, "extends")
+			str = append(str, _extends)
 			str = append(str, cf.SuperClass.String)
 		}
 	}
-	return strings.Join(str, " ")
+	return strings.Join(str, OneSpace)
 }
 
 func (cf ClassFile) InterfaceDesc() string {
@@ -202,14 +252,14 @@ func (cf ClassFile) InterfaceDesc() string {
 	ifc := cf.InterfacesCount.Count
 	var interfaceDesc string
 	if ifc > 0 {
-		str = append(str, "implements")
+		str = append(str, _implements)
 		var s []string
 		for _, v := range cf.Interfaces {
 			s = append(s, v.NameString)
 		}
-		interfaceDesc = strings.Join(s, ",")
+		interfaceDesc = strings.Join(s, P)
 		str = append(str, interfaceDesc)
 	}
 
-	return strings.Join(str, " ")
+	return strings.Join(str, OneSpace)
 }

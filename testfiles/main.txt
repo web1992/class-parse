@@ -4,7 +4,7 @@
 public class Main extends AbstractMain implements InterfaceMain 
  minor version: 0
  major version: 52 
- flags: ACC_PUBLIC,ACC_SUPER 
+ flags: ACC_SUPER,ACC_PUBLIC 
  Constant pool:
     #1 = Methodref          #60.#112      // AbstractMain.<init>:()V
     #2 = Fieldref           #113.#114     // java/lang/System.out:Ljava/io/PrintStream;
@@ -203,44 +203,71 @@ public class Main extends AbstractMain implements InterfaceMain
   #199 = Utf8               java/lang/invoke/MethodHandles$Lookup
   #200 = Utf8               java/lang/invoke/MethodHandles 
  {
-public final static Ljava/lang/Integer; INT_MAX;
+final static public Ljava/lang/Integer; INT_MAX;
 descriptor: Ljava/lang/Integer;
+flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
+
+final static public Ljava/lang/Integer; INT_MIN;
+descriptor: Ljava/lang/Integer;
+flags: ACC_PUBLIC,ACC_FINAL,ACC_STATIC
+
+public final static Ljava/lang/Long; LONG_MAX;
+descriptor: Ljava/lang/Long;
+flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
+
+static public final Ljava/lang/Long; LONG_MIN;
+descriptor: Ljava/lang/Long;
+flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
+
+static public final Ljava/lang/Double; DOUBLE_MAX;
+descriptor: Ljava/lang/Double;
 flags: ACC_STATIC,ACC_PUBLIC,ACC_FINAL
 
-public final static Ljava/lang/Integer; INT_MIN;
-descriptor: Ljava/lang/Integer;
-flags: ACC_PUBLIC,ACC_FINAL,ACC_STATIC
-
-final static public Ljava/lang/Long; LONG_MAX;
-descriptor: Ljava/lang/Long;
-flags: ACC_PUBLIC,ACC_FINAL,ACC_STATIC
-
-public final static Ljava/lang/Long; LONG_MIN;
-descriptor: Ljava/lang/Long;
-flags: ACC_PUBLIC,ACC_FINAL,ACC_STATIC
-
-public final static Ljava/lang/Double; DOUBLE_MAX;
+final static public Ljava/lang/Double; DOUBLE_MIN;
 descriptor: Ljava/lang/Double;
 flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
 
-public final static Ljava/lang/Double; DOUBLE_MIN;
-descriptor: Ljava/lang/Double;
-flags: ACC_PUBLIC,ACC_FINAL,ACC_STATIC
-
 public final static Ljava/lang/Float; FLOAT_MAX;
 descriptor: Ljava/lang/Float;
-flags: ACC_PUBLIC,ACC_FINAL,ACC_STATIC
+flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
 
 public final static Ljava/lang/Float; FLOAT_MIN;
 descriptor: Ljava/lang/Float;
-flags: ACC_PUBLIC,ACC_FINAL,ACC_STATIC
+flags: ACC_STATIC,ACC_PUBLIC,ACC_FINAL
 
-public final static Ljava/lang/Short; SHORT_MAX;
+final static public Ljava/lang/Short; SHORT_MAX;
 descriptor: Ljava/lang/Short;
 flags: ACC_STATIC,ACC_PUBLIC,ACC_FINAL
 
-static public final Ljava/lang/Short; SHORT_MIN;
+public final static Ljava/lang/Short; SHORT_MIN;
 descriptor: Ljava/lang/Short;
-flags: ACC_PUBLIC,ACC_FINAL,ACC_STATIC
+flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
 
-}
+} 
+ public <init>
+descriptor: ()V
+flags: ACC_PUBLIC
+
+static public main
+descriptor: ([Ljava/lang/String;)V
+flags: ACC_STATIC,ACC_PUBLIC
+
+public say
+descriptor: ()V
+flags: ACC_PUBLIC
+
+public hi
+descriptor: (Ljava/lang/String;)Ljava/lang/String;
+flags: ACC_PUBLIC
+
+public synthetic bridge hi
+descriptor: (Ljava/lang/Object;)Ljava/lang/Object;
+flags: ACC_BRIDGE,ACC_SYNTHETIC,ACC_PUBLIC
+
+static synthetic private lambda$main$0
+descriptor: (LMain;Ljava/lang/String;)V
+flags: ACC_STATIC,ACC_SYNTHETIC,ACC_PRIVATE
+
+static <clinit>
+descriptor: ()V
+flags: ACC_STATIC

@@ -71,7 +71,7 @@ public class Main extends AbstractMain<String> implements InterfaceMain {
     }
 
     @Override
-    String hi(String p) {
+    public String hi(String p) {
         return "Hi,2021" + p;
     }
 }
