@@ -5,7 +5,6 @@ import (
 	"github.com/web1992/goclass/core"
 	"log"
 	"os"
-	"strings"
 	"testing"
 )
 
@@ -61,7 +60,7 @@ func Test_get_major_version(t *testing.T) {
 	var cp ClassParse
 	_ = cp.parseFile(file)
 	mv := cp.ClassFile().MajorVersion
-	expect := 58
+	expect := 52
 
 	if (expect) != mv.Version {
 		t.Fatalf("major version is %d,except is %d", mv.Version, expect)
@@ -75,30 +74,13 @@ func Test_get_cp(t *testing.T) {
 	constPoolCount := cp.ClassFile().ConstantPoolCount
 	v := constPoolCount.Count
 
-	except := 162
+	except := 201
 	if v != except {
 		t.Fatalf("constPoolCount is %d  except is %d", v, except)
 	}
 
 }
 
-func Test_get_cp_info_view(t *testing.T) {
-
-	var cp ClassParse
-	_ = cp.parseFile(file)
-	classFile := cp.ClassFile()
-	cpInfos := classFile.CpInfos
-
-	//sv := cpInfos.View()
-	//fmt.Println(cpInfos)
-	expect := "#1 = Methodref          #2.#3         // AbstractMain.<init>:()V"
-
-	s := cpInfos.String()
-	if !strings.Contains(s, expect) {
-		t.Fatalf(" expect %s \n sv is \n%s", expect, s)
-	}
-
-}
 func Test_get_cp_info(t *testing.T) {
 	var cp ClassParse
 	_ = cp.parseFile(file)
