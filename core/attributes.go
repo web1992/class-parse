@@ -1,6 +1,9 @@
 package core
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type AttributeNameIndex int
 type AttributeLength int
@@ -91,6 +94,38 @@ type CodeAttribute struct {
 	ExceptionTable []ExceptionTable
 	AttributeCount
 	Attributes
+}
+
+/**
+
+  stack=1, locals=1, args_size=1
+     0: aload_0
+     1: invokespecial #1                  // Method AbstractMain."<init>":()V
+     4: return
+  LineNumberTable:
+    line 9: 0
+*/
+func (ca *CodeAttribute) String() string {
+	var str []string
+	s1 := "stack=%d, locals=%d, args_size=%d\n"
+	s2 := fmt.Sprintf(s1, ca.MaxStack, ca.MaxLocals, 1)
+	str = append(str, s2)
+
+	for _, op := range ca.OpCodes {
+		if s, ok := op.(fmt.Stringer); ok {
+			str = append(str, s.String())
+		}
+	}
+
+	ac := int(ca.AttributeCount.Count)
+	if ac > 0 {
+		for _, op := range ca.Attributes {
+			if s, ok := op.(fmt.Stringer); ok {
+				str = append(str, s.String())
+			}
+		}
+	}
+	return strings.Join(str, "")
 }
 
 /**
@@ -319,6 +354,21 @@ type LineNumberTableAttribute struct {
 	AttributeLength
 	LineNumberTableLength
 	LineNumberTable []LineTable
+}
+
+/**
+  LineNumberTable:
+    line 9: 0
+*/
+func (lta *LineNumberTableAttribute) String() string {
+
+	var str []string
+	str = append(str, lta.Name+":")
+	for _, v := range lta.LineNumberTable {
+		s := fmt.Sprintf("line %d: %d", v.LineNumber, v.StartPc)
+		str = append(str, s)
+	}
+	return strings.Join(str, "\n")
 }
 
 type LineTable struct {
@@ -576,6 +626,20 @@ type RuntimeVisibleAnnotationsAttr struct {
 	Annotations    []Annotation
 }
 
+/**
+  RuntimeVisibleAnnotations:
+    0: #65(#95=s#96)
+    1: #97(#98=s#99,#100=I#101)
+*/
+func (rvaa *RuntimeVisibleAnnotationsAttr) String() string {
+	var str []string
+	str = append(str, rvaa.Name+":")
+	for i, v := range rvaa.Annotations {
+		s := fmt.Sprintf("%d: %s", i, v.String())
+		str = append(str, s)
+	}
+	return strings.Join(str, "\n")
+}
 func (rva *RuntimeVisibleAnnotationsAttr) ReadObj(bytes []byte) int {
 
 	readLen := 0
@@ -618,6 +682,20 @@ type Annotation struct {
 	ElementValuePair []ElementValuePair
 }
 
+/**
+#65(#95=s#96)
+#97(#98=s#99,#100=I#101)
+*/
+func (ann *Annotation) String() string {
+	s := "#%d(%s)"
+	var str []string
+	for _, ev := range ann.ElementValuePair {
+		str = append(str, ev.String())
+	}
+	ss := strings.Join(str, ",")
+	return fmt.Sprintf(s, ann.TypeIndex, ss)
+}
+
 func (ann *Annotation) ReadObj(bytes []byte) int {
 
 	readLen := 0
@@ -655,6 +733,14 @@ type ElementValuePair struct {
 	ElementValue
 }
 
+/**
+#98=s#99
+*/
+func (evp *ElementValuePair) String() string {
+	s := fmt.Sprintf("#%d=%s#%d", evp.ElementNameIndex, string(evp.Tag), evp.ElementValue.Value.ValueIndex)
+	return s
+}
+
 /*
 tag Item	Type	value Item	Constant Type
 B	byte	const_value_index	CONSTANT_Integer
@@ -679,6 +765,7 @@ type ElementValue struct {
 }
 
 type Value struct {
+	ValueIndex int
 	ConstValue
 	EnumConstValue
 	ClassInfoValue
@@ -740,7 +827,8 @@ func (ev *ElementValue) ReadObj(bytes []byte) int {
 		{
 			var v Value
 			ev.Value = &v
-			v.ConstValueIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
+			v.ValueIndex = int(Byte2U2(bytes[readLen : readLen+u2]))
+			v.ConstValueIndex = v.ValueIndex
 			v.ConstValue.Name = GetCp(cpInfos, v.ConstValueIndex)
 			readLen += u2
 		}

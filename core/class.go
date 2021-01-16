@@ -153,6 +153,15 @@ func getMDesc(m Method) string {
 	str = append(str, s2)
 	s3 := fmt.Sprintf("flags: %s", m.AccessFlag.String())
 	str = append(str, s3)
+	ac := int(m.AttributeCount.Count)
+	if ac > 0 {
+		str = append(str, "Code:")
+		for _, v := range m.Attributes {
+			if s, ok := v.(fmt.Stringer); ok {
+				str = append(str, s.String())
+			}
+		}
+	}
 
 	return strings.Join(str, NewLine) + NewLine
 }

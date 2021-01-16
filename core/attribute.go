@@ -32,6 +32,10 @@ type Attribute struct {
 	AttributeLength    int32
 }
 
+func (af *Attribute) String() string {
+	return af.Name
+}
+
 func (af *Attribute) ReadObj(bytes []byte) int {
 	i := Byte2U2(bytes[0:u2])
 	af.AttributeNameIndex = i

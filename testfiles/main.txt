@@ -4,7 +4,7 @@
 public class Main extends AbstractMain implements InterfaceMain 
  minor version: 0
  major version: 52 
- flags: ACC_SUPER,ACC_PUBLIC 
+ flags: ACC_PUBLIC,ACC_SUPER 
  Constant pool:
     #1 = Methodref          #60.#112      // AbstractMain.<init>:()V
     #2 = Fieldref           #113.#114     // java/lang/System.out:Ljava/io/PrintStream;
@@ -203,71 +203,253 @@ public class Main extends AbstractMain implements InterfaceMain
   #199 = Utf8               java/lang/invoke/MethodHandles$Lookup
   #200 = Utf8               java/lang/invoke/MethodHandles 
  {
-final static public Ljava/lang/Integer; INT_MAX;
+public static final Ljava/lang/Integer; INT_MAX;
 descriptor: Ljava/lang/Integer;
 flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
 
-final static public Ljava/lang/Integer; INT_MIN;
+public static final Ljava/lang/Integer; INT_MIN;
 descriptor: Ljava/lang/Integer;
-flags: ACC_PUBLIC,ACC_FINAL,ACC_STATIC
+flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
 
-public final static Ljava/lang/Long; LONG_MAX;
+public static final Ljava/lang/Long; LONG_MAX;
 descriptor: Ljava/lang/Long;
 flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
 
-static public final Ljava/lang/Long; LONG_MIN;
+static final public Ljava/lang/Long; LONG_MIN;
 descriptor: Ljava/lang/Long;
 flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
 
-static public final Ljava/lang/Double; DOUBLE_MAX;
+final static public Ljava/lang/Double; DOUBLE_MAX;
 descriptor: Ljava/lang/Double;
-flags: ACC_STATIC,ACC_PUBLIC,ACC_FINAL
+flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 
-final static public Ljava/lang/Double; DOUBLE_MIN;
+public static final Ljava/lang/Double; DOUBLE_MIN;
 descriptor: Ljava/lang/Double;
-flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
+flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 
-public final static Ljava/lang/Float; FLOAT_MAX;
+static final public Ljava/lang/Float; FLOAT_MAX;
 descriptor: Ljava/lang/Float;
-flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
+flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 
 public final static Ljava/lang/Float; FLOAT_MIN;
 descriptor: Ljava/lang/Float;
-flags: ACC_STATIC,ACC_PUBLIC,ACC_FINAL
+flags: ACC_STATIC,ACC_FINAL,ACC_PUBLIC
 
-final static public Ljava/lang/Short; SHORT_MAX;
+static final public Ljava/lang/Short; SHORT_MAX;
 descriptor: Ljava/lang/Short;
-flags: ACC_STATIC,ACC_PUBLIC,ACC_FINAL
+flags: ACC_STATIC,ACC_FINAL,ACC_PUBLIC
 
-public final static Ljava/lang/Short; SHORT_MIN;
+static final public Ljava/lang/Short; SHORT_MIN;
 descriptor: Ljava/lang/Short;
-flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
+flags: ACC_PUBLIC,ACC_FINAL,ACC_STATIC
 
 } 
  public <init>
 descriptor: ()V
 flags: ACC_PUBLIC
+Code:
+stack=1, locals=1, args_size=1
+0: aload_0 
+1: invokespecial 
+4: return 
+LineNumberTable:
+line 9: 0
 
-static public main
+public static main
 descriptor: ([Ljava/lang/String;)V
-flags: ACC_STATIC,ACC_PUBLIC
+flags: ACC_PUBLIC,ACC_STATIC
+Code:
+stack=2, locals=8, args_size=1
+0: getstatic 
+3: ldc 
+5: invokevirtual 
+8: new 
+11: dup 
+12: invokespecial 
+15: astore_1 
+16: ldc 
+18: astore_2 
+19: aload_1 
+20: aload_2 
+21: invokedynamic 
+26: astore_3 
+27: aload_3 
+28: invokeinterface 
+33: iconst_1 
+34: istore 
+36: ldc 
+38: astore 
+40: iload 
+42: tableswitch { // 1-3
+               1:68
+               2:72
+               3:76
+         default:80
+} 
+68: ldc 
+70: astore 
+72: ldc 
+74: astore 
+76: ldc 
+78: astore 
+80: ldc 
+82: astore 
+84: getstatic 
+87: ldc 
+89: invokevirtual 
+92: getstatic 
+95: ldc 
+97: invokevirtual 
+100: goto 
+103: astore 
+105: getstatic 
+108: ldc 
+110: invokevirtual 
+113: getstatic 
+116: ldc 
+118: invokevirtual 
+121: goto 
+124: astore 
+126: getstatic 
+129: ldc 
+131: invokevirtual 
+134: aload 
+135: iconst_4 
+136: athrow 
+137: return 
+LineNumberTable:
+line 29: 0
+line 30: 8
+line 32: 16
+line 33: 19
+line 38: 27
+line 40: 33
+line 41: 36
+line 42: 40
+line 44: 68
+line 47: 72
+line 50: 76
+line 53: 80
+line 58: 84
+line 62: 92
+line 63: 100
+line 59: 103
+line 60: 105
+line 62: 113
+line 63: 121
+line 62: 124
+line 63: 134
+line 64: 137StackMapTable
+Exceptions
 
 public say
 descriptor: ()V
 flags: ACC_PUBLIC
+Code:
+stack=2, locals=1, args_size=1
+0: getstatic 
+3: ldc 
+5: invokevirtual 
+8: return 
+LineNumberTable:
+line 70: 0
+line 71: 8
+RuntimeVisibleAnnotations:
+0: #65(#95=s#96)
+1: #97(#98=s#99,#100=I#101)
 
 public hi
 descriptor: (Ljava/lang/String;)Ljava/lang/String;
 flags: ACC_PUBLIC
+Code:
+stack=2, locals=2, args_size=1
+0: new 
+3: dup 
+4: invokespecial 
+7: ldc 
+9: invokevirtual 
+12: aload_1 
+13: invokevirtual 
+16: invokevirtual 
+19: areturn 
+LineNumberTable:
+line 75: 0
 
-public synthetic bridge hi
+public bridge synthetic hi
 descriptor: (Ljava/lang/Object;)Ljava/lang/Object;
-flags: ACC_BRIDGE,ACC_SYNTHETIC,ACC_PUBLIC
+flags: ACC_PUBLIC,ACC_BRIDGE,ACC_SYNTHETIC
+Code:
+stack=2, locals=2, args_size=1
+0: aload_0 
+1: aload_1 
+2: checkcast 
+5: invokevirtual 
+8: areturn 
+LineNumberTable:
+line 8: 0
 
-static synthetic private lambda$main$0
+private static synthetic lambda$main$0
 descriptor: (LMain;Ljava/lang/String;)V
-flags: ACC_STATIC,ACC_SYNTHETIC,ACC_PRIVATE
+flags: ACC_PRIVATE,ACC_STATIC,ACC_SYNTHETIC
+Code:
+stack=2, locals=2, args_size=1
+0: getstatic 
+3: ldc 
+5: invokevirtual 
+8: aload_0 
+9: aload_1 
+10: invokevirtual 
+13: pop 
+14: return 
+LineNumberTable:
+line 34: 0
+line 35: 8
+line 36: 14
 
 static <clinit>
 descriptor: ()V
 flags: ACC_STATIC
+Code:
+stack=2, locals=0, args_size=1
+0: ldc 
+2: invokestatic 
+5: putstatic 
+8: ldc 
+10: invokestatic 
+13: putstatic 
+16: ldc2_w 
+19: invokestatic 
+22: putstatic 
+25: ldc2_w 
+28: invokestatic 
+31: putstatic 
+34: ldc2_w 
+37: invokestatic 
+40: putstatic 
+43: ldc2_w 
+46: invokestatic 
+49: putstatic 
+52: ldc 
+54: invokestatic 
+57: putstatic 
+60: ldc 
+62: invokestatic 
+65: putstatic 
+68: sipush 
+71: invokestatic 
+74: putstatic 
+77: sipush 
+80: invokestatic 
+83: putstatic 
+86: return 
+LineNumberTable:
+line 12: 0
+line 13: 8
+line 15: 16
+line 16: 25
+line 18: 34
+line 19: 43
+line 21: 52
+line 22: 60
+line 24: 68
+line 25: 77
