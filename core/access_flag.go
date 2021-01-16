@@ -56,6 +56,20 @@ func (af *AccessFlag) ReadObj(bytes []byte) int {
 	return u2
 }
 
+/**
+ACC_SUPER
+*/
+func (af *AccessFlag) HasSuper() bool {
+	return af.Flag&JVM_ACC_SUPER != 0
+}
+
+func (af *AccessFlag) HasPublic() bool {
+	return af.Flag&JVM_ACC_PUBLIC != 0
+}
+
+func (af *AccessFlag) HasAbstract() bool {
+	return af.Flag&JVM_ACC_ABSTRACT != 0
+}
 func (af *AccessFlag) String() string {
 	return getFlag(af.Flag)
 }
@@ -103,6 +117,7 @@ func getFlagDesc(f int) string {
 	}
 	return strings.Join(fs, " ")
 }
+
 func getFlag(f int) string {
 
 	var fs []string

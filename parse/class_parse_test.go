@@ -176,3 +176,14 @@ func Test_log(t *testing.T) {
 	core.Warning.Println("Warning")
 	core.Error.Println("Error")
 }
+
+func Test_getClassDesc(t *testing.T) {
+
+	const file = "../testfiles/Main.class"
+
+	var cp ClassParse
+	_ = cp.parseFile(file)
+	cf := cp.ClassFile()
+	desc := cf.ClassDesc()
+	fmt.Println(desc)
+}

@@ -1,5 +1,5 @@
 Classfile /Users/zl/Documents/DEV/github/class-parse/testfiles/Main.class
-  Last modified 2021-1-10; size 3186 bytes
+  Last modified 2021-1-16; size 3186 bytes
   MD5 checksum f84fa68d968e1b7d1f4ee8a21b13a519
   Compiled from "Main.java"
 public class Main extends AbstractMain<java.lang.String> implements InterfaceMain

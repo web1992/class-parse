@@ -76,21 +76,67 @@ type ClassFile struct {
 	Attributes
 }
 
-func (classFile ClassFile) String() string {
-
-	// public class Main extends AbstractMain implements InterfaceMain
+func (cf ClassFile) String() string {
 	var str []string
-	//sm := fmt.Sprintf("%s", classFile.Magic.Hex)
-	//str = append(str, sm)
-	stc := fmt.Sprintf("%s", classFile.ThisClass.String)
-	str = append(str, stc)
-
-	ssc := fmt.Sprintf("%s", classFile.SuperClass.String)
-	str = append(str, ssc)
-
-	for _, m := range classFile.Methods {
+	for _, m := range cf.Methods {
 		fmt.Println(m.NameString)
 	}
 
 	return strings.Join(str, "\n")
+}
+
+/**
+public class Main extends AbstractMain<java.lang.String> implements InterfaceMain
+
+*/
+func (cf ClassFile) ClassDesc() string {
+
+	// public class Main extends AbstractMain implements InterfaceMain
+	var str []string
+	str = append(str, cf.ThisDesc())
+	str = append(str, cf.SuperDesc())
+	str = append(str, cf.InterfaceDesc())
+
+	return strings.Join(str, " ")
+}
+
+func (cf ClassFile) ThisDesc() string {
+	var str []string
+	if cf.AccessFlag.HasPublic() {
+		str = append(str, "public")
+	}
+	if cf.AccessFlag.HasAbstract() {
+		str = append(str, "abstract")
+	}
+	str = append(str, "class")
+	str = append(str, cf.ThisClass.String)
+	return strings.Join(str, " ")
+}
+
+func (cf ClassFile) SuperDesc() string {
+	var str []string
+	if cf.AccessFlag.HasSuper() {
+		if !cf.SuperClass.isJavaLangObject() {
+			str = append(str, "extends")
+			str = append(str, cf.SuperClass.String)
+		}
+	}
+	return strings.Join(str, " ")
+}
+
+func (cf ClassFile) InterfaceDesc() string {
+	var str []string
+	ifc := cf.InterfacesCount.Count
+	var interfaceDesc string
+	if ifc > 0 {
+		str = append(str, "implements")
+		var s []string
+		for _, v := range cf.Interfaces {
+			s = append(s, v.NameString)
+		}
+		interfaceDesc = strings.Join(s, ",")
+		str = append(str, interfaceDesc)
+	}
+
+	return strings.Join(str, " ")
 }

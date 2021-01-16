@@ -208,7 +208,7 @@ func (ca *CodeAttribute) ParseOpCodes(offset int, codeLength int, bs []byte) OpC
 
 		op := Byte2U1(bs[hadReadLen : hadReadLen+u1])
 		_bs := bs[hadReadLen:]
-		desc := GetOpDesc(int(op))
+		//desc := GetOpDesc(int(op))
 		opObj := CreateOpCode(op)
 		if o, ok := opObj.(*OpCodeTableSwitch); ok {
 			// The alignment required of the 4-byte operands of the tableswitch
@@ -217,7 +217,7 @@ func (ca *CodeAttribute) ParseOpCodes(offset int, codeLength int, bs []byte) OpC
 			o.Base = int32(hadReadLen)
 			o.LineNo = hadReadLen
 			readLen := o.ReadObj(_bs)
-			fmt.Printf("%d: %s \n", hadReadLen, GetTableSwitchDesc(*o, desc))
+			//fmt.Printf("%d: %s \n", hadReadLen, GetTableSwitchDesc(*o, desc))
 			hadReadLen = readLen + hadReadLen
 			ops = append(ops, o)
 			continue
@@ -226,14 +226,14 @@ func (ca *CodeAttribute) ParseOpCodes(offset int, codeLength int, bs []byte) OpC
 			o.Base = int32(hadReadLen)
 			o.LineNo = hadReadLen
 			readLen := o.ReadObj(_bs)
-			fmt.Printf("%d: %s \n", hadReadLen, GetLookupSwitchDesc(*o, desc))
+			//fmt.Printf("%d: %s \n", hadReadLen, GetLookupSwitchDesc(*o, desc))
 			hadReadLen = readLen + hadReadLen
 			ops = append(ops, o)
 			continue
 		}
 		if o, ok := opObj.(Reader); ok {
 			readLen := o.ReadObj(_bs)
-			fmt.Printf("%d: %s \n", hadReadLen, desc)
+			//fmt.Printf("%d: %s \n", hadReadLen, desc)
 
 			if opc, ok := opObj.(OpCoder); ok {
 				opc.SetLineNo(hadReadLen)
