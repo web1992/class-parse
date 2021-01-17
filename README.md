@@ -8,7 +8,7 @@ Use golang parse `class` file. Output like use `javap` cmd.
 javap -v Main.class
 ```
 
-![screenshot.gif](screenshot.gif)
+![screenshot](screenshot.png)
 
 ## Links
 
