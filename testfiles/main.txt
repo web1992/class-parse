@@ -1,12 +1,12 @@
 Classfile /Users/zl/Documents/DEV/github/class-parse/testfiles/Main.class
-  Last modified 2021-01-17; size 3377 bytes
+  Last modified 2021-1-17; size 3377 bytes
   MD5 checksum 5bb681d1ec46ad1aa3db24525e5867df
   Compiled from "Main.java"
-public class Main extends AbstractMain implements InterfaceMain 
- minor version: 0
- major version: 52 
- flags: ACC_PUBLIC,ACC_SUPER 
- Constant pool:
+public class Main extends AbstractMain implements InterfaceMain
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
     #1 = Methodref          #61.#122      // AbstractMain.<init>:()V
     #2 = Fieldref           #6.#123       // Main.name:Ljava/lang/String;
     #3 = Fieldref           #124.#125     // java/lang/System.out:Ljava/io/PrintStream;
@@ -212,279 +212,280 @@ public class Main extends AbstractMain implements InterfaceMain
   #207 = Utf8               (Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
   #208 = Class              #210          // java/lang/invoke/MethodHandles
   #209 = Utf8               java/lang/invoke/MethodHandles$Lookup
-  #210 = Utf8               java/lang/invoke/MethodHandles 
- {
-public static final Ljava/lang/Integer; INT_MAX;
-descriptor: Ljava/lang/Integer;
-flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
-RuntimeVisibleAnnotations:
-0: #66()
+  #210 = Utf8               java/lang/invoke/MethodHandles
+{
+  public static final Ljava/lang/Integer; INT_MAX;
+    descriptor: Ljava/lang/Integer;
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
+    RuntimeVisibleAnnotations:
+      0: #66()
 
-public static final Ljava/lang/Integer; INT_MIN;
-descriptor: Ljava/lang/Integer;
-flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
+  public static final Ljava/lang/Integer; INT_MIN;
+    descriptor: Ljava/lang/Integer;
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
 
-public static final Ljava/lang/Long; LONG_MAX;
-descriptor: Ljava/lang/Long;
-flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
+  public static final Ljava/lang/Long; LONG_MAX;
+    descriptor: Ljava/lang/Long;
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
 
-public static final Ljava/lang/Long; LONG_MIN;
-descriptor: Ljava/lang/Long;
-flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
+  public static final Ljava/lang/Long; LONG_MIN;
+    descriptor: Ljava/lang/Long;
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
 
-public static final Ljava/lang/Double; DOUBLE_MAX;
-descriptor: Ljava/lang/Double;
-flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
+  public static final Ljava/lang/Double; DOUBLE_MAX;
+    descriptor: Ljava/lang/Double;
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
 
-public static final Ljava/lang/Double; DOUBLE_MIN;
-descriptor: Ljava/lang/Double;
-flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
+  public static final Ljava/lang/Double; DOUBLE_MIN;
+    descriptor: Ljava/lang/Double;
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
 
-public static final Ljava/lang/Float; FLOAT_MAX;
-descriptor: Ljava/lang/Float;
-flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
+  public static final Ljava/lang/Float; FLOAT_MAX;
+    descriptor: Ljava/lang/Float;
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
 
-public static final Ljava/lang/Float; FLOAT_MIN;
-descriptor: Ljava/lang/Float;
-flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
+  public static final Ljava/lang/Float; FLOAT_MIN;
+    descriptor: Ljava/lang/Float;
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
 
-public static final Ljava/lang/Short; SHORT_MAX;
-descriptor: Ljava/lang/Short;
-flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
+  public static final Ljava/lang/Short; SHORT_MAX;
+    descriptor: Ljava/lang/Short;
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
 
-public static final Ljava/lang/Short; SHORT_MIN;
-descriptor: Ljava/lang/Short;
-flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
+  public static final Ljava/lang/Short; SHORT_MIN;
+    descriptor: Ljava/lang/Short;
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
 
-private Ljava/lang/String; name;
-descriptor: Ljava/lang/String;
-flags: ACC_PRIVATE
+  private Ljava/lang/String; name;
+    descriptor: Ljava/lang/String;
+    flags: ACC_PRIVATE
 
-} 
- public <init>();
-descriptor: ()V
-flags: ACC_PUBLIC
-Code:
-stack=1, locals=1, args_size=1
-0: aload_0 
-1: invokespecial 
-4: return 
-LineNumberTable:
-line 29: 0
-line 30: 4
+  public <init>();
+      descriptor: ()V
+      flags: ACC_PUBLIC
+      Code:
+        stack=1, locals=1, args_size=1
+            0: aload_0
+            1: invokespecial
+            4: return
+        LineNumberTable:
+            line 29: 0
+            line 30: 4
 
-public <init>();
-descriptor: (Ljava/lang/String;)V
-flags: ACC_PUBLIC
-Code:
-stack=2, locals=2, args_size=1
-0: aload_0 
-1: invokespecial 
-4: aload_0 
-5: aload_1 
-6: putfield 
-9: return 
-LineNumberTable:
-line 32: 0
-line 33: 4
-line 34: 9
+  public <init>();
+      descriptor: (Ljava/lang/String;)V
+      flags: ACC_PUBLIC
+      Code:
+        stack=2, locals=2, args_size=1
+            0: aload_0
+            1: invokespecial
+            4: aload_0
+            5: aload_1
+            6: putfield
+            9: return
+        LineNumberTable:
+            line 32: 0
+            line 33: 4
+            line 34: 9
 
-public static main();
-descriptor: ([Ljava/lang/String;)V
-flags: ACC_PUBLIC,ACC_STATIC
-Code:
-stack=2, locals=8, args_size=1
-0: getstatic 
-3: ldc 
-5: invokevirtual 
-8: new 
-11: dup 
-12: invokespecial 
-15: astore_1 
-16: ldc 
-18: astore_2 
-19: aload_1 
-20: aload_2 
-21: invokedynamic 
-26: astore_3 
-27: aload_3 
-28: invokeinterface 
-33: iconst_1 
-34: istore 
-36: ldc 
-38: astore 
-40: iload 
-42: tableswitch { // 1-3
+  public static main();
+      descriptor: ([Ljava/lang/String;)V
+      flags: ACC_PUBLIC, ACC_STATIC
+      Code:
+        stack=2, locals=8, args_size=1
+            0: getstatic
+            3: ldc
+            5: invokevirtual
+            8: new
+            11: dup
+            12: invokespecial
+            15: astore_1
+            16: ldc
+            18: astore_2
+            19: aload_1
+            20: aload_2
+            21: invokedynamic
+            26: astore_3
+            27: aload_3
+            28: invokeinterface
+            33: iconst_1
+            34: istore
+            36: ldc
+            38: astore
+            40: iload
+            42: tableswitch { // 1-3
                1:68
                2:72
                3:76
          default:80
 } 
-68: ldc 
-70: astore 
-72: ldc 
-74: astore 
-76: ldc 
-78: astore 
-80: ldc 
-82: astore 
-84: getstatic 
-87: ldc 
-89: invokevirtual 
-92: getstatic 
-95: ldc 
-97: invokevirtual 
-100: goto 
-103: astore 
-105: getstatic 
-108: ldc 
-110: invokevirtual 
-113: getstatic 
-116: ldc 
-118: invokevirtual 
-121: goto 
-124: astore 
-126: getstatic 
-129: ldc 
-131: invokevirtual 
-134: aload 
-135: iconst_4 
-136: athrow 
-137: return 
-LineNumberTable:
-line 38: 0
-line 39: 8
-line 41: 16
-line 42: 19
-line 47: 27
-line 49: 33
-line 50: 36
-line 51: 40
-line 53: 68
-line 56: 72
-line 59: 76
-line 62: 80
-line 67: 84
-line 71: 92
-line 72: 100
-line 68: 103
-line 69: 105
-line 71: 113
-line 72: 121
-line 71: 124
-line 72: 134
-line 73: 137StackMapTable
-Exceptions
+            68: ldc
+            70: astore
+            72: ldc
+            74: astore
+            76: ldc
+            78: astore
+            80: ldc
+            82: astore
+            84: getstatic
+            87: ldc
+            89: invokevirtual
+            92: getstatic
+            95: ldc
+            97: invokevirtual
+            100: goto
+            103: astore
+            105: getstatic
+            108: ldc
+            110: invokevirtual
+            113: getstatic
+            116: ldc
+            118: invokevirtual
+            121: goto
+            124: astore
+            126: getstatic
+            129: ldc
+            131: invokevirtual
+            134: aload
+            135: iconst_4
+            136: athrow
+            137: return
+        LineNumberTable:
+            line 38: 0
+            line 39: 8
+            line 41: 16
+            line 42: 19
+            line 47: 27
+            line 49: 33
+            line 50: 36
+            line 51: 40
+            line 53: 68
+            line 56: 72
+            line 59: 76
+            line 62: 80
+            line 67: 84
+            line 71: 92
+            line 72: 100
+            line 68: 103
+            line 69: 105
+            line 71: 113
+            line 72: 121
+            line 71: 124
+            line 72: 134
+            line 73: 137        StackMapTable
+        Exceptions
 
-public say();
-descriptor: ()V
-flags: ACC_PUBLIC
-Code:
-stack=2, locals=1, args_size=1
-0: getstatic 
-3: ldc 
-5: invokevirtual 
-8: return 
-LineNumberTable:
-line 80: 0
-line 81: 8
-RuntimeVisibleAnnotations:
-0: #66(#99=s#100)
-1: #101(#80=s#102,#103=I#104)
-2: #105(#80=e#106.#107,#108=c#109,#99=[s#110,s#111])
+  public say();
+      descriptor: ()V
+      flags: ACC_PUBLIC
+      Code:
+        stack=2, locals=1, args_size=1
+            0: getstatic
+            3: ldc
+            5: invokevirtual
+            8: return
+        LineNumberTable:
+            line 80: 0
+            line 81: 8
+        RuntimeVisibleAnnotations:
+      0: #66(#99=s#100)
+      1: #101(#80=s#102,#103=I#104)
+      2: #105(#80=e#106.#107,#108=c#109,#99=[s#110,s#111])
 
-public hi();
-descriptor: (Ljava/lang/String;)Ljava/lang/String;
-flags: ACC_PUBLIC
-Code:
-stack=2, locals=2, args_size=1
-0: new 
-3: dup 
-4: invokespecial 
-7: ldc 
-9: invokevirtual 
-12: aload_1 
-13: invokevirtual 
-16: invokevirtual 
-19: areturn 
-LineNumberTable:
-line 85: 0
+  public hi();
+      descriptor: (Ljava/lang/String;)Ljava/lang/String;
+      flags: ACC_PUBLIC
+      Code:
+        stack=2, locals=2, args_size=1
+            0: new
+            3: dup
+            4: invokespecial
+            7: ldc
+            9: invokevirtual
+            12: aload_1
+            13: invokevirtual
+            16: invokevirtual
+            19: areturn
+        LineNumberTable:
+            line 85: 0
 
-public bridge synthetic hi();
-descriptor: (Ljava/lang/Object;)Ljava/lang/Object;
-flags: ACC_PUBLIC,ACC_BRIDGE,ACC_SYNTHETIC
-Code:
-stack=2, locals=2, args_size=1
-0: aload_0 
-1: aload_1 
-2: checkcast 
-5: invokevirtual 
-8: areturn 
-LineNumberTable:
-line 8: 0
+  public bridge synthetic hi();
+      descriptor: (Ljava/lang/Object;)Ljava/lang/Object;
+      flags: ACC_PUBLIC, ACC_BRIDGE, ACC_SYNTHETIC
+      Code:
+        stack=2, locals=2, args_size=1
+            0: aload_0
+            1: aload_1
+            2: checkcast
+            5: invokevirtual
+            8: areturn
+        LineNumberTable:
+            line 8: 0
 
-private static synthetic lambda$main$0();
-descriptor: (LMain;Ljava/lang/String;)V
-flags: ACC_PRIVATE,ACC_STATIC,ACC_SYNTHETIC
-Code:
-stack=2, locals=2, args_size=1
-0: getstatic 
-3: ldc 
-5: invokevirtual 
-8: aload_0 
-9: aload_1 
-10: invokevirtual 
-13: pop 
-14: return 
-LineNumberTable:
-line 43: 0
-line 44: 8
-line 45: 14
+  private static synthetic lambda$main$0();
+      descriptor: (LMain;Ljava/lang/String;)V
+      flags: ACC_PRIVATE, ACC_STATIC, ACC_SYNTHETIC
+      Code:
+        stack=2, locals=2, args_size=1
+            0: getstatic
+            3: ldc
+            5: invokevirtual
+            8: aload_0
+            9: aload_1
+            10: invokevirtual
+            13: pop
+            14: return
+        LineNumberTable:
+            line 43: 0
+            line 44: 8
+            line 45: 14
 
-static <clinit>();
-descriptor: ()V
-flags: ACC_STATIC
-Code:
-stack=2, locals=0, args_size=1
-0: ldc 
-2: invokestatic 
-5: putstatic 
-8: ldc 
-10: invokestatic 
-13: putstatic 
-16: ldc2_w 
-19: invokestatic 
-22: putstatic 
-25: ldc2_w 
-28: invokestatic 
-31: putstatic 
-34: ldc2_w 
-37: invokestatic 
-40: putstatic 
-43: ldc2_w 
-46: invokestatic 
-49: putstatic 
-52: ldc 
-54: invokestatic 
-57: putstatic 
-60: ldc 
-62: invokestatic 
-65: putstatic 
-68: sipush 
-71: invokestatic 
-74: putstatic 
-77: sipush 
-80: invokestatic 
-83: putstatic 
-86: return 
-LineNumberTable:
-line 12: 0
-line 13: 8
-line 15: 16
-line 16: 25
-line 18: 34
-line 19: 43
-line 21: 52
-line 22: 60
-line 24: 68
-line 25: 77
+  static <clinit>();
+      descriptor: ()V
+      flags: ACC_STATIC
+      Code:
+        stack=2, locals=0, args_size=1
+            0: ldc
+            2: invokestatic
+            5: putstatic
+            8: ldc
+            10: invokestatic
+            13: putstatic
+            16: ldc2_w
+            19: invokestatic
+            22: putstatic
+            25: ldc2_w
+            28: invokestatic
+            31: putstatic
+            34: ldc2_w
+            37: invokestatic
+            40: putstatic
+            43: ldc2_w
+            46: invokestatic
+            49: putstatic
+            52: ldc
+            54: invokestatic
+            57: putstatic
+            60: ldc
+            62: invokestatic
+            65: putstatic
+            68: sipush
+            71: invokestatic
+            74: putstatic
+            77: sipush
+            80: invokestatic
+            83: putstatic
+            86: return
+        LineNumberTable:
+            line 12: 0
+            line 13: 8
+            line 15: 16
+            line 16: 25
+            line 18: 34
+            line 19: 43
+            line 21: 52
+            line 22: 60
+            line 24: 68
+            line 25: 77
+
+}

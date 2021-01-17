@@ -86,7 +86,7 @@ func (cp *ClassParse) parseFile(filePath string) error {
 		log.Println("stat filei nfo error")
 	}
 	cp.modTime = fi.ModTime().Unix()
-	cp.modTimeStr = fi.ModTime().Format("2006-01-02")
+	cp.modTimeStr = fi.ModTime().Format("2006-1-02")
 
 	abs, _ := filepath.Abs(filePath)
 	cp.fullPath = abs

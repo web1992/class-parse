@@ -150,5 +150,5 @@ func getFlag(f int) string {
 			fs = append(fs, v)
 		}
 	}
-	return strings.Join(fs, ",")
+	return strings.Join(fs, ", ")
 }

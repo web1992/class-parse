@@ -101,9 +101,7 @@ func (cf ClassFile) ClassDesc() string {
 
 	// public class Main extends AbstractMain implements InterfaceMain
 	var str []string
-	str = append(str, cf.ThisDesc())
-	str = append(str, cf.SuperDesc())
-	str = append(str, cf.InterfaceDesc())
+	str = append(str, cf.ClassNameDesc())
 	str = append(str, NewLine)
 	str = append(str, cf.VersionDesc())
 	str = append(str, NewLine)
@@ -111,10 +109,14 @@ func (cf ClassFile) ClassDesc() string {
 	str = append(str, NewLine)
 	str = append(str, cf.ConstantPool())
 	str = append(str, NewLine)
+	str = append(str, "{")
+	str = append(str, NewLine)
 	str = append(str, cf.FieldDesc())
 	str = append(str, NewLine)
 	str = append(str, cf.MethodDesc())
-	return strings.Join(str, OneSpace)
+	str = append(str, NewLine)
+	str = append(str, "}")
+	return strings.Join(str, "")
 }
 
 /**
@@ -147,18 +149,18 @@ func getMDesc(m Method) string {
 	var str []string
 
 	s1 := GetFlagDesc(m.AccessFlag)
-	str = append(str, s1+" "+m.NameString+"();")
+	str = append(str, fmt.Sprintf("%s%s %s();", GetSpace(2), s1, m.NameString))
 
-	s2 := fmt.Sprintf("descriptor: %s", m.DescriptorString)
+	s2 := fmt.Sprintf("%sdescriptor: %s", GetSpace(6), m.DescriptorString)
 	str = append(str, s2)
-	s3 := fmt.Sprintf("flags: %s", m.AccessFlag.String())
+	s3 := fmt.Sprintf("%sflags: %s", GetSpace(6), m.AccessFlag.String())
 	str = append(str, s3)
 	ac := int(m.AttributeCount.Count)
 	if ac > 0 {
-		str = append(str, "Code:")
+		str = append(str, fmt.Sprintf(GetSpace(6)+"Code:"))
 		for _, v := range m.Attributes {
 			if s, ok := v.(fmt.Stringer); ok {
-				str = append(str, s.String())
+				str = append(str, fmt.Sprintf("%s%s", GetSpace(8), s.String()))
 			}
 		}
 	}
@@ -177,14 +179,21 @@ func (cf ClassFile) FieldDesc() string {
 	var str []string
 	fc := int(cf.FieldsCount.Count)
 	if fc > 0 {
-		str = append(str, "{")
 		for _, f := range cf.Fields {
 			fd := getFDesc(f)
 			str = append(str, fd)
 		}
-		str = append(str, "}")
 	}
 	return strings.Join(str, NewLine)
+}
+
+func GetSpace(num int) string {
+	var str []string
+
+	for i := 0; i < num; i++ {
+		str = append(str, OneSpace)
+	}
+	return strings.Join(str, "")
 }
 
 func getFDesc(f Field) string {
@@ -193,13 +202,13 @@ func getFDesc(f Field) string {
 	s1 := GetFlagDesc(f.AccessFlag)
 	s2 := f.DescriptorString
 	s3 := f.NameString
-	s4 := fmt.Sprintf("%s %s %s;", s1, s2, s3)
+	s4 := fmt.Sprintf("%s%s %s %s;", GetSpace(2), s1, s2, s3)
 	str = append(str, s4)
 
-	s5 := fmt.Sprintf("descriptor: %s", s2)
+	s5 := fmt.Sprintf("%sdescriptor: %s", GetSpace(4), s2)
 	str = append(str, s5)
 
-	s6 := fmt.Sprintf("flags: %s", f.AccessFlag.String())
+	s6 := fmt.Sprintf("%sflags: %s", GetSpace(4), f.AccessFlag.String())
 	str = append(str, s6)
 
 	ac := int(f.AttributeCount.Count)
@@ -207,7 +216,7 @@ func getFDesc(f Field) string {
 	if ac > 0 {
 		for _, v := range f.Attributes {
 			if s, ok := v.(fmt.Stringer); ok {
-				str = append(str, s.String())
+				str = append(str, fmt.Sprintf("%s%s", GetSpace(4), s.String()))
 			}
 		}
 	}
@@ -218,12 +227,12 @@ func getFDesc(f Field) string {
 
 func (cf ClassFile) ConstantPool() string {
 	var str []string
-	str = append(str, "Constant pool:"+NewLine)
+	str = append(str, fmt.Sprintf("%s", "Constant pool:"+NewLine))
 	str = append(str, cf.CpInfos.String())
 	return strings.Join(str, "")
 }
 func (cf ClassFile) FlagDesc() string {
-	return "flags: " + cf.AccessFlag.FlagString
+	return fmt.Sprintf("%s %s", "  flags:", cf.AccessFlag.FlagString)
 }
 
 func (cf ClassFile) VersionDesc() string {
@@ -231,12 +240,20 @@ func (cf ClassFile) VersionDesc() string {
 	v1 := cf.MinorVersion.Version
 	v2 := cf.MajorVersion.Version
 
-	vs1 := fmt.Sprintf("%13s: %d", _minor_version, v1)
-	vs2 := fmt.Sprintf("%14s: %1d", _major_version, v2)
+	vs1 := fmt.Sprintf("%15s: %d", _minor_version, v1)
+	vs2 := fmt.Sprintf("%15s: %d", _major_version, v2)
 	str = append(str, vs1)
 	str = append(str, vs2)
 	return strings.Join(str, NewLine)
 
+}
+
+func (cf ClassFile) ClassNameDesc() string {
+	var str []string
+	str = append(str, cf.ThisDesc())
+	str = append(str, cf.SuperDesc())
+	str = append(str, cf.InterfaceDesc())
+	return strings.Join(str, " ")
 }
 
 func (cf ClassFile) ThisDesc() string {

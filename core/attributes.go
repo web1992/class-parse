@@ -113,7 +113,7 @@ func (ca *CodeAttribute) String() string {
 
 	for _, op := range ca.OpCodes {
 		if s, ok := op.(fmt.Stringer); ok {
-			str = append(str, s.String())
+			str = append(str, fmt.Sprintf("%s%s", GetSpace(12), s.String()))
 		}
 	}
 
@@ -121,7 +121,8 @@ func (ca *CodeAttribute) String() string {
 	if ac > 0 {
 		for _, op := range ca.Attributes {
 			if s, ok := op.(fmt.Stringer); ok {
-				str = append(str, s.String())
+				ss := fmt.Sprintf("%s%s", GetSpace(8), s.String())
+				str = append(str, ss)
 			}
 		}
 	}
@@ -365,7 +366,7 @@ func (lta *LineNumberTableAttribute) String() string {
 	var str []string
 	str = append(str, lta.Name+":")
 	for _, v := range lta.LineNumberTable {
-		s := fmt.Sprintf("line %d: %d", v.LineNumber, v.StartPc)
+		s := fmt.Sprintf("%sline %d: %d", GetSpace(12), v.LineNumber, v.StartPc)
 		str = append(str, s)
 	}
 	return strings.Join(str, "\n")
@@ -635,7 +636,7 @@ func (rvaa *RuntimeVisibleAnnotationsAttr) String() string {
 	var str []string
 	str = append(str, rvaa.Name+":")
 	for i, v := range rvaa.Annotations {
-		s := fmt.Sprintf("%d: %s", i, v.String())
+		s := fmt.Sprintf("%s%d: %s", GetSpace(6), i, v.String())
 		str = append(str, s)
 	}
 	return strings.Join(str, "\n")

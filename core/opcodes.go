@@ -232,7 +232,7 @@ type OpCode struct {
 
 func (op *OpCode) String() string {
 	desc := GetOpDesc(int(op.Opc))
-	return fmt.Sprintf("%d: %s \n", op.LineNo, desc)
+	return fmt.Sprintf("%d: %s\n", op.LineNo, desc)
 }
 func (oc *OpCode) SetLineNo(lineNo int) {
 	oc.LineNo = lineNo
