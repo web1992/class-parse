@@ -74,7 +74,7 @@ func Test_get_cp(t *testing.T) {
 	constPoolCount := cp.ClassFile().ConstantPoolCount
 	v := constPoolCount.Count
 
-	except := 201
+	except := 211
 	if v != except {
 		t.Fatalf("constPoolCount is %d  except is %d", v, except)
 	}
@@ -99,7 +99,7 @@ func Test_get_access_flags(t *testing.T) {
 
 	af := cp.ClassFile().AccessFlag
 	view := af.String()
-	except := "ACC_PUBLIC,ACC_SUPER"
+	except := "ACC_PUBLIC, ACC_SUPER"
 
 	if view != except {
 		t.Fatalf("access flags is %s  except is %s", view, except)
@@ -155,7 +155,7 @@ func Test_get_attributes(t *testing.T) {
 	classFile := cp.ClassFile()
 
 	core.Info.Println("tes output -------------------")
-	fmt.Println(classFile.String())
+	fmt.Println(classFile.ClassDesc())
 
 	file, err := os.Create("../testfiles/Main.txt")
 	if err != nil {
@@ -166,7 +166,7 @@ func Test_get_attributes(t *testing.T) {
 	file.WriteString("\n")
 	file.WriteString("\n")
 
-	file.WriteString(classFile.String())
+	file.WriteString(classFile.ClassDesc())
 
 }
 
