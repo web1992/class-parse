@@ -342,16 +342,16 @@ func GetTableSwitchDesc(ts OpCodeTableSwitch, desc string) string {
 
 	for _, v := range ts.Pairs {
 		if !v.Default {
-			s = append(s, fmt.Sprintf("%16v:%v", v.Case, v.LineNo))
+			s = append(s, fmt.Sprintf("%s%v:%v", GetSpace(26), v.Case, v.LineNo))
 		}
 	}
 
 	for _, v := range ts.Pairs {
 		if v.Default {
-			s = append(s, fmt.Sprintf("%16v:%v", "default", v.LineNo))
+			s = append(s, fmt.Sprintf("%s%v:%v", GetSpace(20), "default", v.LineNo))
 		}
 	}
-	s = append(s, "}")
+	s = append(s, fmt.Sprintf("%s%s", GetSpace(12), "}"))
 
 	return strings.Join(s, "\n")
 }

@@ -309,6 +309,16 @@ type ExceptionIndexTable struct {
 	Name  string
 }
 
+func (ea *ExceptionsAttribute) String() string {
+	var str []string
+	str = append(str, ea.Name+":")
+
+	for _, v := range ea.ExceptionIndexTable {
+		str = append(str, fmt.Sprintf("%s%s", GetSpace(14), v.Name))
+	}
+	return strings.Join(str, NewLine)
+}
+
 func (ea *ExceptionsAttribute) ReadObj(bytes []byte) int {
 	readLen := 0
 	i := Byte2U2(bytes[readLen:u2])
@@ -992,6 +1002,14 @@ type StackMapTableAttribute struct {
 	NumberOfEntries int32
 }
 
+func (smta *StackMapTableAttribute) String() string {
+
+	// StackMapTable: number_of_entries = 7
+	var str []string
+	str = append(str, "\r")
+	str = append(str, fmt.Sprintf("%s%s: number_of_entries = %d", GetSpace(8), smta.Name, smta.NumberOfEntries))
+	return strings.Join(str, NewLine)
+}
 func (smta *StackMapTableAttribute) ReadObj(bytes []byte) int {
 
 	readLen := 0

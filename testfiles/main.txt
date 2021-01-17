@@ -314,11 +314,11 @@ Constant pool:
             38: astore
             40: iload
             42: tableswitch { // 1-3
-               1:68
-               2:72
-               3:76
-         default:80
-} 
+                          1:68
+                          2:72
+                          3:76
+                    default:80
+            } 
             68: ldc
             70: astore
             72: ldc
@@ -372,8 +372,10 @@ Constant pool:
             line 72: 121
             line 71: 124
             line 72: 134
-            line 73: 137        StackMapTable
-        Exceptions
+            line 73: 137        
+        StackMapTable: number_of_entries = 7
+        Exceptions:
+              java/io/IOException
 
   public say();
       descriptor: ()V
