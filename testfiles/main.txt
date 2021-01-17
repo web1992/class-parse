@@ -491,3 +491,14 @@ Constant pool:
             line 25: 77
 
 }
+Signature: #119                      // LAbstractMain<Ljava/lang/String;>;LInterfaceMain;
+SourceFile: "Main.java"
+RuntimeVisibleAnnotations:
+      0: #66()
+InnerClasses:
+     public static final #205= #204 of #208 // Lookup= java/lang/invoke/MethodHandles$Lookup of java/lang/invoke/MethodHandles
+BootstrapMethods:
+  0: #132 REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;:     Method arguments:
+    #133 ()V:
+    #134 REF_invokeStatic Main.lambda$main$0:(LMain;Ljava/lang/String;)V:
+    #133 ()V:

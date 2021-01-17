@@ -116,7 +116,23 @@ func (cf ClassFile) ClassDesc() string {
 	str = append(str, cf.MethodDesc())
 	str = append(str, NewLine)
 	str = append(str, "}")
+	str = append(str, NewLine)
+	str = append(str, cf.AttrDesc())
 	return strings.Join(str, "")
+}
+func (cf ClassFile) AttrDesc() string {
+	var str []string
+
+	ac := int(cf.AttributeCount.Count)
+	if ac > 0 {
+		for _, a := range cf.Attributes {
+
+			if attr, ok := a.(fmt.Stringer); ok {
+				str = append(str, attr.String())
+			}
+		}
+	}
+	return strings.Join(str, NewLine)
 }
 
 /**

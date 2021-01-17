@@ -452,6 +452,11 @@ type SourceFileAttribute struct {
 	SourceFileName  string
 }
 
+func (sfa *SourceFileAttribute) String() string {
+
+	name := fmt.Sprintf("%s: \"%s\"", sfa.AttributeName, sfa.SourceFileName)
+	return name
+}
 func (sfa *SourceFileAttribute) ReadObj(bytes []byte) int {
 	readLen := 0
 	sfa.AttributeNameIndex = Byte2U2(bytes[0 : readLen+u2])
@@ -500,6 +505,31 @@ type Classes struct {
 	InnerClassAccessFlagsDesc string
 }
 
+func (sfa *InnerClassesAttribute) String() string {
+
+	var str []string
+
+	str = append(str, fmt.Sprintf("%s:", sfa.Name))
+
+	cpInfo := sfa.CpInfos
+	for _, clazz := range sfa.Classes {
+		var af AccessFlag
+		af.Flag = clazz.InnerClassAccessFlags
+		classDesc := fmt.Sprintf("%s%s #%d= #%d of #%d // %s= %s of %s",
+			GetSpace(5),
+			GetFlagDesc(af),
+			clazz.InnerNameIndex,
+			clazz.InnerClassInfoIndex,
+			clazz.OuterClassInfoIndex,
+			GetCp(cpInfo, clazz.InnerNameIndex),
+			GetCp(cpInfo, clazz.InnerClassInfoIndex),
+			GetCp(cpInfo, clazz.OuterClassInfoIndex),
+		)
+		str = append(str, classDesc)
+	}
+
+	return strings.Join(str, NewLine)
+}
 func (sfa *InnerClassesAttribute) ReadObj(bytes []byte) int {
 	readLen := 0
 	i := Byte2U2(bytes[0:u2])
@@ -576,6 +606,25 @@ type BootstrapMethod struct {
 	BootstrapArgumentName  []string
 }
 
+func (bm *BootstrapMethod) String() string {
+
+	var str []string
+	str = append(str, fmt.Sprintf("%s%s:", GetSpace(4), "Method arguments"))
+	for i, v := range bm.BootstrapArguments {
+		str = append(str, fmt.Sprintf("%s#%d %s:", GetSpace(4), v, bm.BootstrapArgumentName[i]))
+	}
+	return strings.Join(str, NewLine)
+
+}
+func (bma *BootstrapMethodsAttribute) String() string {
+
+	var str []string
+	str = append(str, fmt.Sprintf("%s:", bma.Name))
+	for i, v := range bma.BootstrapMethods {
+		str = append(str, fmt.Sprintf("%s%d: #%d %s: \r%s", GetSpace(2), i, v.BootstrapMethodRef, v.BootstrapMethodRefName, v.String()))
+	}
+	return strings.Join(str, NewLine)
+}
 func (bma *BootstrapMethodsAttribute) ReadObj(bytes []byte) int {
 	readLen := 0
 	i := int(Byte2U2(bytes[0 : readLen+u2]))
@@ -968,6 +1017,12 @@ type SignatureAttribute struct {
 	SignatureIndexDesc     string
 }
 
+func (sa *SignatureAttribute) String() string {
+
+	cpDesc := GetCp(sa.Attribute.CpInfos, sa.SignatureIndex)
+	s := fmt.Sprintf("%s: #%d %s // %s", sa.Name, sa.SignatureIndex, GetSpace(20), cpDesc)
+	return s
+}
 func (sa *SignatureAttribute) ReadObj(bytes []byte) int {
 
 	readLen := 0
