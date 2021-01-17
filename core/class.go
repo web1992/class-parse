@@ -147,7 +147,7 @@ func getMDesc(m Method) string {
 	var str []string
 
 	s1 := GetFlagDesc(m.AccessFlag)
-	str = append(str, s1+" "+m.NameString)
+	str = append(str, s1+" "+m.NameString+"();")
 
 	s2 := fmt.Sprintf("descriptor: %s", m.DescriptorString)
 	str = append(str, s2)
@@ -205,7 +205,11 @@ func getFDesc(f Field) string {
 	ac := int(f.AttributeCount.Count)
 
 	if ac > 0 {
-
+		for _, v := range f.Attributes {
+			if s, ok := v.(fmt.Stringer); ok {
+				str = append(str, s.String())
+			}
+		}
 	}
 
 	return strings.Join(str, NewLine) + NewLine

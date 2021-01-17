@@ -737,8 +737,49 @@ type ElementValuePair struct {
 #98=s#99
 */
 func (evp *ElementValuePair) String() string {
-	s := fmt.Sprintf("#%d=%s#%d", evp.ElementNameIndex, string(evp.Tag), evp.ElementValue.Value.ValueIndex)
+	eni := evp.ElementNameIndex
+	tag := evp.Tag
+	vale := evp.ElementValue.Value
+
+	s := fmt.Sprintf("#%d=%s", eni, getValueDesc(int(tag), vale))
 	return s
+}
+
+func getValueDesc(tag int, value *Value) string {
+
+	switch tag {
+	case 'B', 'C', 'D', 'F', 'I', 'J', 'S', 'Z', 's':
+		{
+			return fmt.Sprintf("%s#%d", string(tag), value.ConstValueIndex)
+		}
+	case 'e':
+		{
+			return fmt.Sprintf("%s#%d.#%d", string(tag), value.TypeNameIndex, value.ConstNameIndex)
+		}
+	case 'c':
+		{
+			return fmt.Sprintf("%s#%d", string(tag), value.ClassInfoIndex)
+		}
+	case '@':
+		{
+			ann := value.Annotation
+			return ann.String()
+		}
+	case '[':
+		{
+			// #100=[s#111,s#112]
+			var str []string
+			for _, v := range value.Values {
+				tag := int(v.Tag)
+				str = append(str, getValueDesc(tag, v.Value))
+			}
+			s := strings.Join(str, ",")
+			return fmt.Sprintf("[%s]", s)
+		}
+	}
+
+	return ""
+
 }
 
 /*
@@ -767,10 +808,10 @@ type ElementValue struct {
 type Value struct {
 	ValueIndex int
 	ConstValue
-	EnumConstValue
+	*EnumConstValue
 	ClassInfoValue
-	Annotation
-	ArrayValue
+	*Annotation
+	*ArrayValue
 }
 
 type ConstValue struct {
@@ -843,9 +884,9 @@ func (ev *ElementValue) ReadObj(bytes []byte) int {
 			readLen += u2
 
 			var ecv EnumConstValue
+			v.EnumConstValue = &ecv
 			ecv.ConstNameIndex = constNameIndex
 			ecv.TypeNameIndex = typeNameIndex
-			v.EnumConstValue = ecv
 		}
 	case 'c':
 		{
@@ -862,7 +903,7 @@ func (ev *ElementValue) ReadObj(bytes []byte) int {
 			var ann Annotation
 			ann.CpInfos = cpInfos
 			readLen += ann.ReadObj(bytes[readLen:])
-			v.Annotation = ann
+			v.Annotation = &ann
 		}
 	case '[':
 		{
@@ -873,15 +914,18 @@ func (ev *ElementValue) ReadObj(bytes []byte) int {
 			readLen += u2
 
 			var av ArrayValue
-			v.ArrayValue = av
+			v.ArrayValue = &av
 			av.NumValues = numValues
 
+			var vs []ElementValue
 			for i := 0; i < numValues; i++ {
 				var _ev ElementValue
 				_ev.CpInfos = cpInfos
 				readLen += _ev.ReadObj(bytes[readLen:])
-				av.Values = append(av.Values, _ev)
+				vs = append(vs, _ev)
 			}
+			av.Values = vs
+
 		}
 	default:
 		Error.Println(fmt.Sprintf("error for tag %d", ev.Tag))

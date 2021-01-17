@@ -6,245 +6,261 @@ public class Main extends AbstractMain implements InterfaceMain
  major version: 52 
  flags: ACC_PUBLIC,ACC_SUPER 
  Constant pool:
-    #1 = Methodref          #60.#112      // AbstractMain.<init>:()V
-    #2 = Fieldref           #113.#114     // java/lang/System.out:Ljava/io/PrintStream;
-    #3 = String             #115          // Hello word!
-    #4 = Methodref          #116.#117     // java/io/PrintStream.println:(Ljava/lang/String;)V
-    #5 = Class              #118          // Main
-    #6 = Methodref          #5.#112       // Main.<init>:()V
-    #7 = String             #119          // 777
-    #8 = InvokeDynamic      #0:#124       // #0:run:(LMain;Ljava/lang/String;)Ljava/lang/Runnable;
-    #9 = InterfaceMethodref #125.#126     // java/lang/Runnable.run:()V
-   #10 = String             #127          // 
-   #11 = String             #128          // a
-   #12 = String             #129          // c
-   #13 = String             #130          // D
-   #14 = String             #131          // Z
-   #15 = String             #132          // try
-   #16 = String             #133          // finally
-   #17 = Class              #134          // java/lang/Exception
-   #18 = String             #135          // catch
-   #19 = String             #136          // ha ha ha ha
-   #20 = Class              #137          // java/lang/StringBuilder
-   #21 = Methodref          #20.#112      // java/lang/StringBuilder.<init>:()V
-   #22 = String             #138          // Hi,2021
-   #23 = Methodref          #20.#139      // java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
-   #24 = Methodref          #20.#140      // java/lang/StringBuilder.toString:()Ljava/lang/String;
-   #25 = Class              #141          // java/lang/String
-   #26 = Methodref          #5.#142       // Main.hi:(Ljava/lang/String;)Ljava/lang/String;
-   #27 = String             #143          // run
-   #28 = Class              #144          // java/lang/Integer
-   #29 = Integer            2147483647
-   #30 = Methodref          #28.#145      // java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
-   #31 = Fieldref           #5.#146       // Main.INT_MAX:Ljava/lang/Integer;
-   #32 = Integer            -2147483648
-   #33 = Fieldref           #5.#147       // Main.INT_MIN:Ljava/lang/Integer;
-   #34 = Class              #148          // java/lang/Long
-   #35 = Long               9223372036854775807l
-   #37 = Methodref          #34.#149      // java/lang/Long.valueOf:(J)Ljava/lang/Long;
-   #38 = Fieldref           #5.#150       // Main.LONG_MAX:Ljava/lang/Long;
-   #39 = Long               -9223372036854775808l
-   #41 = Fieldref           #5.#151       // Main.LONG_MIN:Ljava/lang/Long;
-   #42 = Class              #152          // java/lang/Double
-   #43 = Double             1.7976931348623157e+308d
-   #45 = Methodref          #42.#153      // java/lang/Double.valueOf:(D)Ljava/lang/Double;
-   #46 = Fieldref           #5.#154       // Main.DOUBLE_MAX:Ljava/lang/Double;
-   #47 = Double             5e-324d
-   #49 = Fieldref           #5.#155       // Main.DOUBLE_MIN:Ljava/lang/Double;
-   #50 = Class              #156          // java/lang/Float
-   #51 = Float              3.4028235e+38f
-   #52 = Methodref          #50.#157      // java/lang/Float.valueOf:(F)Ljava/lang/Float;
-   #53 = Fieldref           #5.#158       // Main.FLOAT_MAX:Ljava/lang/Float;
-   #54 = Float              1e-45f
-   #55 = Fieldref           #5.#159       // Main.FLOAT_MIN:Ljava/lang/Float;
-   #56 = Class              #160          // java/lang/Short
-   #57 = Methodref          #56.#161      // java/lang/Short.valueOf:(S)Ljava/lang/Short;
-   #58 = Fieldref           #5.#162       // Main.SHORT_MAX:Ljava/lang/Short;
-   #59 = Fieldref           #5.#163       // Main.SHORT_MIN:Ljava/lang/Short;
-   #60 = Class              #164          // AbstractMain
-   #61 = Class              #165          // InterfaceMain
-   #62 = Utf8               INT_MAX
-   #63 = Utf8               Ljava/lang/Integer;
-   #64 = Utf8               RuntimeVisibleAnnotations
-   #65 = Utf8               LFFF;
-   #66 = Utf8               INT_MIN
-   #67 = Utf8               LONG_MAX
-   #68 = Utf8               Ljava/lang/Long;
-   #69 = Utf8               LONG_MIN
-   #70 = Utf8               DOUBLE_MAX
-   #71 = Utf8               Ljava/lang/Double;
-   #72 = Utf8               DOUBLE_MIN
-   #73 = Utf8               FLOAT_MAX
-   #74 = Utf8               Ljava/lang/Float;
-   #75 = Utf8               FLOAT_MIN
-   #76 = Utf8               SHORT_MAX
-   #77 = Utf8               Ljava/lang/Short;
-   #78 = Utf8               SHORT_MIN
-   #79 = Utf8               <init>
-   #80 = Utf8               ()V
-   #81 = Utf8               Code
-   #82 = Utf8               LineNumberTable
-   #83 = Utf8               main
-   #84 = Utf8               ([Ljava/lang/String;)V
-   #85 = Utf8               StackMapTable
-   #86 = Class              #166          // [Ljava/lang/String;
-   #87 = Class              #118          // Main
-   #88 = Class              #141          // java/lang/String
-   #89 = Class              #167          // java/lang/Runnable
-   #90 = Class              #134          // java/lang/Exception
-   #91 = Class              #168          // java/lang/Throwable
-   #92 = Utf8               Exceptions
-   #93 = Class              #169          // java/io/IOException
-   #94 = Utf8               say
-   #95 = Utf8               value
-   #96 = Utf8               3FFF
-   #97 = Utf8               LName;
-   #98 = Utf8               name
-   #99 = Utf8               My Name
-  #100 = Utf8               index
-  #101 = Integer            666
-  #102 = Utf8               hi
-  #103 = Utf8               (Ljava/lang/String;)Ljava/lang/String;
-  #104 = Utf8               (Ljava/lang/Object;)Ljava/lang/Object;
-  #105 = Utf8               lambda$main$0
-  #106 = Utf8               (LMain;Ljava/lang/String;)V
-  #107 = Utf8               <clinit>
-  #108 = Utf8               Signature
-  #109 = Utf8               LAbstractMain<Ljava/lang/String;>;LInterfaceMain;
-  #110 = Utf8               SourceFile
-  #111 = Utf8               Main.java
-  #112 = NameAndType        #79:#80       // <init>:()V
-  #113 = Class              #170          // java/lang/System
-  #114 = NameAndType        #171:#172     // out:Ljava/io/PrintStream;
-  #115 = Utf8               Hello word!
-  #116 = Class              #173          // java/io/PrintStream
-  #117 = NameAndType        #174:#175     // println:(Ljava/lang/String;)V
-  #118 = Utf8               Main
-  #119 = Utf8               777
-  #120 = Utf8               BootstrapMethods
-  #121 = MethodHandle       6:#176        // REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
-  #122 = MethodType         #80           //  ()V
-  #123 = MethodHandle       6:#177        // REF_invokeStatic Main.lambda$main$0:(LMain;Ljava/lang/String;)V
-  #124 = NameAndType        #143:#178     // run:(LMain;Ljava/lang/String;)Ljava/lang/Runnable;
-  #125 = Class              #167          // java/lang/Runnable
-  #126 = NameAndType        #143:#80      // run:()V
-  #127 = Utf8               
-  #128 = Utf8               a
-  #129 = Utf8               c
-  #130 = Utf8               D
-  #131 = Utf8               Z
-  #132 = Utf8               try
-  #133 = Utf8               finally
-  #134 = Utf8               java/lang/Exception
-  #135 = Utf8               catch
-  #136 = Utf8               ha ha ha ha
-  #137 = Utf8               java/lang/StringBuilder
-  #138 = Utf8               Hi,2021
-  #139 = NameAndType        #179:#180     // append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
-  #140 = NameAndType        #181:#182     // toString:()Ljava/lang/String;
-  #141 = Utf8               java/lang/String
-  #142 = NameAndType        #102:#103     // hi:(Ljava/lang/String;)Ljava/lang/String;
-  #143 = Utf8               run
-  #144 = Utf8               java/lang/Integer
-  #145 = NameAndType        #183:#184     // valueOf:(I)Ljava/lang/Integer;
-  #146 = NameAndType        #62:#63       // INT_MAX:Ljava/lang/Integer;
-  #147 = NameAndType        #66:#63       // INT_MIN:Ljava/lang/Integer;
-  #148 = Utf8               java/lang/Long
-  #149 = NameAndType        #183:#185     // valueOf:(J)Ljava/lang/Long;
-  #150 = NameAndType        #67:#68       // LONG_MAX:Ljava/lang/Long;
-  #151 = NameAndType        #69:#68       // LONG_MIN:Ljava/lang/Long;
-  #152 = Utf8               java/lang/Double
-  #153 = NameAndType        #183:#186     // valueOf:(D)Ljava/lang/Double;
-  #154 = NameAndType        #70:#71       // DOUBLE_MAX:Ljava/lang/Double;
-  #155 = NameAndType        #72:#71       // DOUBLE_MIN:Ljava/lang/Double;
-  #156 = Utf8               java/lang/Float
-  #157 = NameAndType        #183:#187     // valueOf:(F)Ljava/lang/Float;
-  #158 = NameAndType        #73:#74       // FLOAT_MAX:Ljava/lang/Float;
-  #159 = NameAndType        #75:#74       // FLOAT_MIN:Ljava/lang/Float;
-  #160 = Utf8               java/lang/Short
-  #161 = NameAndType        #183:#188     // valueOf:(S)Ljava/lang/Short;
-  #162 = NameAndType        #76:#77       // SHORT_MAX:Ljava/lang/Short;
-  #163 = NameAndType        #78:#77       // SHORT_MIN:Ljava/lang/Short;
-  #164 = Utf8               AbstractMain
-  #165 = Utf8               InterfaceMain
-  #166 = Utf8               [Ljava/lang/String;
-  #167 = Utf8               java/lang/Runnable
-  #168 = Utf8               java/lang/Throwable
-  #169 = Utf8               java/io/IOException
-  #170 = Utf8               java/lang/System
-  #171 = Utf8               out
-  #172 = Utf8               Ljava/io/PrintStream;
-  #173 = Utf8               java/io/PrintStream
-  #174 = Utf8               println
-  #175 = Utf8               (Ljava/lang/String;)V
-  #176 = Methodref          #189.#190     // java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
-  #177 = Methodref          #5.#191       // Main.lambda$main$0:(LMain;Ljava/lang/String;)V
-  #178 = Utf8               (LMain;Ljava/lang/String;)Ljava/lang/Runnable;
-  #179 = Utf8               append
-  #180 = Utf8               (Ljava/lang/String;)Ljava/lang/StringBuilder;
-  #181 = Utf8               toString
-  #182 = Utf8               ()Ljava/lang/String;
-  #183 = Utf8               valueOf
-  #184 = Utf8               (I)Ljava/lang/Integer;
-  #185 = Utf8               (J)Ljava/lang/Long;
-  #186 = Utf8               (D)Ljava/lang/Double;
-  #187 = Utf8               (F)Ljava/lang/Float;
-  #188 = Utf8               (S)Ljava/lang/Short;
-  #189 = Class              #192          // java/lang/invoke/LambdaMetafactory
-  #190 = NameAndType        #193:#197     // metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
-  #191 = NameAndType        #105:#106     // lambda$main$0:(LMain;Ljava/lang/String;)V
-  #192 = Utf8               java/lang/invoke/LambdaMetafactory
-  #193 = Utf8               metafactory
-  #194 = Class              #199          // java/lang/invoke/MethodHandles$Lookup
-  #195 = Utf8               Lookup
-  #196 = Utf8               InnerClasses
-  #197 = Utf8               (Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
-  #198 = Class              #200          // java/lang/invoke/MethodHandles
-  #199 = Utf8               java/lang/invoke/MethodHandles$Lookup
-  #200 = Utf8               java/lang/invoke/MethodHandles 
+    #1 = Methodref          #61.#122      // AbstractMain.<init>:()V
+    #2 = Fieldref           #6.#123       // Main.name:Ljava/lang/String;
+    #3 = Fieldref           #124.#125     // java/lang/System.out:Ljava/io/PrintStream;
+    #4 = String             #126          // Hello word!
+    #5 = Methodref          #127.#128     // java/io/PrintStream.println:(Ljava/lang/String;)V
+    #6 = Class              #129          // Main
+    #7 = Methodref          #6.#122       // Main.<init>:()V
+    #8 = String             #130          // 777
+    #9 = InvokeDynamic      #0:#135       // #0:run:(LMain;Ljava/lang/String;)Ljava/lang/Runnable;
+   #10 = InterfaceMethodref #136.#137     // java/lang/Runnable.run:()V
+   #11 = String             #138          // 
+   #12 = String             #139          // a
+   #13 = String             #140          // c
+   #14 = String             #141          // D
+   #15 = String             #142          // Z
+   #16 = String             #143          // try
+   #17 = String             #144          // finally
+   #18 = Class              #145          // java/lang/Exception
+   #19 = String             #146          // catch
+   #20 = String             #147          // ha ha ha ha
+   #21 = Class              #148          // java/lang/StringBuilder
+   #22 = Methodref          #21.#122      // java/lang/StringBuilder.<init>:()V
+   #23 = String             #149          // Hi,2021
+   #24 = Methodref          #21.#150      // java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+   #25 = Methodref          #21.#151      // java/lang/StringBuilder.toString:()Ljava/lang/String;
+   #26 = Class              #152          // java/lang/String
+   #27 = Methodref          #6.#153       // Main.hi:(Ljava/lang/String;)Ljava/lang/String;
+   #28 = String             #154          // run
+   #29 = Class              #155          // java/lang/Integer
+   #30 = Integer            2147483647
+   #31 = Methodref          #29.#156      // java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
+   #32 = Fieldref           #6.#157       // Main.INT_MAX:Ljava/lang/Integer;
+   #33 = Integer            -2147483648
+   #34 = Fieldref           #6.#158       // Main.INT_MIN:Ljava/lang/Integer;
+   #35 = Class              #159          // java/lang/Long
+   #36 = Long               9223372036854775807l
+   #38 = Methodref          #35.#160      // java/lang/Long.valueOf:(J)Ljava/lang/Long;
+   #39 = Fieldref           #6.#161       // Main.LONG_MAX:Ljava/lang/Long;
+   #40 = Long               -9223372036854775808l
+   #42 = Fieldref           #6.#162       // Main.LONG_MIN:Ljava/lang/Long;
+   #43 = Class              #163          // java/lang/Double
+   #44 = Double             1.7976931348623157e+308d
+   #46 = Methodref          #43.#164      // java/lang/Double.valueOf:(D)Ljava/lang/Double;
+   #47 = Fieldref           #6.#165       // Main.DOUBLE_MAX:Ljava/lang/Double;
+   #48 = Double             5e-324d
+   #50 = Fieldref           #6.#166       // Main.DOUBLE_MIN:Ljava/lang/Double;
+   #51 = Class              #167          // java/lang/Float
+   #52 = Float              3.4028235e+38f
+   #53 = Methodref          #51.#168      // java/lang/Float.valueOf:(F)Ljava/lang/Float;
+   #54 = Fieldref           #6.#169       // Main.FLOAT_MAX:Ljava/lang/Float;
+   #55 = Float              1e-45f
+   #56 = Fieldref           #6.#170       // Main.FLOAT_MIN:Ljava/lang/Float;
+   #57 = Class              #171          // java/lang/Short
+   #58 = Methodref          #57.#172      // java/lang/Short.valueOf:(S)Ljava/lang/Short;
+   #59 = Fieldref           #6.#173       // Main.SHORT_MAX:Ljava/lang/Short;
+   #60 = Fieldref           #6.#174       // Main.SHORT_MIN:Ljava/lang/Short;
+   #61 = Class              #175          // AbstractMain
+   #62 = Class              #176          // InterfaceMain
+   #63 = Utf8               INT_MAX
+   #64 = Utf8               Ljava/lang/Integer;
+   #65 = Utf8               RuntimeVisibleAnnotations
+   #66 = Utf8               LFFF;
+   #67 = Utf8               INT_MIN
+   #68 = Utf8               LONG_MAX
+   #69 = Utf8               Ljava/lang/Long;
+   #70 = Utf8               LONG_MIN
+   #71 = Utf8               DOUBLE_MAX
+   #72 = Utf8               Ljava/lang/Double;
+   #73 = Utf8               DOUBLE_MIN
+   #74 = Utf8               FLOAT_MAX
+   #75 = Utf8               Ljava/lang/Float;
+   #76 = Utf8               FLOAT_MIN
+   #77 = Utf8               SHORT_MAX
+   #78 = Utf8               Ljava/lang/Short;
+   #79 = Utf8               SHORT_MIN
+   #80 = Utf8               name
+   #81 = Utf8               Ljava/lang/String;
+   #82 = Utf8               <init>
+   #83 = Utf8               ()V
+   #84 = Utf8               Code
+   #85 = Utf8               LineNumberTable
+   #86 = Utf8               (Ljava/lang/String;)V
+   #87 = Utf8               main
+   #88 = Utf8               ([Ljava/lang/String;)V
+   #89 = Utf8               StackMapTable
+   #90 = Class              #177          // [Ljava/lang/String;
+   #91 = Class              #129          // Main
+   #92 = Class              #152          // java/lang/String
+   #93 = Class              #178          // java/lang/Runnable
+   #94 = Class              #145          // java/lang/Exception
+   #95 = Class              #179          // java/lang/Throwable
+   #96 = Utf8               Exceptions
+   #97 = Class              #180          // java/io/IOException
+   #98 = Utf8               say
+   #99 = Utf8               value
+  #100 = Utf8               3FFF
+  #101 = Utf8               LName;
+  #102 = Utf8               My Name
+  #103 = Utf8               index
+  #104 = Integer            666
+  #105 = Utf8               LHandler;
+  #106 = Utf8               LMainEnum;
+  #107 = Utf8               ONE
+  #108 = Utf8               clazz
+  #109 = Utf8               LInterfaceMain;
+  #110 = Utf8               1
+  #111 = Utf8               2
+  #112 = Utf8               hi
+  #113 = Utf8               (Ljava/lang/String;)Ljava/lang/String;
+  #114 = Utf8               (Ljava/lang/Object;)Ljava/lang/Object;
+  #115 = Utf8               lambda$main$0
+  #116 = Utf8               (LMain;Ljava/lang/String;)V
+  #117 = Utf8               <clinit>
+  #118 = Utf8               Signature
+  #119 = Utf8               LAbstractMain<Ljava/lang/String;>;LInterfaceMain;
+  #120 = Utf8               SourceFile
+  #121 = Utf8               Main.java
+  #122 = NameAndType        #82:#83       // <init>:()V
+  #123 = NameAndType        #80:#81       // name:Ljava/lang/String;
+  #124 = Class              #181          // java/lang/System
+  #125 = NameAndType        #182:#183     // out:Ljava/io/PrintStream;
+  #126 = Utf8               Hello word!
+  #127 = Class              #184          // java/io/PrintStream
+  #128 = NameAndType        #185:#86      // println:(Ljava/lang/String;)V
+  #129 = Utf8               Main
+  #130 = Utf8               777
+  #131 = Utf8               BootstrapMethods
+  #132 = MethodHandle       6:#186        // REF_invokeStatic java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+  #133 = MethodType         #83           //  ()V
+  #134 = MethodHandle       6:#187        // REF_invokeStatic Main.lambda$main$0:(LMain;Ljava/lang/String;)V
+  #135 = NameAndType        #154:#188     // run:(LMain;Ljava/lang/String;)Ljava/lang/Runnable;
+  #136 = Class              #178          // java/lang/Runnable
+  #137 = NameAndType        #154:#83      // run:()V
+  #138 = Utf8               
+  #139 = Utf8               a
+  #140 = Utf8               c
+  #141 = Utf8               D
+  #142 = Utf8               Z
+  #143 = Utf8               try
+  #144 = Utf8               finally
+  #145 = Utf8               java/lang/Exception
+  #146 = Utf8               catch
+  #147 = Utf8               ha ha ha ha
+  #148 = Utf8               java/lang/StringBuilder
+  #149 = Utf8               Hi,2021
+  #150 = NameAndType        #189:#190     // append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #151 = NameAndType        #191:#192     // toString:()Ljava/lang/String;
+  #152 = Utf8               java/lang/String
+  #153 = NameAndType        #112:#113     // hi:(Ljava/lang/String;)Ljava/lang/String;
+  #154 = Utf8               run
+  #155 = Utf8               java/lang/Integer
+  #156 = NameAndType        #193:#194     // valueOf:(I)Ljava/lang/Integer;
+  #157 = NameAndType        #63:#64       // INT_MAX:Ljava/lang/Integer;
+  #158 = NameAndType        #67:#64       // INT_MIN:Ljava/lang/Integer;
+  #159 = Utf8               java/lang/Long
+  #160 = NameAndType        #193:#195     // valueOf:(J)Ljava/lang/Long;
+  #161 = NameAndType        #68:#69       // LONG_MAX:Ljava/lang/Long;
+  #162 = NameAndType        #70:#69       // LONG_MIN:Ljava/lang/Long;
+  #163 = Utf8               java/lang/Double
+  #164 = NameAndType        #193:#196     // valueOf:(D)Ljava/lang/Double;
+  #165 = NameAndType        #71:#72       // DOUBLE_MAX:Ljava/lang/Double;
+  #166 = NameAndType        #73:#72       // DOUBLE_MIN:Ljava/lang/Double;
+  #167 = Utf8               java/lang/Float
+  #168 = NameAndType        #193:#197     // valueOf:(F)Ljava/lang/Float;
+  #169 = NameAndType        #74:#75       // FLOAT_MAX:Ljava/lang/Float;
+  #170 = NameAndType        #76:#75       // FLOAT_MIN:Ljava/lang/Float;
+  #171 = Utf8               java/lang/Short
+  #172 = NameAndType        #193:#198     // valueOf:(S)Ljava/lang/Short;
+  #173 = NameAndType        #77:#78       // SHORT_MAX:Ljava/lang/Short;
+  #174 = NameAndType        #79:#78       // SHORT_MIN:Ljava/lang/Short;
+  #175 = Utf8               AbstractMain
+  #176 = Utf8               InterfaceMain
+  #177 = Utf8               [Ljava/lang/String;
+  #178 = Utf8               java/lang/Runnable
+  #179 = Utf8               java/lang/Throwable
+  #180 = Utf8               java/io/IOException
+  #181 = Utf8               java/lang/System
+  #182 = Utf8               out
+  #183 = Utf8               Ljava/io/PrintStream;
+  #184 = Utf8               java/io/PrintStream
+  #185 = Utf8               println
+  #186 = Methodref          #199.#200     // java/lang/invoke/LambdaMetafactory.metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+  #187 = Methodref          #6.#201       // Main.lambda$main$0:(LMain;Ljava/lang/String;)V
+  #188 = Utf8               (LMain;Ljava/lang/String;)Ljava/lang/Runnable;
+  #189 = Utf8               append
+  #190 = Utf8               (Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #191 = Utf8               toString
+  #192 = Utf8               ()Ljava/lang/String;
+  #193 = Utf8               valueOf
+  #194 = Utf8               (I)Ljava/lang/Integer;
+  #195 = Utf8               (J)Ljava/lang/Long;
+  #196 = Utf8               (D)Ljava/lang/Double;
+  #197 = Utf8               (F)Ljava/lang/Float;
+  #198 = Utf8               (S)Ljava/lang/Short;
+  #199 = Class              #202          // java/lang/invoke/LambdaMetafactory
+  #200 = NameAndType        #203:#207     // metafactory:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+  #201 = NameAndType        #115:#116     // lambda$main$0:(LMain;Ljava/lang/String;)V
+  #202 = Utf8               java/lang/invoke/LambdaMetafactory
+  #203 = Utf8               metafactory
+  #204 = Class              #209          // java/lang/invoke/MethodHandles$Lookup
+  #205 = Utf8               Lookup
+  #206 = Utf8               InnerClasses
+  #207 = Utf8               (Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;
+  #208 = Class              #210          // java/lang/invoke/MethodHandles
+  #209 = Utf8               java/lang/invoke/MethodHandles$Lookup
+  #210 = Utf8               java/lang/invoke/MethodHandles 
  {
 public static final Ljava/lang/Integer; INT_MAX;
 descriptor: Ljava/lang/Integer;
-flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
+flags: ACC_FINAL,ACC_PUBLIC,ACC_STATIC
+RuntimeVisibleAnnotations:
+0: #66()
 
-public static final Ljava/lang/Integer; INT_MIN;
+final public static Ljava/lang/Integer; INT_MIN;
 descriptor: Ljava/lang/Integer;
-flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
+flags: ACC_FINAL,ACC_PUBLIC,ACC_STATIC
 
-public static final Ljava/lang/Long; LONG_MAX;
+static final public Ljava/lang/Long; LONG_MAX;
 descriptor: Ljava/lang/Long;
-flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
+flags: ACC_STATIC,ACC_FINAL,ACC_PUBLIC
 
 static final public Ljava/lang/Long; LONG_MIN;
 descriptor: Ljava/lang/Long;
-flags: ACC_FINAL,ACC_STATIC,ACC_PUBLIC
+flags: ACC_FINAL,ACC_PUBLIC,ACC_STATIC
 
-final static public Ljava/lang/Double; DOUBLE_MAX;
+final public static Ljava/lang/Double; DOUBLE_MAX;
 descriptor: Ljava/lang/Double;
 flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 
 public static final Ljava/lang/Double; DOUBLE_MIN;
 descriptor: Ljava/lang/Double;
-flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
+flags: ACC_STATIC,ACC_FINAL,ACC_PUBLIC
 
 static final public Ljava/lang/Float; FLOAT_MAX;
 descriptor: Ljava/lang/Float;
 flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 
-public final static Ljava/lang/Float; FLOAT_MIN;
+final public static Ljava/lang/Float; FLOAT_MIN;
 descriptor: Ljava/lang/Float;
-flags: ACC_STATIC,ACC_FINAL,ACC_PUBLIC
+flags: ACC_FINAL,ACC_PUBLIC,ACC_STATIC
 
-static final public Ljava/lang/Short; SHORT_MAX;
+public static final Ljava/lang/Short; SHORT_MAX;
+descriptor: Ljava/lang/Short;
+flags: ACC_FINAL,ACC_PUBLIC,ACC_STATIC
+
+final public static Ljava/lang/Short; SHORT_MIN;
 descriptor: Ljava/lang/Short;
 flags: ACC_STATIC,ACC_FINAL,ACC_PUBLIC
 
-static final public Ljava/lang/Short; SHORT_MIN;
-descriptor: Ljava/lang/Short;
-flags: ACC_PUBLIC,ACC_FINAL,ACC_STATIC
+private Ljava/lang/String; name;
+descriptor: Ljava/lang/String;
+flags: ACC_PRIVATE
 
 } 
- public <init>
+ public <init>();
 descriptor: ()V
 flags: ACC_PUBLIC
 Code:
@@ -253,11 +269,28 @@ stack=1, locals=1, args_size=1
 1: invokespecial 
 4: return 
 LineNumberTable:
-line 9: 0
+line 29: 0
+line 30: 4
 
-public static main
+public <init>();
+descriptor: (Ljava/lang/String;)V
+flags: ACC_PUBLIC
+Code:
+stack=2, locals=2, args_size=1
+0: aload_0 
+1: invokespecial 
+4: aload_0 
+5: aload_1 
+6: putfield 
+9: return 
+LineNumberTable:
+line 32: 0
+line 33: 4
+line 34: 9
+
+public static main();
 descriptor: ([Ljava/lang/String;)V
-flags: ACC_PUBLIC,ACC_STATIC
+flags: ACC_STATIC,ACC_PUBLIC
 Code:
 stack=2, locals=8, args_size=1
 0: getstatic 
@@ -318,31 +351,31 @@ stack=2, locals=8, args_size=1
 136: athrow 
 137: return 
 LineNumberTable:
-line 29: 0
-line 30: 8
-line 32: 16
-line 33: 19
-line 38: 27
-line 40: 33
-line 41: 36
-line 42: 40
-line 44: 68
-line 47: 72
-line 50: 76
-line 53: 80
-line 58: 84
-line 62: 92
-line 63: 100
-line 59: 103
-line 60: 105
-line 62: 113
-line 63: 121
-line 62: 124
-line 63: 134
-line 64: 137StackMapTable
+line 38: 0
+line 39: 8
+line 41: 16
+line 42: 19
+line 47: 27
+line 49: 33
+line 50: 36
+line 51: 40
+line 53: 68
+line 56: 72
+line 59: 76
+line 62: 80
+line 67: 84
+line 71: 92
+line 72: 100
+line 68: 103
+line 69: 105
+line 71: 113
+line 72: 121
+line 71: 124
+line 72: 134
+line 73: 137StackMapTable
 Exceptions
 
-public say
+public say();
 descriptor: ()V
 flags: ACC_PUBLIC
 Code:
@@ -352,13 +385,14 @@ stack=2, locals=1, args_size=1
 5: invokevirtual 
 8: return 
 LineNumberTable:
-line 70: 0
-line 71: 8
+line 80: 0
+line 81: 8
 RuntimeVisibleAnnotations:
-0: #65(#95=s#96)
-1: #97(#98=s#99,#100=I#101)
+0: #66(#99=s#100)
+1: #101(#80=s#102,#103=I#104)
+2: #105(#80=e#106.#107,#108=c#109,#99=[s#110,s#111])
 
-public hi
+public hi();
 descriptor: (Ljava/lang/String;)Ljava/lang/String;
 flags: ACC_PUBLIC
 Code:
@@ -373,9 +407,9 @@ stack=2, locals=2, args_size=1
 16: invokevirtual 
 19: areturn 
 LineNumberTable:
-line 75: 0
+line 85: 0
 
-public bridge synthetic hi
+public bridge synthetic hi();
 descriptor: (Ljava/lang/Object;)Ljava/lang/Object;
 flags: ACC_PUBLIC,ACC_BRIDGE,ACC_SYNTHETIC
 Code:
@@ -388,9 +422,9 @@ stack=2, locals=2, args_size=1
 LineNumberTable:
 line 8: 0
 
-private static synthetic lambda$main$0
+synthetic private static lambda$main$0();
 descriptor: (LMain;Ljava/lang/String;)V
-flags: ACC_PRIVATE,ACC_STATIC,ACC_SYNTHETIC
+flags: ACC_SYNTHETIC,ACC_PRIVATE,ACC_STATIC
 Code:
 stack=2, locals=2, args_size=1
 0: getstatic 
@@ -402,11 +436,11 @@ stack=2, locals=2, args_size=1
 13: pop 
 14: return 
 LineNumberTable:
-line 34: 0
-line 35: 8
-line 36: 14
+line 43: 0
+line 44: 8
+line 45: 14
 
-static <clinit>
+static <clinit>();
 descriptor: ()V
 flags: ACC_STATIC
 Code:
