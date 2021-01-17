@@ -234,18 +234,36 @@ type OpCode struct {
 func (op *OpCode) String() string {
 	desc := GetOpDesc(int(op.Opc))
 	argsDesc := getArgsDesc(op.Args)
+	s := getArgsCPDesc(op.Args, op.CpInfos)
 	if argsDesc != "" {
-		return fmt.Sprintf("%2d%s %-16s #%s\n", op.LineNo, ":", desc, argsDesc)
+		return fmt.Sprintf("%3d%s %-18s #%s %s %s \n", op.LineNo, ":", desc, argsDesc, "//", s)
 	} else {
-		return fmt.Sprintf("%2d%s %-16s\n", op.LineNo, ":", desc)
+		return fmt.Sprintf("%3d%s %-18s\n", op.LineNo, ":", desc)
 	}
+}
+
+func getArgsCPDesc(args []int32, cpInfo CpInfos) string {
+
+	if nil == cpInfo {
+		return ""
+	}
+	var str []string
+
+	for i := 0; i < len(args); i++ {
+		ii := int(args[i])
+		if ii > len(cpInfo) {
+			continue
+		}
+		str = append(str, fmt.Sprintf("%s", GetCp(cpInfo, ii)))
+	}
+	return strings.Join(str, ", ")
 }
 
 func getArgsDesc(args []int32) string {
 	var str []string
 
-	for _, v := range args {
-		str = append(str, fmt.Sprintf("%d", int(v)))
+	for i := 0; i < len(args); i++ {
+		str = append(str, fmt.Sprintf("%d", args[i]))
 	}
 	return strings.Join(str, ", ")
 }

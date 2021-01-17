@@ -4,9 +4,9 @@ func CreateOpCode(op int32, infos CpInfos) interface{} {
 
 	switch int(op) {
 	case JVM_OPC_nop:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_aconst_null:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_iconst_m1,
 		JVM_OPC_iconst_0,
 		JVM_OPC_iconst_1,
@@ -14,62 +14,62 @@ func CreateOpCode(op int32, infos CpInfos) interface{} {
 		JVM_OPC_iconst_3,
 		JVM_OPC_iconst_4,
 		JVM_OPC_iconst_5:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_lconst_0,
 		JVM_OPC_lconst_1:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_fconst_0,
 		JVM_OPC_fconst_1,
 		JVM_OPC_fconst_2:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_dconst_0,
 		JVM_OPC_dconst_1:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_bipush:
-		return &OpCode2{}
+		return &OpCode2{OpCode{CpInfos: infos}}
 	case JVM_OPC_sipush:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_ldc:
-		return &OpCode2{}
+		return &OpCode2{OpCode{CpInfos: infos}}
 	case JVM_OPC_ldc_w:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_ldc2_w:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_iload:
-		return &OpCode2{}
+		return &OpCode2{OpCode{CpInfos: infos}}
 	case JVM_OPC_lload:
-		return &OpCode2{}
+		return &OpCode2{OpCode{CpInfos: infos}}
 	case JVM_OPC_fload:
-		return &OpCode2{}
+		return &OpCode2{OpCode{CpInfos: infos}}
 	case JVM_OPC_dload:
-		return &OpCode2{}
+		return &OpCode2{OpCode{CpInfos: infos}}
 	case JVM_OPC_aload:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_iload_0,
 		JVM_OPC_iload_1,
 		JVM_OPC_iload_2,
 		JVM_OPC_iload_3:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_lload_0,
 		JVM_OPC_lload_1,
 		JVM_OPC_lload_2,
 		JVM_OPC_lload_3:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_fload_0,
 		JVM_OPC_fload_1,
 		JVM_OPC_fload_2,
 		JVM_OPC_fload_3:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_dload_0,
 		JVM_OPC_dload_1,
 		JVM_OPC_dload_2,
 		JVM_OPC_dload_3:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_aload_0,
 		JVM_OPC_aload_1,
 		JVM_OPC_aload_2,
 		JVM_OPC_aload_3:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_iaload,
 		JVM_OPC_laload,
 		JVM_OPC_faload,
@@ -78,38 +78,38 @@ func CreateOpCode(op int32, infos CpInfos) interface{} {
 		JVM_OPC_baload,
 		JVM_OPC_caload,
 		JVM_OPC_saload:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_istore,
 		JVM_OPC_lstore,
 		JVM_OPC_fstore,
 		JVM_OPC_dstore,
 		JVM_OPC_astore:
-		return &OpCode2{}
+		return &OpCode2{OpCode{CpInfos: infos}}
 	case JVM_OPC_istore_0,
 		JVM_OPC_istore_1,
 		JVM_OPC_istore_2,
 		JVM_OPC_istore_3:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_lstore_0,
 		JVM_OPC_lstore_1,
 		JVM_OPC_lstore_2,
 		JVM_OPC_lstore_3:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_fstore_0,
 		JVM_OPC_fstore_1,
 		JVM_OPC_fstore_2,
 		JVM_OPC_fstore_3:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_dstore_0,
 		JVM_OPC_dstore_1,
 		JVM_OPC_dstore_2,
 		JVM_OPC_dstore_3:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_astore_0,
 		JVM_OPC_astore_1,
 		JVM_OPC_astore_2,
 		JVM_OPC_astore_3:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_iastore,
 		JVM_OPC_lastore,
 		JVM_OPC_fastore,
@@ -118,7 +118,7 @@ func CreateOpCode(op int32, infos CpInfos) interface{} {
 		JVM_OPC_bastore,
 		JVM_OPC_castore,
 		JVM_OPC_sastore:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_pop,
 		JVM_OPC_pop2,
 		JVM_OPC_dup,
@@ -127,19 +127,19 @@ func CreateOpCode(op int32, infos CpInfos) interface{} {
 		JVM_OPC_dup2,
 		JVM_OPC_dup2_x1,
 		JVM_OPC_dup2_x2:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_swap:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_iadd,
 		JVM_OPC_ladd,
 		JVM_OPC_fadd,
 		JVM_OPC_dadd:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_isub,
 		JVM_OPC_lsub,
 		JVM_OPC_fsub,
 		JVM_OPC_dsub:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_imul,
 		JVM_OPC_lmul,
 		JVM_OPC_fmul,
@@ -168,9 +168,9 @@ func CreateOpCode(op int32, infos CpInfos) interface{} {
 		JVM_OPC_lor,
 		JVM_OPC_ixor,
 		JVM_OPC_lxor:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_iinc:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case
 		JVM_OPC_i2l,
 		JVM_OPC_i2f,
@@ -188,7 +188,7 @@ func CreateOpCode(op int32, infos CpInfos) interface{} {
 		JVM_OPC_i2c,
 		JVM_OPC_i2s,
 		JVM_OPC_lcmp:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_fcmpl,
 		JVM_OPC_fcmpg,
 		JVM_OPC_dcmpl,
@@ -199,7 +199,7 @@ func CreateOpCode(op int32, infos CpInfos) interface{} {
 		JVM_OPC_ifge,
 		JVM_OPC_ifgt,
 		JVM_OPC_ifle:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_if_icmpeq,
 		JVM_OPC_if_icmpne,
 		JVM_OPC_if_icmplt,
@@ -208,13 +208,13 @@ func CreateOpCode(op int32, infos CpInfos) interface{} {
 		JVM_OPC_if_icmple,
 		JVM_OPC_if_acmpeq,
 		JVM_OPC_if_acmpne:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_goto:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_jsr:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_ret:
-		return &OpCode2{}
+		return &OpCode2{OpCode{CpInfos: infos}}
 	case JVM_OPC_tableswitch:
 		return &OpCodeTableSwitch{}
 	case JVM_OPC_lookupswitch:
@@ -225,52 +225,52 @@ func CreateOpCode(op int32, infos CpInfos) interface{} {
 		JVM_OPC_dreturn,
 		JVM_OPC_areturn,
 		JVM_OPC_return:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_getstatic,
 		JVM_OPC_putstatic,
 		JVM_OPC_getfield,
 		JVM_OPC_putfield:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_invokevirtual:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_invokespecial:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_invokestatic:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_invokeinterface:
-		return &OpCode5{}
+		return &OpCode5{OpCode{CpInfos: infos}}
 	case JVM_OPC_invokedynamic:
-		return &OpCode5{}
+		return &OpCode5{OpCode{CpInfos: infos}}
 	case JVM_OPC_new:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_newarray:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_anewarray:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_arraylength:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_athrow:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_checkcast:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_instanceof:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_monitorenter,
 		JVM_OPC_monitorexit:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 		// todo
 	case JVM_OPC_wide:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	case JVM_OPC_multianewarray:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_ifnull,
 		JVM_OPC_ifnonnull:
-		return &OpCode3{}
+		return &OpCode3{OpCode{CpInfos: infos}}
 	case JVM_OPC_goto_w,
 		JVM_OPC_jsr_w:
-		return &OpCode5{}
+		return &OpCode5{OpCode{CpInfos: infos}}
 	default:
-		return &OpCode{}
+		return &OpCode{CpInfos: infos}
 	}
 
 }

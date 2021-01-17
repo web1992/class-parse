@@ -265,9 +265,9 @@ Constant pool:
       flags: ACC_PUBLIC
       Code:
         stack=1, locals=1, args_size=1
-             0: aload_0         
-             1: invokespecial    #1
-             4: return          
+              0: aload_0           
+              1: invokespecial      #1 // AbstractMain.<init>:()V 
+              4: return            
         LineNumberTable:
             line 29: 0
             line 30: 4
@@ -277,12 +277,12 @@ Constant pool:
       flags: ACC_PUBLIC
       Code:
         stack=2, locals=2, args_size=1
-             0: aload_0         
-             1: invokespecial    #1
-             4: aload_0         
-             5: aload_1         
-             6: putfield         #2
-             9: return          
+              0: aload_0           
+              1: invokespecial      #1 // AbstractMain.<init>:()V 
+              4: aload_0           
+              5: aload_1           
+              6: putfield           #2 // Main.name:Ljava/lang/String; 
+              9: return            
         LineNumberTable:
             line 32: 0
             line 33: 4
@@ -293,63 +293,63 @@ Constant pool:
       flags: ACC_PUBLIC, ACC_STATIC
       Code:
         stack=2, locals=8, args_size=1
-             0: getstatic        #3
-             3: ldc              #4
-             5: invokevirtual    #5
-             8: new              #6
-            11: dup             
-            12: invokespecial    #7
-            15: astore_1        
-            16: ldc              #8
-            18: astore_2        
-            19: aload_1         
-            20: aload_2         
-            21: invokedynamic    #9, 0, 0
-            26: astore_3        
-            27: aload_3         
-            28: invokeinterface  #10, 1, 0
-            33: iconst_1        
-            34: istore           #4
-            36: ldc              #11
-            38: astore           #5
-            40: iload            #4
+              0: getstatic          #3 // java/lang/System.out:Ljava/io/PrintStream; 
+              3: ldc                #4 // Hello word! 
+              5: invokevirtual      #5 // java/io/PrintStream.println:(Ljava/lang/String;)V 
+              8: new                #6 // Main 
+             11: dup               
+             12: invokespecial      #7 // Main.<init>:()V 
+             15: astore_1          
+             16: ldc                #8 // 777 
+             18: astore_2          
+             19: aload_1           
+             20: aload_2           
+             21: invokedynamic      #9, 0, 0 // #0:run:(LMain;Ljava/lang/String;)Ljava/lang/Runnable;, #0 = , #0 =  
+             26: astore_3          
+             27: aload_3           
+             28: invokeinterface    #10, 1, 0 // java/lang/Runnable.run:()V, AbstractMain.<init>:()V, #0 =  
+             33: iconst_1          
+             34: istore             #4 // Hello word! 
+             36: ldc                #11 //  
+             38: astore             #5 // java/io/PrintStream.println:(Ljava/lang/String;)V 
+             40: iload              #4 // Hello word! 
             42: tableswitch { // 1-3
                           1:68
                           2:72
                           3:76
                     default:80
             } 
-            68: ldc              #12
-            70: astore           #5
-            72: ldc              #13
-            74: astore           #5
-            76: ldc              #14
-            78: astore           #5
-            80: ldc              #15
-            82: astore           #5
-            84: getstatic        #3
-            87: ldc              #16
-            89: invokevirtual    #5
-            92: getstatic        #3
-            95: ldc              #17
-            97: invokevirtual    #5
-            100: goto             #37
-            103: astore           #6
-            105: getstatic        #3
-            108: ldc              #19
-            110: invokevirtual    #5
-            113: getstatic        #3
-            116: ldc              #17
-            118: invokevirtual    #5
-            121: goto             #16
-            124: astore           #7
-            126: getstatic        #3
-            129: ldc              #17
-            131: invokevirtual    #5
-            134: aload           
-            135: iconst_4        
-            136: athrow          
-            137: return          
+             68: ldc                #12 // a 
+             70: astore             #5 // java/io/PrintStream.println:(Ljava/lang/String;)V 
+             72: ldc                #13 // c 
+             74: astore             #5 // java/io/PrintStream.println:(Ljava/lang/String;)V 
+             76: ldc                #14 // D 
+             78: astore             #5 // java/io/PrintStream.println:(Ljava/lang/String;)V 
+             80: ldc                #15 // Z 
+             82: astore             #5 // java/io/PrintStream.println:(Ljava/lang/String;)V 
+             84: getstatic          #3 // java/lang/System.out:Ljava/io/PrintStream; 
+             87: ldc                #16 // try 
+             89: invokevirtual      #5 // java/io/PrintStream.println:(Ljava/lang/String;)V 
+             92: getstatic          #3 // java/lang/System.out:Ljava/io/PrintStream; 
+             95: ldc                #17 // finally 
+             97: invokevirtual      #5 // java/io/PrintStream.println:(Ljava/lang/String;)V 
+            100: goto               #37 // #37 =  
+            103: astore             #6 // Main 
+            105: getstatic          #3 // java/lang/System.out:Ljava/io/PrintStream; 
+            108: ldc                #19 // catch 
+            110: invokevirtual      #5 // java/io/PrintStream.println:(Ljava/lang/String;)V 
+            113: getstatic          #3 // java/lang/System.out:Ljava/io/PrintStream; 
+            116: ldc                #17 // finally 
+            118: invokevirtual      #5 // java/io/PrintStream.println:(Ljava/lang/String;)V 
+            121: goto               #16 // try 
+            124: astore             #7 // Main.<init>:()V 
+            126: getstatic          #3 // java/lang/System.out:Ljava/io/PrintStream; 
+            129: ldc                #17 // finally 
+            131: invokevirtual      #5 // java/io/PrintStream.println:(Ljava/lang/String;)V 
+            134: aload             
+            135: iconst_4          
+            136: athrow            
+            137: return            
         LineNumberTable:
             line 38: 0
             line 39: 8
@@ -382,10 +382,10 @@ Constant pool:
       flags: ACC_PUBLIC
       Code:
         stack=2, locals=1, args_size=1
-             0: getstatic        #3
-             3: ldc              #20
-             5: invokevirtual    #5
-             8: return          
+              0: getstatic          #3 // java/lang/System.out:Ljava/io/PrintStream; 
+              3: ldc                #20 // ha ha ha ha 
+              5: invokevirtual      #5 // java/io/PrintStream.println:(Ljava/lang/String;)V 
+              8: return            
         LineNumberTable:
             line 80: 0
             line 81: 8
@@ -399,15 +399,15 @@ Constant pool:
       flags: ACC_PUBLIC
       Code:
         stack=2, locals=2, args_size=1
-             0: new              #21
-             3: dup             
-             4: invokespecial    #22
-             7: ldc              #23
-             9: invokevirtual    #24
-            12: aload_1         
-            13: invokevirtual    #24
-            16: invokevirtual    #25
-            19: areturn         
+              0: new                #21 // java/lang/StringBuilder 
+              3: dup               
+              4: invokespecial      #22 // java/lang/StringBuilder.<init>:()V 
+              7: ldc                #23 // Hi,2021 
+              9: invokevirtual      #24 // java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder; 
+             12: aload_1           
+             13: invokevirtual      #24 // java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder; 
+             16: invokevirtual      #25 // java/lang/StringBuilder.toString:()Ljava/lang/String; 
+             19: areturn           
         LineNumberTable:
             line 85: 0
 
@@ -416,11 +416,11 @@ Constant pool:
       flags: ACC_PUBLIC, ACC_BRIDGE, ACC_SYNTHETIC
       Code:
         stack=2, locals=2, args_size=1
-             0: aload_0         
-             1: aload_1         
-             2: checkcast        #26
-             5: invokevirtual    #27
-             8: areturn         
+              0: aload_0           
+              1: aload_1           
+              2: checkcast          #26 // java/lang/String 
+              5: invokevirtual      #27 // Main.hi:(Ljava/lang/String;)Ljava/lang/String; 
+              8: areturn           
         LineNumberTable:
             line 8: 0
 
@@ -429,14 +429,14 @@ Constant pool:
       flags: ACC_PRIVATE, ACC_STATIC, ACC_SYNTHETIC
       Code:
         stack=2, locals=2, args_size=1
-             0: getstatic        #3
-             3: ldc              #28
-             5: invokevirtual    #5
-             8: aload_0         
-             9: aload_1         
-            10: invokevirtual    #27
-            13: pop             
-            14: return          
+              0: getstatic          #3 // java/lang/System.out:Ljava/io/PrintStream; 
+              3: ldc                #28 // run 
+              5: invokevirtual      #5 // java/io/PrintStream.println:(Ljava/lang/String;)V 
+              8: aload_0           
+              9: aload_1           
+             10: invokevirtual      #27 // Main.hi:(Ljava/lang/String;)Ljava/lang/String; 
+             13: pop               
+             14: return            
         LineNumberTable:
             line 43: 0
             line 44: 8
@@ -447,37 +447,37 @@ Constant pool:
       flags: ACC_STATIC
       Code:
         stack=2, locals=0, args_size=1
-             0: ldc              #30
-             2: invokestatic     #31
-             5: putstatic        #32
-             8: ldc              #33
-            10: invokestatic     #31
-            13: putstatic        #34
-            16: ldc2_w           #36
-            19: invokestatic     #38
-            22: putstatic        #39
-            25: ldc2_w           #40
-            28: invokestatic     #38
-            31: putstatic        #42
-            34: ldc2_w           #44
-            37: invokestatic     #46
-            40: putstatic        #47
-            43: ldc2_w           #48
-            46: invokestatic     #46
-            49: putstatic        #50
-            52: ldc              #52
-            54: invokestatic     #53
-            57: putstatic        #54
-            60: ldc              #55
-            62: invokestatic     #53
-            65: putstatic        #56
-            68: sipush           #32767
-            71: invokestatic     #58
-            74: putstatic        #59
-            77: sipush           #32768
-            80: invokestatic     #58
-            83: putstatic        #60
-            86: return          
+              0: ldc                #30 // 2147483647 
+              2: invokestatic       #31 // java/lang/Integer.valueOf:(I)Ljava/lang/Integer; 
+              5: putstatic          #32 // Main.INT_MAX:Ljava/lang/Integer; 
+              8: ldc                #33 // -2147483648 
+             10: invokestatic       #31 // java/lang/Integer.valueOf:(I)Ljava/lang/Integer; 
+             13: putstatic          #34 // Main.INT_MIN:Ljava/lang/Integer; 
+             16: ldc2_w             #36 // 9223372036854775807 
+             19: invokestatic       #38 // java/lang/Long.valueOf:(J)Ljava/lang/Long; 
+             22: putstatic          #39 // Main.LONG_MAX:Ljava/lang/Long; 
+             25: ldc2_w             #40 // -9223372036854775808 
+             28: invokestatic       #38 // java/lang/Long.valueOf:(J)Ljava/lang/Long; 
+             31: putstatic          #42 // Main.LONG_MIN:Ljava/lang/Long; 
+             34: ldc2_w             #44 // 1.7976931348623157e+308 
+             37: invokestatic       #46 // java/lang/Double.valueOf:(D)Ljava/lang/Double; 
+             40: putstatic          #47 // Main.DOUBLE_MAX:Ljava/lang/Double; 
+             43: ldc2_w             #48 // 5e-324 
+             46: invokestatic       #46 // java/lang/Double.valueOf:(D)Ljava/lang/Double; 
+             49: putstatic          #50 // Main.DOUBLE_MIN:Ljava/lang/Double; 
+             52: ldc                #52 // 3.4028235e+38 
+             54: invokestatic       #53 // java/lang/Float.valueOf:(F)Ljava/lang/Float; 
+             57: putstatic          #54 // Main.FLOAT_MAX:Ljava/lang/Float; 
+             60: ldc                #55 // 1e-45 
+             62: invokestatic       #53 // java/lang/Float.valueOf:(F)Ljava/lang/Float; 
+             65: putstatic          #56 // Main.FLOAT_MIN:Ljava/lang/Float; 
+             68: sipush             #32767 //  
+             71: invokestatic       #58 // java/lang/Short.valueOf:(S)Ljava/lang/Short; 
+             74: putstatic          #59 // Main.SHORT_MAX:Ljava/lang/Short; 
+             77: sipush             #32768 //  
+             80: invokestatic       #58 // java/lang/Short.valueOf:(S)Ljava/lang/Short; 
+             83: putstatic          #60 // Main.SHORT_MIN:Ljava/lang/Short; 
+             86: return            
         LineNumberTable:
             line 12: 0
             line 13: 8
