@@ -1,6 +1,7 @@
 package core
 
 import (
+	"sort"
 	"strings"
 )
 
@@ -113,7 +114,14 @@ func GetFlagDesc(f AccessFlag) string {
 func getFlagDesc(f int) string {
 
 	var fs []string
-	for k, v := range accMap {
+	var keys []int
+	for k := range accMap {
+		keys = append(keys, k)
+	}
+	sort.Ints(keys)
+
+	for _, k := range keys {
+		v := accMap[k]
 		if k == JVM_ACC_SUPER {
 			continue
 		}
@@ -129,7 +137,15 @@ func getFlagDesc(f int) string {
 func getFlag(f int) string {
 
 	var fs []string
-	for k, v := range accMap {
+
+	var keys []int
+	for k := range accMap {
+		keys = append(keys, k)
+	}
+	sort.Ints(keys)
+
+	for _, k := range keys {
+		v := accMap[k]
 		if k&f != 0 {
 			fs = append(fs, v)
 		}

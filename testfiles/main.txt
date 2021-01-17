@@ -1,6 +1,7 @@
-
-
-
+Classfile /Users/zl/Documents/DEV/github/class-parse/testfiles/Main.class
+  Last modified 2021-01-17; size 3377 bytes
+  MD5 checksum 5bb681d1ec46ad1aa3db24525e5867df
+  Compiled from "Main.java"
 public class Main extends AbstractMain implements InterfaceMain 
  minor version: 0
  major version: 52 
@@ -215,45 +216,45 @@ public class Main extends AbstractMain implements InterfaceMain
  {
 public static final Ljava/lang/Integer; INT_MAX;
 descriptor: Ljava/lang/Integer;
-flags: ACC_FINAL,ACC_PUBLIC,ACC_STATIC
+flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 RuntimeVisibleAnnotations:
 0: #66()
 
-final public static Ljava/lang/Integer; INT_MIN;
+public static final Ljava/lang/Integer; INT_MIN;
 descriptor: Ljava/lang/Integer;
-flags: ACC_FINAL,ACC_PUBLIC,ACC_STATIC
+flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 
-static final public Ljava/lang/Long; LONG_MAX;
+public static final Ljava/lang/Long; LONG_MAX;
 descriptor: Ljava/lang/Long;
-flags: ACC_STATIC,ACC_FINAL,ACC_PUBLIC
+flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 
-static final public Ljava/lang/Long; LONG_MIN;
+public static final Ljava/lang/Long; LONG_MIN;
 descriptor: Ljava/lang/Long;
-flags: ACC_FINAL,ACC_PUBLIC,ACC_STATIC
+flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 
-final public static Ljava/lang/Double; DOUBLE_MAX;
+public static final Ljava/lang/Double; DOUBLE_MAX;
 descriptor: Ljava/lang/Double;
 flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 
 public static final Ljava/lang/Double; DOUBLE_MIN;
 descriptor: Ljava/lang/Double;
-flags: ACC_STATIC,ACC_FINAL,ACC_PUBLIC
+flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 
-static final public Ljava/lang/Float; FLOAT_MAX;
+public static final Ljava/lang/Float; FLOAT_MAX;
 descriptor: Ljava/lang/Float;
 flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 
-final public static Ljava/lang/Float; FLOAT_MIN;
+public static final Ljava/lang/Float; FLOAT_MIN;
 descriptor: Ljava/lang/Float;
-flags: ACC_FINAL,ACC_PUBLIC,ACC_STATIC
+flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 
 public static final Ljava/lang/Short; SHORT_MAX;
 descriptor: Ljava/lang/Short;
-flags: ACC_FINAL,ACC_PUBLIC,ACC_STATIC
+flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 
-final public static Ljava/lang/Short; SHORT_MIN;
+public static final Ljava/lang/Short; SHORT_MIN;
 descriptor: Ljava/lang/Short;
-flags: ACC_STATIC,ACC_FINAL,ACC_PUBLIC
+flags: ACC_PUBLIC,ACC_STATIC,ACC_FINAL
 
 private Ljava/lang/String; name;
 descriptor: Ljava/lang/String;
@@ -290,7 +291,7 @@ line 34: 9
 
 public static main();
 descriptor: ([Ljava/lang/String;)V
-flags: ACC_STATIC,ACC_PUBLIC
+flags: ACC_PUBLIC,ACC_STATIC
 Code:
 stack=2, locals=8, args_size=1
 0: getstatic 
@@ -422,9 +423,9 @@ stack=2, locals=2, args_size=1
 LineNumberTable:
 line 8: 0
 
-synthetic private static lambda$main$0();
+private static synthetic lambda$main$0();
 descriptor: (LMain;Ljava/lang/String;)V
-flags: ACC_SYNTHETIC,ACC_PRIVATE,ACC_STATIC
+flags: ACC_PRIVATE,ACC_STATIC,ACC_SYNTHETIC
 Code:
 stack=2, locals=2, args_size=1
 0: getstatic 

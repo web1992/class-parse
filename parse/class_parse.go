@@ -1,9 +1,14 @@
 package parse
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"errors"
+	"fmt"
 	"github.com/web1992/goclass/core"
 	"github.com/web1992/goclass/utils"
+	"log"
+	"path/filepath"
 	"strings"
 )
 
@@ -14,11 +19,24 @@ var fileSuffixInvalid = errors.New("file must has suffix " + fileSuffix)
 var byteNoUsed = errors.New("byte not all used")
 
 type ClassParse struct {
-	filePath string // file path
-	bytes    []byte // files bytes
-	pointer  int    // []byte index
+	filePath   string // file path
+	fullPath   string // file path
+	modTime    int64
+	modTimeStr string
+	bytes      []byte // files bytes
+	pointer    int    // []byte index
 }
 
+func (cp *ClassParse) CpDesc(thisName string) string {
+	s1 := fmt.Sprintf("Classfile %s", cp.fullPath)
+	s2 := fmt.Sprintf("  Last modified %s; size %d bytes", cp.modTimeStr, len(cp.bytes))
+	h := md5.New()
+	h.Write(cp.bytes)
+	s3 := fmt.Sprintf("  MD5 checksum %s", hex.EncodeToString(h.Sum(nil)))
+	s4 := fmt.Sprintf("  Compiled from \"%s%s\"", thisName, ".java")
+
+	return strings.Join([]string{s1, s2, s3, s4}, "\n") + "\n"
+}
 func (cp *ClassParse) IncrPointer(num int) {
 	cp.pointer += num
 }
@@ -51,11 +69,27 @@ func (cp *ClassParse) parseFile(filePath string) error {
 		return fileSuffixInvalid
 	}
 
-	bytes, e := utils.ReadClassFile(filePath)
+	f, e := utils.GetFile(filePath)
 
 	if e != nil {
 		return e
 	}
+	defer f.Close()
+	bytes, e := utils.ReadClassFile(f)
+
+	if e != nil {
+		return e
+	}
+
+	fi, err := f.Stat()
+	if err != nil {
+		log.Println("stat filei nfo error")
+	}
+	cp.modTime = fi.ModTime().Unix()
+	cp.modTimeStr = fi.ModTime().Format("2006-01-02")
+
+	abs, _ := filepath.Abs(filePath)
+	cp.fullPath = abs
 
 	cp.bytes = bytes
 	return nil

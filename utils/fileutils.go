@@ -5,15 +5,26 @@ import (
 	"os"
 )
 
-func ReadClassFile(filePath string) ([]byte, error) {
-
+func GetFile(filePath string) (*os.File, error) {
 	f, er := os.Open(filePath)
-
-	defer f.Close()
 
 	if er != nil {
 		return nil, er
 	}
+
+	return f, nil
+}
+
+func ReadFile(filePath string) ([]byte, error) {
+	f, er := GetFile(filePath)
+	if er != nil {
+		return nil, er
+	}
+	return ReadClassFile(f)
+}
+
+func ReadClassFile(f *os.File) ([]byte, error) {
+
 	var bs []byte
 
 	buf := make([]byte, 1024)
