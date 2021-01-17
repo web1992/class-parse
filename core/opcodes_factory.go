@@ -1,6 +1,6 @@
 package core
 
-func CreateOpCode(op int32) interface{} {
+func CreateOpCode(op int32, infos CpInfos) interface{} {
 
 	switch int(op) {
 	case JVM_OPC_nop:

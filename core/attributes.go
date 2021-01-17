@@ -245,7 +245,7 @@ func (ca *CodeAttribute) ParseOpCodes(offset int, codeLength int, bs []byte) OpC
 		op := Byte2U1(bs[hadReadLen : hadReadLen+u1])
 		_bs := bs[hadReadLen:]
 		//desc := GetOpDesc(int(op))
-		opObj := CreateOpCode(op)
+		opObj := CreateOpCode(op, ca.CpInfos)
 		if o, ok := opObj.(*OpCodeTableSwitch); ok {
 			// The alignment required of the 4-byte operands of the tableswitch
 			// instruction guarantees 4-byte alignment of those operands if
@@ -611,7 +611,7 @@ func (bm *BootstrapMethod) String() string {
 	var str []string
 	str = append(str, fmt.Sprintf("%s%s:", GetSpace(4), "Method arguments"))
 	for i, v := range bm.BootstrapArguments {
-		str = append(str, fmt.Sprintf("%s#%d %s:", GetSpace(4), v, bm.BootstrapArgumentName[i]))
+		str = append(str, fmt.Sprintf("%s#%d %s:", GetSpace(6), v, bm.BootstrapArgumentName[i]))
 	}
 	return strings.Join(str, NewLine)
 

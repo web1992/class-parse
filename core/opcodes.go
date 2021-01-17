@@ -224,6 +224,7 @@ type OpCoder interface {
 
 // OpCode 1 byte
 type OpCode struct {
+	CpInfos
 	LineNo int
 	Desc   string
 	Opc    int32
@@ -232,8 +233,23 @@ type OpCode struct {
 
 func (op *OpCode) String() string {
 	desc := GetOpDesc(int(op.Opc))
-	return fmt.Sprintf("%d: %s\n", op.LineNo, desc)
+	argsDesc := getArgsDesc(op.Args)
+	if argsDesc != "" {
+		return fmt.Sprintf("%2d%s %-16s #%s\n", op.LineNo, ":", desc, argsDesc)
+	} else {
+		return fmt.Sprintf("%2d%s %-16s\n", op.LineNo, ":", desc)
+	}
 }
+
+func getArgsDesc(args []int32) string {
+	var str []string
+
+	for _, v := range args {
+		str = append(str, fmt.Sprintf("%d", int(v)))
+	}
+	return strings.Join(str, ", ")
+}
+
 func (oc *OpCode) SetLineNo(lineNo int) {
 	oc.LineNo = lineNo
 }
