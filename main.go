@@ -2,12 +2,17 @@ package main
 
 import (
 	"fmt"
-	"github.com/web1992/goclass/core"
+	"github.com/web1992/goclass/parse"
 )
 
 func main() {
 
-	fmt.Printf("goclass \n")
-	a := []byte{0, 32, 0, 0}
-	fmt.Println(core.Byte2U4(a))
+	const file = "./testfiles/Main.class"
+	var cp parse.ClassParse
+	_ = cp.Parse(file)
+	cf := cp.ClassFile()
+	desc := cf.ClassDesc()
+	fmt.Println(cp.CpDesc(cf.ThisClass.String))
+	fmt.Println(desc)
+
 }
