@@ -11,7 +11,7 @@ const (
 	u4             = U4
 	NewLine        = "\n"
 	OneSpace       = " "
-	P              = ","
+	COMMA          = ","
 	_class         = "class"
 	_extends       = "extends"
 	_implements    = "implements"

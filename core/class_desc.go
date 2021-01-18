@@ -215,7 +215,7 @@ func (cf ClassFile) InterfaceDesc() string {
 		for _, v := range cf.Interfaces {
 			s = append(s, v.NameString)
 		}
-		interfaceDesc = strings.Join(s, P)
+		interfaceDesc = strings.Join(s, COMMA)
 		str = append(str, interfaceDesc)
 	}
 
