@@ -6,7 +6,7 @@ type Magic struct {
 }
 
 func (m *Magic) ByteLen() int {
-	return U4_L
+	return U4
 }
 
 func MagicNew() *Magic {

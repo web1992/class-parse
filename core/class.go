@@ -1,14 +1,14 @@
 package core
 
 const (
-	U1_L = 1 // 1 byte
-	U2_L = 2 // 2 bytes
-	U4_L = 4 // 4 bytes
+	U1 = 1 // 1 byte
+	U2 = 2 // 2 bytes
+	U4 = 4 // 4 bytes
 )
 const (
-	u1             = U1_L
-	u2             = U2_L
-	u4             = U4_L
+	u1             = U1
+	u2             = U2
+	u4             = U4
 	NewLine        = "\n"
 	OneSpace       = " "
 	P              = ","

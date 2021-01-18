@@ -18,7 +18,7 @@ func (cp *ClassParse) cpInfos(cpc core.ConstantPoolCount) core.CpInfos {
 		bytes := cp.bytes
 
 		p := cp.pointer
-		tagByte := bytes[p : p+core.U1_L]
+		tagByte := bytes[p : p+core.U1]
 		tag := core.Byte2U1(tagByte)
 		switch tag {
 
