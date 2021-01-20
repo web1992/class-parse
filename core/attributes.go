@@ -1102,7 +1102,16 @@ AnnotationDefault_attribute {
 
 type AnnotationDefaultAttribute struct {
 	Attribute
-	ElementValue
+	*ElementValue
+}
+
+func (ada *AnnotationDefaultAttribute) String() string {
+
+	var str []string
+	str = append(str, ada.Name+":")
+	desc := getValueDesc(int(ada.Tag), ada.Value)
+	str = append(str, fmt.Sprintf("%sdefault_value: %s", GetSpace(10), desc))
+	return strings.Join(str, NewLine)
 }
 
 func (annDefault *AnnotationDefaultAttribute) ReadObj(bytes []byte) int {
@@ -1111,12 +1120,12 @@ func (annDefault *AnnotationDefaultAttribute) ReadObj(bytes []byte) int {
 	annDefault.AttributeNameIndex = Byte2U2(bytes[readLen : readLen+u2])
 	readLen += u2
 
-	l := Byte2U2(bytes[readLen : readLen+u4])
+	l := Byte2U4(bytes[readLen : readLen+u4])
 	readLen += u4
 	annDefault.AttributeLength = l
 
 	var ev ElementValue
-	annDefault.ElementValue = ev
+	annDefault.ElementValue = &ev
 
 	ev.CpInfos = annDefault.Attribute.CpInfos
 	ev.ReadObj(bytes[readLen:])
