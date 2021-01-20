@@ -1090,3 +1090,36 @@ append_frame;
 full_frame;
 }
 */
+
+/**
+
+AnnotationDefault_attribute {
+    u2            attribute_name_index;
+    u4            attribute_length;
+    element_value default_value;
+}
+*/
+
+type AnnotationDefaultAttribute struct {
+	Attribute
+	ElementValue
+}
+
+func (annDefault *AnnotationDefaultAttribute) ReadObj(bytes []byte) int {
+
+	readLen := 0
+	annDefault.AttributeNameIndex = Byte2U2(bytes[readLen : readLen+u2])
+	readLen += u2
+
+	l := Byte2U2(bytes[readLen : readLen+u4])
+	readLen += u4
+	annDefault.AttributeLength = l
+
+	var ev ElementValue
+	annDefault.ElementValue = ev
+
+	ev.CpInfos = annDefault.Attribute.CpInfos
+	ev.ReadObj(bytes[readLen:])
+
+	return readLen + int(l)
+}

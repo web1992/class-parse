@@ -73,6 +73,13 @@ func CreateAttribute(name string, cpInfos CpInfos, pointer int) interface{} {
 
 	switch name {
 
+	case AnnotationDefault:
+		return &AnnotationDefaultAttribute{
+			Attribute: Attribute{
+				CpInfos: cpInfos,
+				Name:    name,
+			},
+		}
 	case StackMapTable:
 		return &StackMapTableAttribute{
 			Attribute: Attribute{
