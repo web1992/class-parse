@@ -9,7 +9,7 @@ import (
 func main() {
 
 	const file = "./testfiles/Main.class"
-	var cp parse.ClassParse
+	var cp parse.ClassReader
 	_ = cp.Parse(file)
 	cf := cp.ClassFile()
 	desc := cf.ClassDesc()

@@ -7,7 +7,7 @@ import (
 
 // read constant_pool
 // The constant_pool table is indexed from 1 to constant_pool_count - 1.
-func (cp *ClassParse) cpInfos(cpc core.ConstantPoolCount) core.CpInfos {
+func (cp *ClassReader) cpInfos(cpc core.ConstantPoolCount) core.CpInfos {
 
 	var cpInfos core.CpInfos
 	cpInfos = append(cpInfos, nil)

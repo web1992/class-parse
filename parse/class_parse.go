@@ -18,16 +18,16 @@ var filePathInvalid = errors.New("file patch is invalid")
 var fileSuffixInvalid = errors.New("file must has suffix " + fileSuffix)
 var byteNoUsed = errors.New("byte not all used")
 
-type ClassParse struct {
+type ClassReader struct {
 	filePath   string // file path
 	fullPath   string // file path
 	modTime    int64
 	modTimeStr string
 	bytes      []byte // files bytes
-	pointer    int    // []byte index
+	pointer    int    // read index
 }
 
-func (cp *ClassParse) CpDesc(thisName string) string {
+func (cp *ClassReader) CpDesc(thisName string) string {
 	s1 := fmt.Sprintf("Classfile %s", cp.fullPath)
 	s2 := fmt.Sprintf("  Last modified %s; size %d bytes", cp.modTimeStr, len(cp.bytes))
 	h := md5.New()
@@ -37,25 +37,25 @@ func (cp *ClassParse) CpDesc(thisName string) string {
 
 	return strings.Join([]string{s1, s2, s3, s4}, "\n") + "\n"
 }
-func (cp *ClassParse) IncrPointer(num int) {
+func (cp *ClassReader) IncrPointer(num int) {
 	cp.pointer += num
 }
 
-func (cp *ClassParse) Read(r core.Reader) {
+func (cp *ClassReader) Read(r core.Reader) {
 	bytes := cp.bytes
 	readL := r.ReadObj(bytes[cp.pointer:])
 	cp.IncrPointer(readL)
 }
 
-func (cp *ClassParse) String() string {
+func (cp *ClassReader) String() string {
 	return cp.filePath
 }
 
-func (cp *ClassParse) Parse(filePath string) error {
+func (cp *ClassReader) Parse(filePath string) error {
 	return cp.parseFile(filePath)
 }
 
-func (cp *ClassParse) parseFile(filePath string) error {
+func (cp *ClassReader) parseFile(filePath string) error {
 
 	cp.filePath = filePath
 
@@ -97,7 +97,7 @@ func (cp *ClassParse) parseFile(filePath string) error {
 
 // ClassFile
 // parse bytes to core.ClassFile obj
-func (cp *ClassParse) ClassFile() core.ClassFile {
+func (cp *ClassReader) ClassFile() core.ClassFile {
 
 	magic := cp.magic()
 	minorVersion := cp.minorVersion()
@@ -141,34 +141,34 @@ func (cp *ClassParse) ClassFile() core.ClassFile {
 
 }
 
-func (cp *ClassParse) magic() core.Magic {
+func (cp *ClassReader) magic() core.Magic {
 	var m = core.MagicNew()
 	cp.Read(m)
 	return *m
 }
 
-func (cp *ClassParse) minorVersion() core.MinorVersion {
+func (cp *ClassReader) minorVersion() core.MinorVersion {
 
 	var mv = core.MinorVersionNew()
 	cp.Read(mv)
 	return *mv
 }
 
-func (cp *ClassParse) majorVersion() core.MajorVersion {
+func (cp *ClassReader) majorVersion() core.MajorVersion {
 
 	var mv = core.MajorVersionNew()
 	cp.Read(mv)
 	return *mv
 }
 
-func (cp *ClassParse) constantPoolCount() core.ConstantPoolCount {
+func (cp *ClassReader) constantPoolCount() core.ConstantPoolCount {
 
 	var cpPool = core.ConstantPoolCountNew()
 	cp.Read(cpPool)
 	return *cpPool
 }
 
-func (cp *ClassParse) accessFlag() core.AccessFlag {
+func (cp *ClassReader) accessFlag() core.AccessFlag {
 
 	var af = core.AccessFlagNew()
 	cp.Read(af)
@@ -177,7 +177,7 @@ func (cp *ClassParse) accessFlag() core.AccessFlag {
 	return *af
 }
 
-func (cp *ClassParse) thisClass(cpInfos core.CpInfos) core.ThisClass {
+func (cp *ClassReader) thisClass(cpInfos core.CpInfos) core.ThisClass {
 
 	var tc = core.ThisClassNew()
 	cp.Read(tc)
@@ -189,7 +189,7 @@ func (cp *ClassParse) thisClass(cpInfos core.CpInfos) core.ThisClass {
 	return *tc
 }
 
-func (cp *ClassParse) superClass(cpInfos core.CpInfos) core.SuperClass {
+func (cp *ClassReader) superClass(cpInfos core.CpInfos) core.SuperClass {
 
 	superClass := core.SuperClassNew()
 	cp.Read(superClass)
@@ -199,12 +199,12 @@ func (cp *ClassParse) superClass(cpInfos core.CpInfos) core.SuperClass {
 	return *superClass
 }
 
-func (cp *ClassParse) interfacesCount() core.InterfacesCount {
+func (cp *ClassReader) interfacesCount() core.InterfacesCount {
 	interfacesCount := core.InterfacesCountNew()
 	cp.Read(interfacesCount)
 	return *interfacesCount
 }
-func (cp *ClassParse) interfaces(cpInfos core.CpInfos, count core.InterfacesCount) core.Interfaces {
+func (cp *ClassReader) interfaces(cpInfos core.CpInfos, count core.InterfacesCount) core.Interfaces {
 
 	var fs core.Interfaces
 	c := count.Count
@@ -221,7 +221,7 @@ func (cp *ClassParse) interfaces(cpInfos core.CpInfos, count core.InterfacesCoun
 	return fs
 }
 
-func (cp *ClassParse) fieldsCount() core.FieldsCount {
+func (cp *ClassReader) fieldsCount() core.FieldsCount {
 
 	fc := core.FieldsCountNew()
 	cp.Read(fc)
@@ -229,7 +229,7 @@ func (cp *ClassParse) fieldsCount() core.FieldsCount {
 	return *fc
 }
 
-func (cp *ClassParse) fields(cpInfos core.CpInfos, count core.FieldsCount) core.Fields {
+func (cp *ClassReader) fields(cpInfos core.CpInfos, count core.FieldsCount) core.Fields {
 
 	var fields core.Fields
 
@@ -247,14 +247,14 @@ func (cp *ClassParse) fields(cpInfos core.CpInfos, count core.FieldsCount) core.
 	return fields
 }
 
-func (cp *ClassParse) methodCount() core.MethodCount {
+func (cp *ClassReader) methodCount() core.MethodCount {
 
 	mc := core.MethodCountNew()
 	cp.Read(mc)
 	return *mc
 }
 
-func (cp *ClassParse) methods(cpInfos core.CpInfos, count core.MethodCount) core.Methods {
+func (cp *ClassReader) methods(cpInfos core.CpInfos, count core.MethodCount) core.Methods {
 
 	var ms core.Methods
 	c := int(count.Count)

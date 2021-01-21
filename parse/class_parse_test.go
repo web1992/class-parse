@@ -12,7 +12,7 @@ const file = "../testfiles/Main.class"
 
 func Test_class_parse(t *testing.T) {
 
-	var cp ClassParse
+	var cp ClassReader
 	e := cp.parseFile(file)
 	if e != nil {
 		t.Fatal(e)
@@ -22,7 +22,7 @@ func Test_class_parse(t *testing.T) {
 }
 
 func Test_get_class_file(t *testing.T) {
-	var cp ClassParse
+	var cp ClassReader
 	_ = cp.parseFile(file)
 
 	classFile := cp.ClassFile()
@@ -32,7 +32,7 @@ func Test_get_class_file(t *testing.T) {
 
 func Test_get_magic_num(t *testing.T) {
 
-	var cp ClassParse
+	var cp ClassReader
 	_ = cp.parseFile(file)
 
 	m := cp.ClassFile().Magic
@@ -45,7 +45,7 @@ func Test_get_magic_num(t *testing.T) {
 
 func Test_get_Minor_Version(t *testing.T) {
 
-	var cp ClassParse
+	var cp ClassReader
 	_ = cp.parseFile(file)
 	mv := cp.ClassFile().MinorVersion
 	v := mv.Version
@@ -57,7 +57,7 @@ func Test_get_Minor_Version(t *testing.T) {
 }
 
 func Test_get_major_version(t *testing.T) {
-	var cp ClassParse
+	var cp ClassReader
 	_ = cp.parseFile(file)
 	mv := cp.ClassFile().MajorVersion
 	expect := 52
@@ -69,7 +69,7 @@ func Test_get_major_version(t *testing.T) {
 }
 
 func Test_get_cp(t *testing.T) {
-	var cp ClassParse
+	var cp ClassReader
 	_ = cp.parseFile(file)
 	constPoolCount := cp.ClassFile().ConstantPoolCount
 	v := constPoolCount.Count
@@ -82,7 +82,7 @@ func Test_get_cp(t *testing.T) {
 }
 
 func Test_get_cp_info(t *testing.T) {
-	var cp ClassParse
+	var cp ClassReader
 	_ = cp.parseFile(file)
 	classFile := cp.ClassFile()
 	cpInfos := classFile.CpInfos
@@ -94,7 +94,7 @@ func Test_get_cp_info(t *testing.T) {
 }
 
 func Test_get_access_flags(t *testing.T) {
-	var cp ClassParse
+	var cp ClassReader
 	_ = cp.parseFile(file)
 
 	af := cp.ClassFile().AccessFlag
@@ -109,7 +109,7 @@ func Test_get_access_flags(t *testing.T) {
 
 func Test_get_this_class(t *testing.T) {
 
-	var cp ClassParse
+	var cp ClassReader
 	_ = cp.parseFile(file)
 
 	classFile := cp.ClassFile()
@@ -126,7 +126,7 @@ func Test_get_this_class(t *testing.T) {
 }
 
 func Test_get_interface(t *testing.T) {
-	var cp ClassParse
+	var cp ClassReader
 	_ = cp.parseFile(file)
 
 	classFile := cp.ClassFile()
@@ -149,7 +149,7 @@ func Test_get_interface(t *testing.T) {
 }
 
 func Test_get_attributes(t *testing.T) {
-	var cp ClassParse
+	var cp ClassReader
 	_ = cp.parseFile(file)
 
 	classFile := cp.ClassFile()
@@ -186,7 +186,7 @@ func Test_getClassDesc(t *testing.T) {
 		log.Fatalln("Failed to open error log file:", err)
 	}
 
-	var cp ClassParse
+	var cp ClassReader
 	_ = cp.parseFile(file)
 	cf := cp.ClassFile()
 	desc := cf.ClassDesc()

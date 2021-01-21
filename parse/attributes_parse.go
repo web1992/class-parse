@@ -4,7 +4,7 @@ import (
 	"github.com/web1992/goclass/core"
 )
 
-func (cp *ClassParse) attributeCount() core.AttributeCount {
+func (cp *ClassReader) attributeCount() core.AttributeCount {
 
 	ac := core.AttributeCountNew()
 	cp.Read(ac)
@@ -59,7 +59,7 @@ u2 attribute_name_index;
 u4 attribute_length;
 u1 info[attribute_length];
 }*/
-func (cp *ClassParse) attributes(cpInfos core.CpInfos, attributeCount core.AttributeCount) core.Attributes {
+func (cp *ClassReader) attributes(cpInfos core.CpInfos, attributeCount core.AttributeCount) core.Attributes {
 
 	var attrs core.Attributes
 	c := int(attributeCount.Count)
@@ -80,7 +80,7 @@ func (cp *ClassParse) attributes(cpInfos core.CpInfos, attributeCount core.Attri
 	return attrs
 }
 
-func (cp *ClassParse) parseAttr(ca interface{}, cpInfos core.CpInfos, name string) interface{} {
+func (cp *ClassReader) parseAttr(ca interface{}, cpInfos core.CpInfos, name string) interface{} {
 
 	if reader, ok := ca.(core.Reader); ok {
 		cp.Read(reader)
